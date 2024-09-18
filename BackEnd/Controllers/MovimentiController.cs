@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BackEnd.Classi;
-using System.Data.SqlClient;
 using OfficeOpenXml;
+using Microsoft.Data.SqlClient;
+
 namespace BankEnd.Controllers
 {
     [Route("api/[controller]")]
