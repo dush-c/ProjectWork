@@ -50,6 +50,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "EPPlus": {
+              "target": "Package",
+              "version": "[7.3.2, )"
+            },
             "Identity.PasswordHasher": {
               "target": "Package",
               "version": "[1.0.0, )"
