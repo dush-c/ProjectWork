@@ -1,5 +1,6 @@
 ﻿using BackEnd.Classi;
 using Identity.PasswordHasher;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.Numerics;
@@ -100,8 +101,51 @@ namespace BackEnd.Controllers
         [HttpPost]
         public string Login(string email, string password)
         {
+            var hasher = new PasswordHasher<string>();
 
-            return "OK";
+            try
+            {
+               
+                Database db = new Database();
+                db.sqlCommand = db.sqlConnection.CreateCommand();
+
+                // Prepare the SQL query to retrieve the user based on email only
+                db.sqlCommand.Parameters.AddWithValue("@Email", email);
+                db.sqlCommand.CommandText = "SELECT * FROM TContiCorrenti WHERE Email = @Email";
+                db.sqlConnection.Open();
+
+                SqlDataReader returnUser = db.sqlCommand.ExecuteReader();
+
+                if (!returnUser.HasRows)
+                {
+                    // If no user is found with this email
+                    return "Nessun utente trovato con questa email.";
+                }
+
+                // If a user is found, read the hashed password from the database
+                returnUser.Read();
+                string storedHashedPassword = returnUser["Password"].ToString();
+
+                // Use PasswordHasher to verify the entered password with the stored hashed password
+                
+                var verificationResult = hasher.VerifyHashedPassword(null, storedHashedPassword, password);
+
+                if (verificationResult == PasswordVerificationResult.SuccessRehashNeeded)
+                {
+                    // Password is correct
+                    return returnUser["NomeTitolare"].ToString() + " " + returnUser["CognomeTitolare"].ToString();
+                }
+                else
+                {
+                    // Password is incorrect
+                    return "Password errata.";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+                return ex.Message;
+            }
         }
         #endregion
 
