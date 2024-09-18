@@ -2,6 +2,8 @@
 using Identity.PasswordHasher;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using System.Numerics;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace BackEnd.Controllers
@@ -19,13 +21,7 @@ namespace BackEnd.Controllers
         {
             ResponseRegistrazione responseRegistrazione = new ResponseRegistrazione();
             PasswordHasher hasher = new PasswordHasher();
-            /*
-            1.2. Prevedere un controllo lato client:
-            1.2.1. Obbligo di caricamento di tutti i dati
-            1.2.2. validità formale della mail
-            1.2.3. Password almeno 8 caratteri, una maiuscola e un simbolo 
-            1.2.4. Password uguale a conferma password
-             */
+            
             //controllo che l'email sia stata scritta correttamente
             if (!IsValidEmail(user.Email!))
             {
@@ -72,8 +68,11 @@ namespace BackEnd.Controllers
                     db.sqlCommand.Parameters.AddWithValue("@NomeTitolare", user.NomeTitolare);
                     db.sqlCommand.Parameters.AddWithValue("@CognomeTitolare", user.CognomeTitolare);
                     db.sqlCommand.Parameters.AddWithValue("@DataApertura", DataApertura);
+
+                    string IBAN = GenerateIBAN();
+                    db.sqlCommand.Parameters.AddWithValue("@IBAN", IBAN);
                     db.sqlCommand.CommandText = "insert into TContiCorrenti (Email, Password, CognomeTitolare, NomeTitolare, DataApertura, IBAN)" +
-                        "values(@Email, @Password, @CognomeTitolare, @NomeTitolare, @DataApertura, 0)";
+                        "values(@Email, @Password, @CognomeTitolare, @NomeTitolare, @DataApertura, @IBAN)";
 
                     db.sqlCommand.ExecuteNonQuery();
                     responseRegistrazione.messaggio = "OK, registrazione avvenuta con successo!";
@@ -96,10 +95,12 @@ namespace BackEnd.Controllers
             }
         }
 
+
         [Route("/Login")]
         [HttpPost]
-        public string Login(string mail, string password)
+        public string Login(string email, string password)
         {
+
             return "OK";
         }
         #endregion
@@ -126,6 +127,8 @@ namespace BackEnd.Controllers
                 return false;
             }
         }
+
+        //checks if the password is valid
         public static bool IsValidPassword(string password)
         {
             Regex regex = new Regex(@"^(.{0,7}|[^0-9]*|[^A-Z]*|[a-zA-Z0-9]*)$");
@@ -133,6 +136,85 @@ namespace BackEnd.Controllers
             return match.Success;
         }
 
+        //randomly generates the IBAN after the user is registered
+        public static string GenerateIBAN()
+        {
+            string countryCode = "IT"; // Country code for Italy
+            string nationalCheckChar = GenerateRandomLetter(); // 1 letter national check character
+            string bankCode = GenerateRandomNumericString(5); // ABI (Bank code: 5 digits)
+            string branchCode = GenerateRandomNumericString(5); // CAB (Branch code: 5 digits)
+            string accountNumber = GenerateRandomAlphanumericString(12); // BBAN (Account number: 12 alphanumeric characters)
+
+            // Create IBAN without the checksum (placeholders '00' for checksum)
+            string ibanWithoutChecksum = countryCode + "00" + nationalCheckChar + bankCode + branchCode + accountNumber;
+
+            // Generate checksum
+            string checksum = GenerateIbanChecksum(ibanWithoutChecksum);
+
+            // Final IBAN
+            string iban = countryCode + checksum + nationalCheckChar + bankCode + branchCode + accountNumber;
+
+            return iban;
+        }
+        // Method to generate the checksum
+        public static string GenerateIbanChecksum(string ibanWithoutChecksum)
+        {
+            // Move the country code and checksum ('00') to the end of the string
+            string rearrangedIban = ibanWithoutChecksum.Substring(4) + ibanWithoutChecksum.Substring(0, 4);
+
+            // Replace each letter with two digits (A = 10, B = 11, ..., Z = 35)
+            StringBuilder numericIban = new StringBuilder();
+            foreach (char ch in rearrangedIban)
+            {
+                if (char.IsLetter(ch))
+                {
+                    numericIban.Append((ch - 'A' + 10).ToString());
+                }
+                else
+                {
+                    numericIban.Append(ch);
+                }
+            }
+
+            // Convert the string to a BigInteger and compute the checksum mod 97
+            BigInteger ibanAsNumber = BigInteger.Parse(numericIban.ToString());
+            int checksum = 98 - (int)(ibanAsNumber % 97);
+
+            return checksum.ToString("D2"); // Return as a 2-digit string
+        }
+
+        // Method to generate a random numeric string of given length
+        public static string GenerateRandomNumericString(int length)
+        {
+            Random random = new Random();
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < length; i++)
+            {
+                result.Append(random.Next(0, 10)); // Add a random digit
+            }
+            return result.ToString();
+        }
+
+        // Method to generate a random alphanumeric string of given length
+        public static string GenerateRandomAlphanumericString(int length)
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < length; i++)
+            {
+                result.Append(chars[random.Next(chars.Length)]); // Add a random alphanumeric character
+            }
+            return result.ToString();
+        }
+
+        // Method to generate a random letter
+        public static string GenerateRandomLetter()
+        {
+            Random random = new Random();
+            char letter = (char)('A' + random.Next(0, 26)); // Generate a random letter (A-Z)
+            return letter.ToString();
+        }
         #endregion
     }
 
