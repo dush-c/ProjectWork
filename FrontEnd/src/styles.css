@@ -12,3 +12,6 @@ By default, styles are applied in the order they are imported. To ensure Tailwin
   @tailwind components;
   @tailwind utilities;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
