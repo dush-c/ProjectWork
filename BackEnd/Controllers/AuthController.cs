@@ -1,0 +1,265 @@
+﻿using BackEnd.Classi;
+using Identity.PasswordHasher;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using System.Numerics;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace BackEnd.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : Controller
+    {
+
+
+        #region ApiCalls
+        [Route("/Registrazione")]
+        [HttpPost]
+        public ResponseRegistrazione RegistraNuovoUtente(Utente user, string confermaPassword)
+        {
+            ResponseRegistrazione responseRegistrazione = new ResponseRegistrazione();
+            PasswordHasher hasher = new PasswordHasher();
+            
+            //controllo che l'email sia stata scritta correttamente
+            if (!IsValidEmail(user.Email!))
+            {
+                responseRegistrazione.messaggio = $"KO! La mail '{user.Email}' non è corretta";
+                responseRegistrazione.contoCorrenteID = 0;
+                return responseRegistrazione;
+            }
+            //controllo che la password sia stata scritta correttamente
+            if (!IsValidPassword(user.Password!))
+            {
+                responseRegistrazione.messaggio = $"KO! La password deve contenere: almeno 8 caratteri, una maiuscola e un simbolo";
+                responseRegistrazione.contoCorrenteID = 0;
+                return responseRegistrazione;
+            }
+            if (!user.Password!.Equals(confermaPassword))
+            {
+                responseRegistrazione.messaggio = $"KO! Le due password non coincidono";
+            }
+
+            //se arrivo a questo punto significa che le credenziali sono corrette
+            try
+            {
+                Database db = new Database();
+                db.sqlCommand = db.sqlConnection.CreateCommand();
+                //devo prima assicurarmi che non sia già presente una mail uguale a quella usata per la registrazione
+                db.sqlCommand.Parameters.AddWithValue("@Email", user.Email);
+                db.sqlCommand.CommandText = "select * from TContiCorrenti where Email = @Email";
+                db.sqlConnection.Open();
+                SqlDataReader reader = db.sqlCommand.ExecuteReader();
+                if (!reader.Read())
+                {
+                    //se non sono stati trovati dei record significa che la mail inserita dall'utente è univoca.
+                    //quindi posso andare ad inserire un nuovo record
+
+                    //La password deve essere salvata su db in formato criptato
+                    string hashedPassword = hasher.HashPassword(user.Password!);
+                    //inserisco un nuovo record
+                    DateTime DataApertura = DateTime.Now;
+
+                    db.sqlConnection.Close();
+                    db.sqlConnection.Open();
+
+                    db.sqlCommand.Parameters.AddWithValue("@Password", hashedPassword);
+                    db.sqlCommand.Parameters.AddWithValue("@NomeTitolare", user.NomeTitolare);
+                    db.sqlCommand.Parameters.AddWithValue("@CognomeTitolare", user.CognomeTitolare);
+                    db.sqlCommand.Parameters.AddWithValue("@DataApertura", DataApertura);
+
+                    string IBAN = GenerateIBAN();
+                    db.sqlCommand.Parameters.AddWithValue("@IBAN", IBAN);
+                    db.sqlCommand.CommandText = "insert into TContiCorrenti (Email, Password, CognomeTitolare, NomeTitolare, DataApertura, IBAN)" +
+                        "values(@Email, @Password, @CognomeTitolare, @NomeTitolare, @DataApertura, @IBAN)";
+
+                    db.sqlCommand.ExecuteNonQuery();
+                    responseRegistrazione.messaggio = "OK, registrazione avvenuta con successo!";
+
+                    //una volta avvenuta una nuova registrazione ritorno l'id del conto appena creato
+                    db.sqlCommand.CommandText = "select * from TContiCorrenti where Email = @Email";
+                    SqlDataReader returnUser = db.sqlCommand.ExecuteReader();
+                    if (!returnUser.Read())
+                    {
+                        responseRegistrazione.contoCorrenteID = Convert.ToInt32(returnUser["ContoCorrenteID"]);
+                    }
+                }
+                return responseRegistrazione;
+            }
+            catch (Exception ex)
+            {
+                responseRegistrazione.messaggio = ex.Message;
+                responseRegistrazione.contoCorrenteID = 0;
+                return responseRegistrazione;
+            }
+        }
+
+
+        [Route("/Login")]
+        [HttpPost]
+        public string Login(string email, string password)
+        {
+            var hasher = new PasswordHasher<string>();
+
+            try
+            {
+               
+                Database db = new Database();
+                db.sqlCommand = db.sqlConnection.CreateCommand();
+
+                // Prepare the SQL query to retrieve the user based on email only
+                db.sqlCommand.Parameters.AddWithValue("@Email", email);
+                db.sqlCommand.CommandText = "SELECT * FROM TContiCorrenti WHERE Email = @Email";
+                db.sqlConnection.Open();
+
+                SqlDataReader returnUser = db.sqlCommand.ExecuteReader();
+
+                if (!returnUser.HasRows)
+                {
+                    // If no user is found with this email
+                    return "Nessun utente trovato con questa email.";
+                }
+
+                // If a user is found, read the hashed password from the database
+                returnUser.Read();
+                string storedHashedPassword = returnUser["Password"].ToString();
+
+                // Use PasswordHasher to verify the entered password with the stored hashed password
+                
+                var verificationResult = hasher.VerifyHashedPassword(null, storedHashedPassword, password);
+
+                if (verificationResult == PasswordVerificationResult.SuccessRehashNeeded)
+                {
+                    // Password is correct
+                    return returnUser["NomeTitolare"].ToString() + " " + returnUser["CognomeTitolare"].ToString();
+                }
+                else
+                {
+                    // Password is incorrect
+                    return "Password errata.";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+                return ex.Message;
+            }
+        }
+        #endregion
+
+
+        #region Methods
+        //checks if the email is valid
+        public static bool IsValidEmail(string email)
+        {
+
+            var trimmedEmail = email.Trim();
+
+            if (trimmedEmail.EndsWith("."))
+            {
+                return false;
+            }
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == trimmedEmail;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        //checks if the password is valid
+        public static bool IsValidPassword(string password)
+        {
+            Regex regex = new Regex(@"^(.{0,7}|[^0-9]*|[^A-Z]*|[a-zA-Z0-9]*)$");
+            Match match = regex.Match(password);
+            return match.Success;
+        }
+
+        //randomly generates the IBAN after the user is registered
+        public static string GenerateIBAN()
+        {
+            string countryCode = "IT"; // Country code for Italy
+            string nationalCheckChar = GenerateRandomLetter(); // 1 letter national check character
+            string bankCode = GenerateRandomNumericString(5); // ABI (Bank code: 5 digits)
+            string branchCode = GenerateRandomNumericString(5); // CAB (Branch code: 5 digits)
+            string accountNumber = GenerateRandomAlphanumericString(12); // BBAN (Account number: 12 alphanumeric characters)
+
+            // Create IBAN without the checksum (placeholders '00' for checksum)
+            string ibanWithoutChecksum = countryCode + "00" + nationalCheckChar + bankCode + branchCode + accountNumber;
+
+            // Generate checksum
+            string checksum = GenerateIbanChecksum(ibanWithoutChecksum);
+
+            // Final IBAN
+            string iban = countryCode + checksum + nationalCheckChar + bankCode + branchCode + accountNumber;
+
+            return iban;
+        }
+        // Method to generate the checksum
+        public static string GenerateIbanChecksum(string ibanWithoutChecksum)
+        {
+            // Move the country code and checksum ('00') to the end of the string
+            string rearrangedIban = ibanWithoutChecksum.Substring(4) + ibanWithoutChecksum.Substring(0, 4);
+
+            // Replace each letter with two digits (A = 10, B = 11, ..., Z = 35)
+            StringBuilder numericIban = new StringBuilder();
+            foreach (char ch in rearrangedIban)
+            {
+                if (char.IsLetter(ch))
+                {
+                    numericIban.Append((ch - 'A' + 10).ToString());
+                }
+                else
+                {
+                    numericIban.Append(ch);
+                }
+            }
+
+            // Convert the string to a BigInteger and compute the checksum mod 97
+            BigInteger ibanAsNumber = BigInteger.Parse(numericIban.ToString());
+            int checksum = 98 - (int)(ibanAsNumber % 97);
+
+            return checksum.ToString("D2"); // Return as a 2-digit string
+        }
+
+        // Method to generate a random numeric string of given length
+        public static string GenerateRandomNumericString(int length)
+        {
+            Random random = new Random();
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < length; i++)
+            {
+                result.Append(random.Next(0, 10)); // Add a random digit
+            }
+            return result.ToString();
+        }
+
+        // Method to generate a random alphanumeric string of given length
+        public static string GenerateRandomAlphanumericString(int length)
+        {
+            Random random = new Random();
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < length; i++)
+            {
+                result.Append(chars[random.Next(chars.Length)]); // Add a random alphanumeric character
+            }
+            return result.ToString();
+        }
+
+        // Method to generate a random letter
+        public static string GenerateRandomLetter()
+        {
+            Random random = new Random();
+            char letter = (char)('A' + random.Next(0, 26)); // Generate a random letter (A-Z)
+            return letter.ToString();
+        }
+        #endregion
+    }
+
+}

@@ -50,9 +50,23 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "Identity.PasswordHasher": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
             "Microsoft.Data.SqlClient": {
               "target": "Package",
-              "version": "[5.2.2, )"
+              "version": "[6.0.0-preview1.24240.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.20, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.20, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
