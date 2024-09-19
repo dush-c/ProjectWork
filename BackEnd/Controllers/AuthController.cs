@@ -3,6 +3,8 @@ using Identity.PasswordHasher;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using System.Net.Mail;
+using System.Net;
 using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -13,7 +15,6 @@ namespace BackEnd.Controllers
     [ApiController]
     public class AuthController : Controller
     {
-
 
         #region ApiCalls
         [Route("/Registrazione")]
@@ -78,6 +79,8 @@ namespace BackEnd.Controllers
                     db.sqlCommand.ExecuteNonQuery();
                     responseRegistrazione.messaggio = "OK, registrazione avvenuta con successo!";
 
+                    //SendingEmail(user.Email!);
+
                     //una volta avvenuta una nuova registrazione ritorno l'id del conto appena creato
                     db.sqlCommand.CommandText = "select * from TContiCorrenti where Email = @Email";
                     SqlDataReader returnUser = db.sqlCommand.ExecuteReader();
@@ -95,7 +98,6 @@ namespace BackEnd.Controllers
                 return responseRegistrazione;
             }
         }
-
 
         [Route("/Login")]
         [HttpPost]
@@ -147,10 +149,71 @@ namespace BackEnd.Controllers
                 return ex.Message;
             }
         }
+
+        [Route("/EmailConferma")]
+        [HttpPost]
+        public string ConfermaEmail(int ContoCorrenteID)
+        {
+            //questa chiamata deve occuparsi di andare ad inserire un record nella tabella dei movimenti
+            try
+            {
+                Database db = new Database();
+
+                DateTime Data = new DateTime();
+                db.sqlCommand = db.sqlConnection.CreateCommand();
+                db.sqlCommand.Parameters.AddWithValue("@ContoCorrenteID", ContoCorrenteID);
+                db.sqlCommand.Parameters.AddWithValue("@Data", Data);
+
+                //Categoria movimento = 1 significa che si tratta della Creazione del conto
+                db.sqlCommand.CommandText = "insert into TMovimentiContoCorrente (ContoCorrenteID, Data, Importo, Saldo, CategoriaMovimentoID, DescrizioneEstesa) " +
+                    "values (@ContoCorrenteID, @Data, 0, 0, 1)";
+                db.sqlCommand.ExecuteNonQuery();
+
+                return "OK, Registrazione andata a buon fine";  
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
         #endregion
 
-
+        [Route("/ProvaInvioEmail")]
+        [HttpPost]
+        public string InvioMail(string a)
+        {
+            SendingEmail( a);
+            return "OK";
+        }
         #region Methods
+        //sending the Confirmation email
+        public static string SendingEmail( string destinationEmail)
+        {
+            try
+            {
+                SmtpClient smtpServer = new SmtpClient("smtp.gmail.com");
+                smtpServer.Port = 587;
+                smtpServer.Credentials = new NetworkCredential("meneghellogiovanni88@gmail.com", "kprk ntdy fnxc aliv");
+                smtpServer.EnableSsl = true;
+
+                MailMessage mail = new MailMessage();
+
+                mail.From = new MailAddress("meneghellogiovanni88@gmail.com");
+                mail.To.Add(destinationEmail);
+
+                mail.Subject = "Conferma Email";
+
+                mail.Body = "Link alla pagina Angular per la conferma";
+
+                smtpServer.Send(mail);
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
         //checks if the email is valid
         public static bool IsValidEmail(string email)
         {
