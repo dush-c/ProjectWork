@@ -23,7 +23,7 @@ namespace BackEnd.Controllers
         {
             ResponseRegistrazione responseRegistrazione = new ResponseRegistrazione();
             PasswordHasher hasher = new PasswordHasher();
-            
+
             //controllo che l'email sia stata scritta correttamente
             if (!IsValidEmail(user.Email!))
             {
@@ -79,7 +79,7 @@ namespace BackEnd.Controllers
                     db.sqlCommand.ExecuteNonQuery();
                     responseRegistrazione.messaggio = "OK, registrazione avvenuta con successo!";
 
-                    //SendingEmail(user.Email!);
+                    SendingEmail(user.Email!);
 
                     //una volta avvenuta una nuova registrazione ritorno l'id del conto appena creato
                     db.sqlCommand.CommandText = "select * from TContiCorrenti where Email = @Email";
@@ -107,7 +107,7 @@ namespace BackEnd.Controllers
 
             try
             {
-               
+
                 Database db = new Database();
                 db.sqlCommand = db.sqlConnection.CreateCommand();
 
@@ -128,20 +128,15 @@ namespace BackEnd.Controllers
                 returnUser.Read();
                 string storedHashedPassword = returnUser["Password"].ToString();
 
-                // Use PasswordHasher to verify the entered password with the stored hashed password
-                
-                var verificationResult = hasher.VerifyHashedPassword(null, storedHashedPassword, password);
-
-                if (verificationResult == PasswordVerificationResult.SuccessRehashNeeded)
+                if (VerifyPassword(storedHashedPassword, password))
                 {
-                    // Password is correct
                     return returnUser["NomeTitolare"].ToString() + " " + returnUser["CognomeTitolare"].ToString();
                 }
                 else
                 {
-                    // Password is incorrect
-                    return "Password errata.";
+                    return "KO";
                 }
+
             }
             catch (Exception ex)
             {
@@ -149,6 +144,68 @@ namespace BackEnd.Controllers
                 return ex.Message;
             }
         }
+
+        [Route("/AggiornaPassword")]
+        [HttpPut]
+        //metodo che si occupa di aggiornare la password dell'utente attualmente loggato
+        public string AggiornaPassword(int contoCorrenteID, string oldPassword, string newPassword)
+        {
+            PasswordHasher hasher = new PasswordHasher();
+            try
+            {
+                Database db = new Database();
+                //vado innanzitutto ad assicurarmi che la vecchia password corrisponda a quella salvata nel database
+                db.sqlCommand = db.sqlConnection.CreateCommand();
+
+                db.sqlCommand.Parameters.AddWithValue("@ContoCorrenteID", contoCorrenteID);
+
+                db.sqlCommand.CommandText = "SELECT * FROM TContiCorrenti WHERE ContoCorrenteID = @ContoCorrenteID";
+
+                db.sqlConnection.Open();
+
+                SqlDataReader reader = db.sqlCommand.ExecuteReader();
+
+                if (!reader.HasRows)
+                {
+                    //se non ci sono righe ci sono degli errori
+                    //TODO: handle errors
+                    return "KO, errore";
+                }
+                else
+                {
+                    //deve esserci solo un record
+                    reader.Read();
+                    string storedPassword = Convert.ToString(reader["Password"]);
+                    //mi devo assicurare che la password dentro il database corrisponda a quella inserita dall'utente
+                    if (VerifyPassword(storedPassword, oldPassword))
+                    {
+                        db.sqlConnection.Close();
+                        db.sqlConnection.Open();
+
+                        //se corrispondono -> cripto la nuova password -> modifico il campo
+                        string hashedPassword = hasher.HashPassword(newPassword);
+                        db.sqlCommand.Parameters.AddWithValue("@Password", hashedPassword);
+                        db.sqlCommand.CommandText = "UPDATE TContiCorrenti SET Password = @Password WHERE ContoCorrenteID = @ContoCorrenteID";
+
+                        db.sqlCommand.ExecuteNonQuery();
+
+                        return "password aggiornata con successo";
+                    }
+                    else
+                    {
+                        //se non corrispondono segnalo l'errore 
+                        return "KO";
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //TODO: gestisci errore
+                return ex.Message;
+            }
+        }
+
 
         [Route("/EmailConferma")]
         [HttpPost]
@@ -169,25 +226,45 @@ namespace BackEnd.Controllers
                     "values (@ContoCorrenteID, @Data, 0, 0, 1)";
                 db.sqlCommand.ExecuteNonQuery();
 
-                return "OK, Registrazione andata a buon fine";  
+                return "OK, Registrazione andata a buon fine";
             }
             catch (Exception ex)
             {
+                //TODO: gestisci errore
                 return ex.Message;
             }
         }
         #endregion
 
-        [Route("/ProvaInvioEmail")]
-        [HttpPost]
-        public string InvioMail(string a)
-        {
-            SendingEmail( a);
-            return "OK";
-        }
         #region Methods
+        //questo metodo deve occuparsi di verificare se le due password corrispondono
+        public static bool VerifyPassword(string hashedPassword, string notHashedPassword)
+        {
+            var hasher = new PasswordHasher<string>();
+            try
+            {
+                // Use PasswordHasher to verify the entered password with the stored hashed password
+
+                var verificationResult = hasher.VerifyHashedPassword(null, hashedPassword, notHashedPassword);
+
+                if (verificationResult == PasswordVerificationResult.SuccessRehashNeeded)
+                {
+                    // Password is correct
+                    return true;
+                }
+                else
+                {
+                    // Password is incorrect
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         //sending the Confirmation email
-        public static string SendingEmail( string destinationEmail)
+        public static string SendingEmail(string destinationEmail)
         {
             try
             {
@@ -210,6 +287,7 @@ namespace BackEnd.Controllers
             }
             catch (Exception ex)
             {
+                //TODO: gestisci errore
                 return ex.Message;
             }
         }
@@ -322,6 +400,16 @@ namespace BackEnd.Controllers
             char letter = (char)('A' + random.Next(0, 26)); // Generate a random letter (A-Z)
             return letter.ToString();
         }
+        #endregion
+
+        #region Debugging
+        //[Route("/ProvaInvioEmail")]
+        //[HttpPost]
+        //public string InvioMail(string a)
+        //{
+        //    SendingEmail( a);
+        //    return "OK";
+        //}
         #endregion
     }
 
