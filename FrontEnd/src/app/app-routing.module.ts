@@ -5,13 +5,16 @@ import {LoginComponent} from "./pages/auth/login/login.component";
 import {RegisterComponent} from "./pages/auth/register/register.component";
 import {authGuard} from "./guards/auth.guard";
 import {EmailConfirmedComponent} from "./pages/auth/email-confirmed/email-confirmed.component";
+import {ProfileComponent} from "./components/profile/profile.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent}, //canActivate: [authGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  {path:'email-confirmed', component: EmailConfirmedComponent}
+  {path:'email-confirmed', component: EmailConfirmedComponent},
+  {path:"profile", component: ProfileComponent},
+
 ];
 
 @NgModule({
