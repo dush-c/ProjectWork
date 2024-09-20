@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, map, tap } from 'rxjs';
-import { JWTService } from './jwt.service';
+import { JWTService} from "./jwt.service";
 import {User} from "../interfaces/user.entity";
 
 @Injectable({ providedIn: 'root' })
@@ -31,6 +31,22 @@ export class AuthService {
         tap((res) => this._currentUser$.next(res.user)),
         map((res) => res.user)
       );
+  }
+
+  register(
+    firstName: string,
+    lastName: string,
+    username: string,
+    password: string,
+    picture: string
+  ) {
+    return this.http.post(`/api/register`, {
+      firstName,
+      lastName,
+      username,
+      password,
+      picture
+    })
   }
 
   logout() {

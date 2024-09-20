@@ -10,7 +10,7 @@ import { LoginComponent } from './pages/auth/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
 import {RouterModule} from "@angular/router";
-import {RegisterComponent} from "./pages/auth/register/signup.component";
+import {RegisterComponent} from "./pages/auth/register/register.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 

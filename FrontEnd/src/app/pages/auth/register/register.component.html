@@ -1,0 +1,60 @@
+<div class="flex flex-col items-center justify-center h-screen">
+  <div class="w-full sm:max-w-md">
+    <h1 class="text-xl text-center font-bold leading-tight text-base-content md:text-2xl ">
+      Sign up
+    </h1>
+    <form (ngSubmit)="signUp()" [formGroup]="registrationForm">
+      <div>
+        <div class="mt-6">
+          <label class="block mb-2 text-sm font-medium text-base-content">First name</label>
+          <label class="input input-bordered flex items-center gap-2">
+            <input required type="text" class="grow" placeholder="First name" formControlName="firstName" />
+          </label>
+        </div>
+        <div class="mt-6">
+          <label class="block mb-2 text-sm font-medium text-base-content">Last name</label>
+          <label class="input input-bordered flex items-center gap-2">
+            <input required type="text" class="grow" placeholder="Last name" formControlName="lastName" />
+          </label>
+        </div>
+        <div class="mt-6">
+          <label class="block mb-2 text-sm font-medium text-base-content">Password</label>
+          <label class="input input-bordered flex items-center gap-2">
+            <input required type="password" class="grow" placeholder="Password" formControlName="password" />
+          </label>
+        </div>
+        <div class="mt-6">
+          <label class="block mb-2 text-sm font-medium text-base-content">Confirm Password</label>
+          <label class="input input-bordered flex items-center gap-2">
+            <input required type="password" class="grow" placeholder="Confirm Password"
+                   formControlName="confirmPassword" />
+          </label>
+        </div>
+        <div class="mt-6">
+          <label class="block mb-2 text-sm font-medium text-base-content">Profile Picture</label>
+          <label class="input input-bordered flex items-center gap-2">
+            <input required type="url" class="grow" placeholder="Picture URL" formControlName="profilePicture" />
+          </label>
+        </div>
+        <div class="text-error text-center" *ngIf="registrationError">
+          {{ registrationError }}
+        </div>
+        <div class="text-error text-center" *ngIf="
+            registrationForm.controls.password.value !=
+            registrationForm.controls.confirmPassword.value
+          ">
+          Passwords do not match
+        </div>
+      </div>
+      <div class="flex justify-center my-8">
+        <button type="submit" class="btn btn-outline-secondary btn-wide" [disabled]="registrationForm.invalid">Sign
+          up</button>
+      </div>
+      <p class="text-sm font-light text-gray-500 dark:text-gray-400 my-8">
+        Already have an account? <a href="#"
+                                    class="font-medium text-base-content max-w-full no-underline hover:cursor-pointer mx-2"
+                                    routerLink="/login">Login</a>
+      </p>
+    </form>
+  </div>
+</div>
