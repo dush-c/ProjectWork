@@ -16,9 +16,12 @@
         </div>
         <div class="my-3">
           <label class="block mb-2 text-sm font-medium text-base-content">Password</label>
-          <label class="input input-bordered flex items-center gap-2">
-            <input type="password" class="grow" placeholder="Password" formControlName="password" />
-          </label>
+          <div class="input input-bordered flex items-center gap-2 input-container">
+            <input [type]="hide ? 'password' : 'text'" class="grow" placeholder="Password" formControlName="password" />
+            <button type="button" class="icon-button" (click)="hide = !hide" [attr.aria-label]="hide ? 'Mostra password' : 'Nascondi password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+          </div>
           <div class="text-error" *ngIf="loginError">
             {{ loginError }}
           </div>
