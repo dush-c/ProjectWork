@@ -1,1 +1,28 @@
-<p>navbar works!</p>
+<div class="navbar w-full  bg-base-100 border-b border-slate-700">
+  <div class="flex-1">
+    <label for="my-drawer-3" aria-label="open sidebar">
+      <div tabindex="0" role="button" class="btn btn-circle">
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+        </svg>
+      </div>
+    </label>
+  </div>
+  <div class="flex-none gap-2">
+    <div>
+      <input type="text" placeholder="Search" class="input input-bordered border-slate-700 w-24 md:w-auto" />
+    </div>
+    <div class="dropdown dropdown-end">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+        <div class="w-10 rounded-full">
+          <img src="assets/me.jpg" alt="Profile">
+        </div>
+      </div>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+        <li><a class="text-base-content">Profile</a></li>
+        <li><a class="text-base-content">Settings</a></li>
+        <li><a class="text-base-content">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
