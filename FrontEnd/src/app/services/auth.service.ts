@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, map, tap } from 'rxjs';
 import { JWTService} from "./jwt.service";
 import {User} from "../interfaces/user.entity";
+import {APIURL} from "../enviroments/api-url";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -25,7 +26,7 @@ export class AuthService {
 
   login(username: string, password: string) {
     return this.http
-      .post<{ user: User; token: string }>('/api/login', { username, password })
+      .post<{ user: User; token: string }>(`${APIURL}/api/login`, { username, password })
       .pipe(
         tap((res) => this.jwtSrv.setToken(res.token)),
         tap((res) => this._currentUser$.next(res.user)),
@@ -40,7 +41,7 @@ export class AuthService {
     password: string,
     picture: string
   ) {
-    return this.http.post(`/api/register`, {
+    return this.http.post(`${APIURL}/api/register`, {
       firstName,
       lastName,
       username,
@@ -57,7 +58,7 @@ export class AuthService {
 
   public fetchUser() {
     this.http
-      .get<User>('/api/users/me')
+      .get<User>(`${APIURL}/api/users/me`)
       .subscribe((user) => this._currentUser$.next(user));
   }
 }
