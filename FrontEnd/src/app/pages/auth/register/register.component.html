@@ -1,8 +1,9 @@
 <div class="flex flex-col items-center justify-center h-screen">
   <div class="w-full sm:max-w-md">
     <h1 class="text-xl text-center font-bold leading-tight text-base-content md:text-2xl ">
-      Sign up
+      Register
     </h1>
+    <app-login-toggle></app-login-toggle>
     <form (ngSubmit)="signUp()" [formGroup]="registrationForm">
       <div>
         <div class="mt-6">

@@ -13,6 +13,7 @@ import {RouterModule} from "@angular/router";
 import {RegisterComponent} from "./pages/auth/register/register.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
+import { LoginToggleComponent } from './components/login-toggle/login-toggle.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {HttpClientModule} from "@angular/common/http";
     RegisterComponent,
     LoginComponent,
     DashboardComponent,
-    IfAuthenticatedDirective
+    IfAuthenticatedDirective,
+    LoginToggleComponent
   ],
   imports: [
     BrowserModule,

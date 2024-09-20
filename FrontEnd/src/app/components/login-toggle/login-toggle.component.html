@@ -1,0 +1,12 @@
+<div class="toggle-container">
+  <button
+    [ngClass]="{'active': isLoginMode, 'inactive': !isLoginMode}"
+    (click)="navigateTo('/login')">
+    Login
+  </button>
+  <button
+    [ngClass]="{'active': !isLoginMode, 'inactive': isLoginMode}"
+    (click)="navigateTo('/register')">
+    Registrati
+  </button>
+</div>
