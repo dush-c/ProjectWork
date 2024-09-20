@@ -1,1 +1,3 @@
-ciao mondo
+public string ConnectionString = "Server=tcp:mioserverits.database.windows.net,1433;Initial Catalog=projectworkfinale;Persist Security Info=False;" +
+    "User ID=mioadmin;Password=miapasswordadmin123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        

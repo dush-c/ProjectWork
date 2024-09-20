@@ -8,16 +8,18 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { BalanceCardComponent } from './components/balance-card/balance-card.component';
+import { TransactionsTableComponent } from './components/transactions-table/transactions-table.component';
 import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
-import {RouterModule} from "@angular/router";
-import {RegisterComponent} from "./pages/auth/register/register.component";
-import {ReactiveFormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
+import { RouterModule } from '@angular/router';
+import { RegisterComponent } from './pages/auth/register/register.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { LoginToggleComponent } from './components/login-toggle/login-toggle.component';
-import {MatCard, MatCardContent, MatCardTitle} from "@angular/material/card";
-import {MatIconModule} from "@angular/material/icon";
-import {MatIconButton} from "@angular/material/button";
-import {MatSuffix} from "@angular/material/form-field";
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { MatSuffix } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -27,8 +29,10 @@ import {MatSuffix} from "@angular/material/form-field";
     RegisterComponent,
     LoginComponent,
     DashboardComponent,
+    BalanceCardComponent,
+    TransactionsTableComponent,
     IfAuthenticatedDirective,
-    LoginToggleComponent
+    LoginToggleComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,11 +46,9 @@ import {MatSuffix} from "@angular/material/form-field";
     MatCardTitle,
     MatIconModule,
     MatIconButton,
-    MatSuffix
+    MatSuffix,
   ],
-  providers: [
-    provideAnimationsAsync()
-  ],
-  bootstrap: [AppComponent]
+  providers: [provideAnimationsAsync()],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
