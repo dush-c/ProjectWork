@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NavigationEnd, Router} from "@angular/router";
 
 @Component({
@@ -6,7 +6,7 @@ import {NavigationEnd, Router} from "@angular/router";
   templateUrl: './login-toggle.component.html',
   styleUrl: './login-toggle.component.scss'
 })
-export class LoginToggleComponent {
+export class LoginToggleComponent implements OnInit{
   isLoginMode: boolean = false;
 
   constructor(private router: Router) {}

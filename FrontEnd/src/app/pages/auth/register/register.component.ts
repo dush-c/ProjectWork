@@ -10,6 +10,8 @@ import {Router} from "@angular/router";
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent implements OnInit, OnDestroy {
+  hide = true;
+
   registrationForm = this.fb.group({
     firstName: ['', { validators: Validators.required }],
     lastName: ['', { validators: Validators.required }],
@@ -40,7 +42,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.destroyed$.complete()
   }
 
-  signUp() {
+  register() {
     if (this.registrationForm.valid) {
       const { firstName, lastName, email, password, profilePicture } = this.registrationForm.value
       this.authSrv

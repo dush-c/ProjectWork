@@ -14,6 +14,10 @@ import {RegisterComponent} from "./pages/auth/register/register.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import { LoginToggleComponent } from './components/login-toggle/login-toggle.component';
+import {MatCard, MatCardContent, MatCardTitle} from "@angular/material/card";
+import {MatIconModule} from "@angular/material/icon";
+import {MatIconButton} from "@angular/material/button";
+import {MatSuffix} from "@angular/material/form-field";
 
 @NgModule({
   declarations: [
@@ -33,6 +37,12 @@ import { LoginToggleComponent } from './components/login-toggle/login-toggle.com
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatCard,
+    MatCardContent,
+    MatCardTitle,
+    MatIconModule,
+    MatIconButton,
+    MatSuffix
   ],
   providers: [
     provideAnimationsAsync()

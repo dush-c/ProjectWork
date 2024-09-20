@@ -10,6 +10,7 @@ import {Router} from "@angular/router";
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+  hide = true;
   loginForm;
   loginError = '';
 
