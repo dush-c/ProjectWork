@@ -9,6 +9,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { SignupComponent } from './pages/signup/signup.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { BalanceCardComponent } from './components/balance-card/balance-card.component';
+import { TransactionsTableComponent } from './components/transactions-table/transactions-table.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     NavbarComponent,
     SignupComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    BalanceCardComponent,
+    TransactionsTableComponent
   ],
   imports: [
     BrowserModule,
