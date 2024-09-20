@@ -43,18 +43,19 @@ export class LoginComponent {
   login() {
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value;
-      this.authSrv
-        .login(username!, password!)
-        .pipe(
-          catchError((err) => {
-            console.log(err);
-            this.loginError = err.error.message;
-            return throwError(() => err);
-          })
-        )
-        .subscribe((user) => {
+      this.authSrv.login(username!, password!).pipe(
+        catchError((err) => {
+          console.log(err);
+          this.loginError = 'Credenziali errate o non valide';
+          return throwError(() => err);
+        })
+      ).subscribe({
+        next: (user) => {
           this.router.navigate(['/dashboard']);
-        });
+        },
+        error: () => {
+        }
+      });
     }
   }
 }

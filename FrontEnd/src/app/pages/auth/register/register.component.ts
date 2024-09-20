@@ -44,18 +44,22 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   register() {
     if (this.registrationForm.valid) {
-      const { firstName, lastName, email, password, profilePicture } = this.registrationForm.value
+      const { firstName, lastName, email, password, profilePicture } = this.registrationForm.value;
       this.authSrv
-        .register(firstName!, lastName!, email!, password!, profilePicture!)
-        .pipe(
-          catchError((err) => {
-            this.registrationError = err.error.message
-            return throwError(() => err)
-          })
-        )
-        .subscribe(() => {
-          this.router.navigate(['/login'])
-        })
+          .register(firstName!, lastName!, email!, password!, profilePicture!)
+          .pipe(
+              catchError((err) => {
+                this.registrationError = 'Errore durante la registrazione.';
+                return throwError(() => err);
+              })
+          )
+          .subscribe({
+            next: () => {
+              this.router.navigate(['/login']);
+            }
+          });
+    } else {
+      this.registrationError = 'Compila tutti i campi richiesti correttamente.';
     }
   }
 }

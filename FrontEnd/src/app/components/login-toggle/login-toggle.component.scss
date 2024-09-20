@@ -35,10 +35,10 @@ button.inactive {
 }
 
 button.active {
-  background-color: #000000;
+  background-color: var(--fallback-b1, oklch(0.23 0.02 252.41));
   color: white;
   &:hover {
-    background-color: darken(#000000, 20%);
+    background-color: darken(#000000, 30%);
   }
 }
 
