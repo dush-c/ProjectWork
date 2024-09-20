@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {catchError, Subject, takeUntil, throwError} from "rxjs";
 import {FormBuilder, Validators} from "@angular/forms";
 import {AuthService} from "../../../services/auth.service";
@@ -9,12 +9,14 @@ import {Router} from "@angular/router";
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   hide = true;
   loginForm;
   loginError = '';
+  timeoutMessage = '';
 
   private destroyed$ = new Subject<void>();
+  private timeout: any;
 
   constructor(
     protected fb: FormBuilder,
@@ -32,15 +34,28 @@ export class LoginComponent {
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => {
         this.loginError = '';
+        this.timeoutMessage = '';
+        this.resetTimeout();
       });
   }
 
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
+    clearTimeout(this.timeout);
+  }
+
+  resetTimeout(): void {
+    clearTimeout(this.timeout);
+
+    this.timeout = setTimeout(() => {
+      this.loginForm.reset();
+      this.timeoutMessage = 'Timeout';
+    }, 30000);
   }
 
   login() {
+    clearTimeout(this.timeout);
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value;
       this.authSrv.login(username!, password!).pipe(

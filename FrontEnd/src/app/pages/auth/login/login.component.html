@@ -23,6 +23,11 @@
       <span>{{ loginError }}</span>
     </div>
 
+    <!-- Alert per Reset dopo 30 sec -->
+    <div *ngIf="timeoutMessage" role="alert" class="alert alert-error flex justify-center items-center max-w-sm mx-auto p-2">
+      <p>{{ timeoutMessage }}</p>
+    </div>
+
     <form (ngSubmit)="login()" [formGroup]="loginForm">
       <div>
         <div class="my-3">
@@ -39,9 +44,6 @@
               <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
             </button>
           </div>
-<!--          <div class="text-error" *ngIf="loginError">-->
-<!--            {{ loginError }}-->
-<!--          </div>-->
         </div>
       </div>
       <div class="flex justify-center my-8">
