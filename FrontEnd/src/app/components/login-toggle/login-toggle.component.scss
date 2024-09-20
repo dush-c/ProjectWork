@@ -1,0 +1,46 @@
+.toggle-container {
+  display: flex;
+  border: 1px solid #000000;
+  border-radius: 25px;
+  overflow: hidden;
+  width: 220px;
+  background-color: rgba(234, 234, 234, 0.92);
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 2px;
+  margin-top: 10px;
+}
+
+button {
+  flex: 1;
+  border: none;
+  padding: 5px;
+  font-size: 16px;
+  color: white;
+  background-color: oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity));
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
+  cursor: pointer;
+  outline: none;
+  border-radius: 25px;
+  font-weight: bold;
+}
+
+button.inactive {
+  background-color: transparent;
+  color: #000000;
+  &:hover {
+    background-color: lighten(#000000, 50%);
+  }
+}
+
+button.active {
+  background-color: #000000;
+  color: white;
+  &:hover {
+    background-color: darken(#000000, 20%);
+  }
+}
+
+button:focus {
+  outline: none;
+}

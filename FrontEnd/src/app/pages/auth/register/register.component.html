@@ -1,0 +1,62 @@
+<div class="registration-page">
+  <div class="card-register">
+    <mat-card class="custom-card">
+      <div class="flex flex-col items-center justify-center h-screen">
+        <div class="w-full sm:max-w-md">
+          <h1 class="text-xl text-center font-bold leading-tight text-base-content md:text-2xl ">
+            Crea un Account!
+          </h1>
+            <app-login-toggle></app-login-toggle>
+          <mat-card-content>
+            <form (ngSubmit)="register()" [formGroup]="registrationForm" class="flex flex-col">
+              <div class="flex flex-row space-x-4 mb-4">
+                <div class="flex-1">
+                  <label class="block mb-2 text-sm font-medium text-base-content">Nome</label>
+                  <input type="text" class="input input-bordered w-full" placeholder="Nome" formControlName="firstName" required />
+                </div>
+                <div class="flex-1">
+                  <label class="block mb-2 text-sm font-medium text-base-content">Cognome</label>
+                  <input type="text" class="input input-bordered w-full" placeholder="Cognome" formControlName="lastName" required />
+                </div>
+              </div>
+              <div class="flex flex-row space-x-4 mb-4">
+                <div class="flex-1">
+                  <label class="block mb-2 text-sm font-medium text-base-content">Email</label>
+                  <input type="email" class="input input-bordered w-full" placeholder="Email" formControlName="email" required />
+                </div>
+                <div class="flex-1">
+                  <label class="block mb-2 text-sm font-medium text-base-content">Link Foto Profilo</label>
+                  <input type="url" class="input input-bordered w-full" placeholder="Link Foto Profilo" formControlName="profilePicture" required />
+                </div>
+              </div>
+              <div class="flex flex-row space-x-4 mb-4">
+                <div class="flex-1">
+                  <label class="block mb-2 text-sm font-medium text-base-content">Password</label>
+                  <div class="input-container">
+                    <input [type]="hide ? 'password' : 'text'" class="input input-bordered w-full" formControlName="password" placeholder="Password" required />
+                    <button type="button" class="icon-button" (click)="hide = !hide" [attr.aria-label]="hide ? 'Mostra password' : 'Nascondi password'" [attr.aria-pressed]="hide">
+                      <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                <div class="flex-1">
+                  <label class="block mb-2 text-sm font-medium text-base-content">Conferma Password</label>
+                  <div class="input-container">
+                    <input [type]="hide ? 'password' : 'text'" class="input input-bordered w-full" formControlName="confirmPassword" placeholder="Conferma Password" required />
+                    <button type="button" class="icon-button" (click)="hide = !hide" [attr.aria-label]="hide ? 'Mostra password' : 'Nascondi password'" [attr.aria-pressed]="hide">
+                      <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex justify-center">
+              <button class="btn btn-outline-secondary btn-wide" type="submit" [disabled]="registrationForm.invalid">Registrati</button>
+              </div>
+            </form>
+          </mat-card-content>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

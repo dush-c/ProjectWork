@@ -1,4 +1,4 @@
-import { Transaction } from './app/entities/transaction.entity';
+import { Transaction } from './app/interfaces/transaction.entity';
 
 export const TRANSACTIONS: Transaction[] = [
   {
