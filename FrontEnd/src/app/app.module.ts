@@ -20,6 +20,7 @@ import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatSuffix } from '@angular/material/form-field';
+import { EmailConfirmedComponent } from './pages/auth/email-confirmed/email-confirmed.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { MatSuffix } from '@angular/material/form-field';
     TransactionsTableComponent,
     IfAuthenticatedDirective,
     LoginToggleComponent,
+    EmailConfirmedComponent,
   ],
   imports: [
     BrowserModule,
