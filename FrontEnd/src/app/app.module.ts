@@ -18,12 +18,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginToggleComponent } from './components/login-toggle/login-toggle.component';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatIconButton } from '@angular/material/button';
-import { MatSuffix } from '@angular/material/form-field';
+import {MatButton, MatIconButton} from '@angular/material/button';
+import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
 import { EmailConfirmedComponent } from './pages/auth/email-confirmed/email-confirmed.component';
 import { OptionsComponent } from './pages/options/options.component';
 import { PhoneCreditComponent } from './pages/phone-credit/phone-credit.component';
 import { BankTransferComponent } from './pages/bank-transfer/bank-transfer.component';
+import {MatOption} from "@angular/material/autocomplete";
+import {MatSelect} from "@angular/material/select";
+import {MatInput} from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -55,6 +58,12 @@ import { BankTransferComponent } from './pages/bank-transfer/bank-transfer.compo
     MatIconModule,
     MatIconButton,
     MatSuffix,
+    MatFormField,
+    MatOption,
+    MatSelect,
+    MatButton,
+    MatInput,
+    MatLabel
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],

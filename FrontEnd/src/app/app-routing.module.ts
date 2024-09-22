@@ -12,14 +12,14 @@ import {PhoneCreditComponent} from "./pages/phone-credit/phone-credit.component"
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent}, //canActivate: [authGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  {path:'email-confirmed', component: EmailConfirmedComponent},
-  {path:"profile", component: ProfileComponent},
-  {path:"settings", component: OptionsComponent},
-  {path:"bank-transfer", component: BankTransferComponent},
-  {path:"phone-credit", component: PhoneCreditComponent},
+  { path:'email-confirmed', component: EmailConfirmedComponent},
+  { path: 'dashboard', component: DashboardComponent}, //canActivate: [authGuard] },
+  { path:"profile", component: ProfileComponent},
+  { path:"settings", component: OptionsComponent},
+  { path:"bank-transfer", component: BankTransferComponent},
+  { path:"phone-credit", component: PhoneCreditComponent},
 
 ];
 
