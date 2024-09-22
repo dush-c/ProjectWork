@@ -6,6 +6,9 @@ import {RegisterComponent} from "./pages/auth/register/register.component";
 import {authGuard} from "./guards/auth.guard";
 import {EmailConfirmedComponent} from "./pages/auth/email-confirmed/email-confirmed.component";
 import {ProfileComponent} from "./components/profile/profile.component";
+import {OptionsComponent} from "./pages/options/options.component";
+import {BankTransferComponent} from "./pages/bank-transfer/bank-transfer.component";
+import {PhoneCreditComponent} from "./pages/phone-credit/phone-credit.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -14,6 +17,9 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   {path:'email-confirmed', component: EmailConfirmedComponent},
   {path:"profile", component: ProfileComponent},
+  {path:"settings", component: OptionsComponent},
+  {path:"bank-transfer", component: BankTransferComponent},
+  {path:"phone-credit", component: PhoneCreditComponent},
 
 ];
 

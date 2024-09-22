@@ -21,6 +21,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatSuffix } from '@angular/material/form-field';
 import { EmailConfirmedComponent } from './pages/auth/email-confirmed/email-confirmed.component';
+import { OptionsComponent } from './pages/options/options.component';
+import { PhoneCreditComponent } from './pages/phone-credit/phone-credit.component';
+import { BankTransferComponent } from './pages/bank-transfer/bank-transfer.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +38,9 @@ import { EmailConfirmedComponent } from './pages/auth/email-confirmed/email-conf
     IfAuthenticatedDirective,
     LoginToggleComponent,
     EmailConfirmedComponent,
+    OptionsComponent,
+    PhoneCreditComponent,
+    BankTransferComponent,
   ],
   imports: [
     BrowserModule,
