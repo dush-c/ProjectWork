@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {User} from "../../interfaces/user.entity";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-navbar',
@@ -7,13 +8,9 @@ import {User} from "../../interfaces/user.entity";
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
-  @Input()
-  user: User | null = null;
-
-  @Output('logout')
-  logoutEvent = new EventEmitter<void>();
+  constructor(public authSrv: AuthService) {}
 
   logout() {
-    this.logoutEvent.emit();
+    this.authSrv.logout();
   }
 }

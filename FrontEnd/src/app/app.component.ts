@@ -7,7 +7,6 @@ import {AuthService} from "./services/auth.service";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'todos';
   currentUser$;
 
   constructor(protected authSrv: AuthService) {
