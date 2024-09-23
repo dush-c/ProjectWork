@@ -1,9 +1,9 @@
 export interface Transaction {
   transactionID: number;
-  bankAccountID: number;
+  bankAccountID: string;
   date: string;
   amount: number;
   balance: number;
-  categoryTransactionID: number;
+  categoryTransactionID: string;
   description: string;
 }
