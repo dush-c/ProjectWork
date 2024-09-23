@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {catchError, Subject, takeUntil, throwError} from "rxjs";
-import {FormBuilder, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, Validators} from "@angular/forms";
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
 
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) {
     this.loginForm = this.fb.group({
       username: ['', { validators: Validators.required }],
-      password: ['', { validators: Validators.required }],
+      password: ['', { validators: [Validators.required, Validators.minLength(8), this.passwordValidator] }],
     });
   }
 
@@ -72,5 +72,11 @@ export class LoginComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  private passwordValidator(control: AbstractControl) {
+    const password = control.value;
+    const specialCharacterRegex = /[!@#$%^&*(),.?":{}|<>]/;
+    return password && specialCharacterRegex.test(password) ? null : { special: true };
   }
 }
