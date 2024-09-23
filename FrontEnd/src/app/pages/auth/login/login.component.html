@@ -32,14 +32,12 @@
       <div>
         <div class="my-3">
           <label class="block mb-2 text-sm font-medium text-base-content">Email</label>
-          <label class="input input-bordered flex items-center gap-2">
-            <input type="email" class="grow" placeholder="Email" formControlName="username" />
-          </label>
+            <input type="email" class="input input-bordered w-full" placeholder="Email" formControlName="username" />
         </div>
         <div class="my-3">
           <label class="block mb-2 text-sm font-medium text-base-content">Password</label>
-          <div class="input input-bordered flex items-center gap-2 input-container">
-            <input [type]="hide ? 'password' : 'text'" class="grow" placeholder="Password" formControlName="password" />
+          <div class="input-container">
+            <input [type]="hide ? 'password' : 'text'" class="input input-bordered w-full" placeholder="Password" formControlName="password" />
             <button type="button" class="icon-button" (click)="hide = !hide" [attr.aria-label]="hide ? 'Mostra password' : 'Nascondi password'" [attr.aria-pressed]="hide">
               <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
             </button>

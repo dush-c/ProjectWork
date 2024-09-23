@@ -43,7 +43,7 @@ export type ChartOptions = {
 @Component({
   selector: 'app-chart-card',
   templateUrl: './chart-card.component.html',
-  styleUrl: './chart-card.component.css',
+  styleUrl: './chart-card.component.scss',
 })
 export class ChartCardComponent {
   @ViewChild('chart') chart!: ChartComponent;

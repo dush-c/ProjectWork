@@ -1,7 +1,5 @@
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ProfileComponent } from './components/profile/profile.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -10,7 +8,6 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { TransactionsTableComponent } from './components/transactions-table/transactions-table.component';
 import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
 import { RegisterComponent } from './pages/auth/register/register.component';
-import { HttpClientModule } from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { LoginToggleComponent } from './components/login-toggle/login-toggle.component';
@@ -26,9 +23,6 @@ import { EmailConfirmedComponent } from './pages/auth/email-confirmed/email-conf
 import { ModifyPasswordComponent } from './pages/modify-password/modify-password.component';
 import { PhoneCreditComponent } from './pages/phone-credit/phone-credit.component';
 import { BankTransferComponent } from './pages/bank-transfer/bank-transfer.component';
-import {MatOption} from "@angular/material/autocomplete";
-import {MatSelect} from "@angular/material/select";
-import {MatInput} from "@angular/material/input";
 import { OptionsComponent } from './pages/options/options.component';
 import {MatSlideToggle, MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {AuthInterceptor} from "./utils/auth.interceptor";
@@ -37,8 +31,7 @@ import { MatSelect } from '@angular/material/select';
 import { MatInput } from '@angular/material/input';
 import { WelcomeBarComponent } from './components/welcome-bar/welcome-bar.component';
 import { StatsCardComponent } from './components/stats-card/stats-card.component';
-import { ChartCardComponent } from './components/chart-card/chart-card.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ChartCardComponent } from './components/chart-card/chart-card.component';;
 import { RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -91,7 +84,6 @@ import { CreditCardComponent } from './components/credit-card/credit-card.compon
     MatLabel,
     NgApexchartsModule
   ],
-  providers: [],
   providers: [provideAnimationsAsync(), {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent],
 })
