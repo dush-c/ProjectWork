@@ -9,11 +9,9 @@ import {AuthService} from "../../services/auth.service";
 })
 export class NavbarComponent {
   @Output() logout = new EventEmitter<void>();
-
-  constructor(public authSrv: AuthService) {}
+  @Input() user: User | null = null;
 
   onLogout() {
-    this.authSrv.logout();
     this.logout.emit();
   }
 }
