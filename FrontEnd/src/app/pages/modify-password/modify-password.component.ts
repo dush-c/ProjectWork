@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {BankAccount} from "../../interfaces/bank-account";
+import {BankAccountService} from "../../services/bank-account.service";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-modify-password',
@@ -7,15 +10,15 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
   styleUrl: './modify-password.component.scss'
 })
 export class ModifyPasswordComponent {
-  hide = true;
+  hide = true
   passwordForm: FormGroup;
+  registrationError: string | null = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
     this.passwordForm = this.fb.group({
-      oldPassword: ['', Validators.required],
-      newPassword: ['',  { validators: [Validators.required, Validators.minLength(8), this.passwordValidator] }],
+      newPassword: ['', [Validators.required, Validators.minLength(8), this.specialCharacterValidator]],
       confirmPassword: ['', Validators.required]
-    }, { validator: this.passwordMatchValidator });
+    }, { validators: this.passwordMatchValidator });
   }
 
   passwordMatchValidator(form: FormGroup) {
@@ -23,19 +26,22 @@ export class ModifyPasswordComponent {
       ? null : { mismatch: true };
   }
 
-  changePassword() {
-    if (this.passwordForm.valid) {
-      const { oldPassword, newPassword } = this.passwordForm.value;
-
-      // Qui inserisci la logica per verificare la vecchia password
-      // e aggiornare la password sul server.
-      console.log('Password cambiata con successo:', { oldPassword, newPassword });
-    }
+  specialCharacterValidator(control: AbstractControl) {
+    const regex = /(?=.*[!@#$%^&*])/;
+    return regex.test(control.value) ? null : { special: true };
   }
 
-  private passwordValidator(control: AbstractControl) {
-    const password = control.value;
-    const specialCharacterRegex = /[!@#$%^&*(),.?":{}|<>]/;
-    return password && specialCharacterRegex.test(password) ? null : { special: true };
+  changePassword() {
+    if (this.passwordForm.valid) {
+      const { newPassword, confirmPassword } = this.passwordForm.value;
+      this.authService.updatePassword(newPassword, confirmPassword).subscribe(
+        response => {
+          console.log('Password aggiornata con successo');
+        },
+        error => {
+          this.registrationError = "La password non può essere uguale a quella attuale";
+        }
+      );
+    }
   }
 }
