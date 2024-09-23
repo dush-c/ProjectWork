@@ -8,7 +8,7 @@ import {AuthService} from "./services/auth.service";
 })
 export class AppComponent {
   constructor(public authSrv: AuthService) {}
-
+  currentUser$ = this.authSrv.currentUser$;
   logout() {
     this.authSrv.logout();
   }

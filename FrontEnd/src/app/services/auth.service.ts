@@ -57,8 +57,14 @@ export class AuthService {
   }
 
   public fetchUser() {
+    console.log("api log ",`${APIURL}/api/users/me`);
     this.http
       .get<User>(`${APIURL}/api/users/me`)
-      .subscribe((user) => this._currentUser$.next(user));
+      .subscribe((user) => {
+        this._currentUser$.next(user);
+        console.log("user log: ",user);
+      }
+      );
   }
 }
+

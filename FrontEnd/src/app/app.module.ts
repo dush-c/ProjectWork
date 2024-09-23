@@ -14,7 +14,7 @@ import { IfAuthenticatedDirective } from './directives/if-authenticated.directiv
 import { RouterModule } from '@angular/router';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { LoginToggleComponent } from './components/login-toggle/login-toggle.component';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -29,6 +29,7 @@ import {MatSelect} from "@angular/material/select";
 import {MatInput} from "@angular/material/input";
 import { OptionsComponent } from './pages/options/options.component';
 import {MatSlideToggle, MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {AuthInterceptor} from "./utils/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -71,7 +72,7 @@ import {MatSlideToggle, MatSlideToggleModule} from "@angular/material/slide-togg
     FormsModule,
     MatSlideToggleModule,
   ],
-  providers: [provideAnimationsAsync()],
+  providers: [provideAnimationsAsync(), {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
