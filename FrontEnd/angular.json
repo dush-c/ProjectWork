@@ -87,7 +87,7 @@
               "src/styles.css",
               "node_modules/@angular/material/prebuilt-themes/azure-blue.css"
             ],
-            "scripts": []
+            "scripts": ["node_modules/apexcharts/dist/apexcharts.min.js"]
           }
         }
       }
