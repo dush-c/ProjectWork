@@ -31,10 +31,5 @@
 
   .btn {
     transition: background-color 0.3s ease;
-
-    &:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
   }
 }
