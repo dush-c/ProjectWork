@@ -49,4 +49,22 @@
       cursor: not-allowed;
     }
   }
+
+  .profile-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Due colonne */
+    gap: 20px; /* Spazio tra i campi */
+}
+
+.input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
 }
