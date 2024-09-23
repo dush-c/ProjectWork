@@ -7,11 +7,7 @@ import {AuthService} from "./services/auth.service";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  currentUser$;
-
-  constructor(protected authSrv: AuthService) {
-    this.currentUser$ = this.authSrv.currentUser$;
-  }
+  constructor(public authSrv: AuthService) {}
 
   logout() {
     this.authSrv.logout();

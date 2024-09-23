@@ -8,9 +8,12 @@ import {AuthService} from "../../services/auth.service";
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
+  @Output() logout = new EventEmitter<void>();
+
   constructor(public authSrv: AuthService) {}
 
-  logout() {
+  onLogout() {
     this.authSrv.logout();
+    this.logout.emit();
   }
 }
