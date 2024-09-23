@@ -67,15 +67,13 @@ export class AuthService {
       );
   }
 
-  updatePassword(newPassword: string, confirmPassword: string) {
+  updatePassword(newPassword: string, confirmPassword: string): Observable<any> {
     const body = {
       newPassword,
       confirmPassword
     };
-    this.http.patch<any>(`${APIURL}/api/users/updatePassword`, body)
-      .subscribe(_ => {
-        console.log("Password Aggiornata con successo");
-      });
+    return this.http.patch<any>(`${APIURL}/api/users/updatePassword`, body);
   }
+
 }
 
