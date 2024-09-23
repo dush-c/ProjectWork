@@ -1,0 +1,32 @@
+.settings-card {
+  width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+
+  .settings-list {
+    list-style: none;
+    padding: 0;
+
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid #ddd;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+
+      .icon-chevron {
+        width: 24px;
+        height: 24px;
+        color: #333;
+      }
+    }
+
+    .setting-item:last-child {
+      border-bottom: none;
+    }
+  }
+}
+

@@ -13,7 +13,7 @@ import { TransactionsTableComponent } from './components/transactions-table/tran
 import { IfAuthenticatedDirective } from './directives/if-authenticated.directive';
 import { RouterModule } from '@angular/router';
 import { RegisterComponent } from './pages/auth/register/register.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginToggleComponent } from './components/login-toggle/login-toggle.component';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
@@ -21,12 +21,14 @@ import { MatIconModule } from '@angular/material/icon';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatFormField, MatLabel, MatSuffix} from '@angular/material/form-field';
 import { EmailConfirmedComponent } from './pages/auth/email-confirmed/email-confirmed.component';
-import { OptionsComponent } from './pages/options/options.component';
+import { ModifyPasswordComponent } from './pages/modify-password/modify-password.component';
 import { PhoneCreditComponent } from './pages/phone-credit/phone-credit.component';
 import { BankTransferComponent } from './pages/bank-transfer/bank-transfer.component';
 import {MatOption} from "@angular/material/autocomplete";
 import {MatSelect} from "@angular/material/select";
 import {MatInput} from "@angular/material/input";
+import { OptionsComponent } from './pages/options/options.component';
+import {MatSlideToggle, MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @NgModule({
   declarations: [
@@ -41,9 +43,10 @@ import {MatInput} from "@angular/material/input";
     IfAuthenticatedDirective,
     LoginToggleComponent,
     EmailConfirmedComponent,
-    OptionsComponent,
+    ModifyPasswordComponent,
     PhoneCreditComponent,
     BankTransferComponent,
+    OptionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,7 +66,10 @@ import {MatInput} from "@angular/material/input";
     MatSelect,
     MatButton,
     MatInput,
-    MatLabel
+    MatLabel,
+    MatSlideToggle,
+    FormsModule,
+    MatSlideToggleModule,
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],

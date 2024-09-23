@@ -6,7 +6,7 @@
     <h2 class="font-bold text-lg mb-0">Nuovo Bonifico</h2>
   </div>
 
-  <form [formGroup]="transferForm" (ngSubmit)="submitTransfer()">
+  <form (ngSubmit)="submitTransfer()" [formGroup]="transferForm">
     <div class="form-group">
       <label for="iban">IBAN Destinatario:</label>
       <input type="text" id="iban" formControlName="iban" placeholder="Inserisci l'IBAN" class="input w-full" required />
