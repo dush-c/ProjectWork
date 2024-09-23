@@ -7,6 +7,24 @@
             Crea un Account!
           </h1>
             <app-login-toggle></app-login-toggle>
+
+
+            <!-- Alert per errore di registrazione -->
+            <div *ngIf="registrationError" role="alert" class="alert alert-error flex items-center p-4 mb-4 text-red-700 bg-red-100 rounded-lg">
+                <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6 shrink-0 stroke-current mr-2"
+                        fill="none"
+                        viewBox="0 0 24 24">
+                    <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>{{ registrationError }}</span>
+            </div>
+
           <mat-card-content>
             <form (ngSubmit)="register()" [formGroup]="registrationForm" class="flex flex-col">
               <div class="flex flex-row space-x-4 mb-4">
@@ -26,7 +44,7 @@
                 </div>
                 <div class="flex-1">
                   <label class="block mb-2 text-sm font-medium text-base-content">Link Foto Profilo</label>
-                  <input type="url" class="input input-bordered w-full" placeholder="Link Foto Profilo" formControlName="profilePicture" required />
+                  <input type="url" class="input input-bordered w-full" placeholder="Link Foto Profilo" formControlName="profilePicture" />
                 </div>
               </div>
               <div class="flex flex-row space-x-4 mb-4">
@@ -49,6 +67,13 @@
                   </div>
                 </div>
               </div>
+
+                <div class="text-error text-center" *ngIf="
+            registrationForm.controls.password.value !=
+            registrationForm.controls.confirmPassword.value
+          ">
+                  Le Password non sono uguali
+                </div>
 
               <div class="flex justify-center">
               <button class="btn btn-outline-secondary btn-wide" type="submit" [disabled]="registrationForm.invalid">Registrati</button>

@@ -9,6 +9,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 2px;
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 button {
@@ -34,10 +35,10 @@ button.inactive {
 }
 
 button.active {
-  background-color: #000000;
+  background-color: var(--fallback-b1, oklch(0.23 0.02 252.41));
   color: white;
   &:hover {
-    background-color: darken(#000000, 20%);
+    background-color: darken(#000000, 30%);
   }
 }
 

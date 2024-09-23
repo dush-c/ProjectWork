@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, Validators} from "@angular/forms";
 import {catchError, Subject, takeUntil, throwError} from "rxjs";
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
@@ -15,10 +15,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
   registrationForm = this.fb.group({
     firstName: ['', { validators: Validators.required }],
     lastName: ['', { validators: Validators.required }],
-    email: ['', { validators: Validators.required }],
-    password: ['', { validators: Validators.required }],
+    email: ['', { validators: [Validators.required, Validators.email] }],
+    password: ['', { validators: [Validators.required, Validators.minLength(8), this.passwordValidator] }],
     confirmPassword: ['', { validators: Validators.required }],
-    profilePicture: ['', { validators: Validators.required }]
+    profilePicture: ['']
   })
 
   registrationError = ''
@@ -44,18 +44,38 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   register() {
     if (this.registrationForm.valid) {
-      const { firstName, lastName, email, password, profilePicture } = this.registrationForm.value
+      const {firstName, lastName, email, password, profilePicture} = this.registrationForm.value;
       this.authSrv
-        .register(firstName!, lastName!, email!, password!, profilePicture!)
-        .pipe(
-          catchError((err) => {
-            this.registrationError = err.error.message
-            return throwError(() => err)
-          })
-        )
-        .subscribe(() => {
-          this.router.navigate(['/login'])
-        })
+          .register(firstName!, lastName!, email!, password!, profilePicture!)
+          .pipe(
+              catchError((err) => {
+                this.registrationError = 'Errore durante la registrazione.';
+                return throwError(() => err);
+              })
+          )
+          .subscribe({
+            next: () => {
+              this.router.navigate(['/login']);
+            }
+          });
+    } else {
+      const emailControl = this.registrationForm.get('email');
+      const passwordControl = this.registrationForm.get('password');
+
+      if (emailControl?.invalid) {
+        this.registrationError = 'La email deve essere valida.';
+      } else if (passwordControl?.invalid) {
+        this.registrationError = 'La password deve contenere almeno 8 caratteri e almeno un carattere speciale';
+      } else {
+        this.registrationError = 'Compila tutti i campi richiesti correttamente';
+      }
     }
   }
+
+  private passwordValidator(control: AbstractControl) {
+    const password = control.value;
+    const specialCharacterRegex = /[!@#$%^&*(),.?":{}|<>]/;
+    return password && specialCharacterRegex.test(password) ? null : { special: true };
+  }
+
 }

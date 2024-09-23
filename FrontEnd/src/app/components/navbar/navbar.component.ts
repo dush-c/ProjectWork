@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {User} from "../../interfaces/user.entity";
 
 @Component({
   selector: 'app-navbar',
@@ -6,5 +7,13 @@ import { Component } from '@angular/core';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
+  @Input()
+  user: User | null = null;
 
+  @Output('logout')
+  logoutEvent = new EventEmitter<void>();
+
+  logout() {
+    this.logoutEvent.emit();
+  }
 }

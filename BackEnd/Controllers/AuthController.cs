@@ -11,12 +11,13 @@ using System.Text.RegularExpressions;
 
 namespace BackEnd.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/")]
     [ApiController]
     public class AuthController : Controller
     {
 
         #region ApiCalls
+        
         [Route("/Registrazione")]
         [HttpPost]
         public ResponseRegistrazione RegistraNuovoUtente(Utente user, string confermaPassword)
@@ -73,11 +74,29 @@ namespace BackEnd.Controllers
 
                     string IBAN = GenerateIBAN();
                     db.sqlCommand.Parameters.AddWithValue("@IBAN", IBAN);
+                    //inserisco un nuovo record nella tabella contiCorrenti
                     db.sqlCommand.CommandText = "insert into TContiCorrenti (Email, Password, CognomeTitolare, NomeTitolare, DataApertura, IBAN)" +
                         "values(@Email, @Password, @CognomeTitolare, @NomeTitolare, @DataApertura, @IBAN)";
 
                     db.sqlCommand.ExecuteNonQuery();
                     responseRegistrazione.messaggio = "OK, registrazione avvenuta con successo!";
+
+                    db.sqlConnection.Close();
+                    db.sqlConnection.Open();
+                    //aggiunto il record in ContiCorrenti devo aggiungere il record in Utenti, per farlo devo andare a recuperare l'id del contoCorrente appena creato
+                    db.sqlCommand.CommandText = "select ContoCorrenteID from TContiCorrenti where Email = @Email";
+
+                    var readerContoCorrente = db.sqlCommand.ExecuteReader();
+                    readerContoCorrente.Read();
+                    db.sqlCommand.Parameters.AddWithValue("@ContoCorrenteID", Convert.ToInt32(readerContoCorrente["ContoCorrenteID"]));
+
+                    db.sqlConnection.Close();
+                    db.sqlConnection.Open();
+                    //qui inserisco il record in TUtenti
+                    db.sqlCommand.CommandText = "insert into TUtenti (Cognome, Nome, Mail, IsConfirmed, ContoCorrenteID )" +
+                        "values(@CognomeTitolare, @Nome, @Email, 0, @ContoCorrenteID)";
+
+                    db.sqlCommand.ExecuteNonQuery();
 
                     SendingEmail(user.Email!);
 
@@ -206,12 +225,12 @@ namespace BackEnd.Controllers
             }
         }
 
-
         [Route("/EmailConferma")]
         [HttpPost]
         public string ConfermaEmail(int ContoCorrenteID)
         {
             //questa chiamata deve occuparsi di andare ad inserire un record nella tabella dei movimenti
+            //e di andare a cambiare il valore di 'IsConfirmed' in TUtenti
             try
             {
                 Database db = new Database();
@@ -221,10 +240,15 @@ namespace BackEnd.Controllers
                 db.sqlCommand.Parameters.AddWithValue("@ContoCorrenteID", ContoCorrenteID);
                 db.sqlCommand.Parameters.AddWithValue("@Data", Data);
 
-                //Categoria movimento = 1 significa che si tratta della Creazione del conto
+                //Categoria movimento = 6 significa che si tratta della Creazione del conto
                 db.sqlCommand.CommandText = "insert into TMovimentiContoCorrente (ContoCorrenteID, Data, Importo, Saldo, CategoriaMovimentoID, DescrizioneEstesa) " +
-                    "values (@ContoCorrenteID, @Data, 0, 0, 1)";
+                    "values (@ContoCorrenteID, @Data, 0, 0, 6)";
                 db.sqlCommand.ExecuteNonQuery();
+
+                db.sqlConnection.Close();
+                db.sqlConnection.Open();
+
+                db.sqlCommand.CommandText = "alter table TUtenti set IsConfirmed = 1 where ContoCorrenteID = @ContoCorrenteID";
 
                 return "OK, Registrazione andata a buon fine";
             }
@@ -410,6 +434,23 @@ namespace BackEnd.Controllers
         //    SendingEmail( a);
         //    return "OK";
         //}
+
+        [Route("/debug")]
+        [HttpGet]
+        public string ConnessioneDB()
+        {
+            try
+            {
+                Database db = new Database();
+                return "OK";
+            }
+            catch (Exception)
+            {
+                return "KO";
+            }
+
+        }
+
         #endregion
     }
 
