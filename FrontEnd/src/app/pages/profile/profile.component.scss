@@ -1,0 +1,70 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.transfer-card {
+  width: 400px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+
+
+  .form-group {
+    margin-bottom: 15px;
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    input {
+      padding-right: 30px;
+    }
+
+    span {
+      position: absolute;
+      right: 60px;
+      transform: translateY(30%);
+      pointer-events: none;
+    }
+  }
+
+  .btn {
+    transition: background-color 0.3s ease;
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+
+  .profile-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Due colonne */
+    gap: 20px; /* Spazio tra i campi */
+}
+
+.input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+}
