@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BalanceCardComponent } from './balance-card.component';
+import { WelcomeBarComponent } from './welcome-bar.component';
 
-describe('BalanceCardComponent', () => {
-  let component: BalanceCardComponent;
-  let fixture: ComponentFixture<BalanceCardComponent>;
+describe('WelcomeBarComponent', () => {
+  let component: WelcomeBarComponent;
+  let fixture: ComponentFixture<WelcomeBarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BalanceCardComponent]
+      declarations: [WelcomeBarComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(BalanceCardComponent);
+    fixture = TestBed.createComponent(WelcomeBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

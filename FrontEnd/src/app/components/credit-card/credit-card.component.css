@@ -1,0 +1,140 @@
+/* Visa Card 2 (Matt Black) */
+
+/* position: absolute;
+width: 335px;
+height: 185px;
+left: 200px;
+top: 581px; */
+
+/* Card surface */
+
+/* position: absolute;
+width: 335px;
+height: 185px;
+left: 0px;
+top: 0px;
+
+background: linear-gradient(106.15deg, #282828 1.61%, #0B0B0B 93.48%);
+border-radius: 20px; */
+
+/* Gousian Layer */
+/* 
+position: absolute;
+width: 335px;
+height: 185px;
+left: 0px;
+top: 0px;
+
+background: rgba(255, 255, 255, 0.03);
+backdrop-filter: blur(40px); */
+/* Note: backdrop-filter has minimal browser support */
+/* border-radius: 20px; */
+
+/* Effect */
+
+/* position: absolute;
+width: 334.78px;
+height: 185px;
+left: 0px;
+top: 0px;
+
+background: rgba(255, 255, 255, 0.06); */
+
+/* Rectangle */
+/* 
+position: absolute;
+width: 335px;
+height: 185px;
+left: 0px;
+top: 0px; */
+
+/* gray/400 */
+/* background: #A1A1AA;
+border-radius: 20px; */
+
+/* Vector 1 */
+
+/* position: absolute;
+width: 455.82px;
+height: 386.25px;
+left: -121px;
+top: -4px; */
+
+/* gray/200 */
+/* background: #E4E4E7; */
+
+/* Logo */
+/* 
+position: absolute;
+width: 48px;
+height: 48px;
+left: 263px;
+top: 12px; */
+
+/* Vector */
+/* 
+position: absolute;
+left: 0%;
+right: 0%;
+top: 33.85%;
+bottom: 33.85%;
+
+background: #FFFFFF; */
+
+/* Logo */
+/* 
+position: absolute;
+width: 48px;
+height: 48px;
+left: 263px;
+top: 45px; */
+
+/* Ellipse 1 */
+
+/* position: absolute;
+left: 0%;
+right: 37.5%;
+top: 18.63%;
+bottom: 18.87%;
+
+background: #EB001B; */
+
+/* Ellipse 2 */
+
+/* position: absolute;
+left: 37.5%;
+right: 0%;
+top: 18.63%;
+bottom: 18.87%;
+
+background: #F79E1B; */
+
+/* Intersect */
+/* 
+position: absolute;
+left: 35.57%;
+right: 35.57%;
+top: 24.88%;
+bottom: 25.12%;
+
+background: #FF5F00; */
+
+/* Ellipse 4 */
+
+/* position: absolute;
+left: 6.71%;
+right: 35.57%;
+top: 21.02%;
+bottom: 21.26%;
+
+background: #C4C4C4; */
+
+/* Ellipse 3 */
+
+/* position: absolute;
+left: 35.57%;
+right: 6.71%;
+top: 21.02%;
+bottom: 21.26%;
+
+background: #C4C4C4; */
