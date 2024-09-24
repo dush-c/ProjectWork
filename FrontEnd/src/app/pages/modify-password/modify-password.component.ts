@@ -13,6 +13,7 @@ export class ModifyPasswordComponent {
   hide = true
   passwordForm: FormGroup;
   registrationError: string | null = null;
+  registrationSuccess: string | null = null;
 
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.passwordForm = this.fb.group({
@@ -36,7 +37,8 @@ export class ModifyPasswordComponent {
       const { newPassword, confirmPassword } = this.passwordForm.value;
       this.authService.updatePassword(newPassword, confirmPassword).subscribe(
         response => {
-          console.log('Password aggiornata con successo');
+          this.registrationSuccess = "Password aggiornata con successo";
+          this.registrationError = null;
         },
         error => {
           this.registrationError = "La password non può essere uguale a quella attuale";
