@@ -55,7 +55,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           )
           .subscribe({
             next: () => {
-              this.router.navigate(['/login']);
+              this.router.navigate(['/check-email']);
             }
           });
     } else {

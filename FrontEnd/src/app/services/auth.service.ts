@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, map, tap } from 'rxjs';
+import {BehaviorSubject, map, Observable, tap} from 'rxjs';
 import { JWTService} from "./jwt.service";
 import {User} from "../interfaces/user.entity";
 import {APIURL} from "../enviroments/api-url";
@@ -66,5 +66,14 @@ export class AuthService {
       }
       );
   }
+
+  updatePassword(newPassword: string, confirmPassword: string): Observable<any> {
+    const body = {
+      newPassword,
+      confirmPassword
+    };
+    return this.http.patch<any>(`${APIURL}/api/users/updatePassword`, body);
+  }
+
 }
 
