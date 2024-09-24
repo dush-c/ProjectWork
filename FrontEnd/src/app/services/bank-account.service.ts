@@ -9,9 +9,9 @@ import {HttpClient} from "@angular/common/http";
 })
 export class BankAccountService {
 
-  constructor(private bankAccountService: BankAccountService, private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   getBankAccountInfo(): Observable<BankAccount> {
-    return this.http.get<BankAccount>(`${APIURL}/api/info`);
+    return this.http.get<BankAccount>(`${APIURL}/api/bankAccounts/info`);
   }
 }

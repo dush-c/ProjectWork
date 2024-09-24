@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BENVEUTO NEL TUO PROFILO</title>
-    <link rel="stylesheet" href="profile.component.scss"> 
-</head>
-<body>
-
 <div class="container">
     <mat-card class="transfer-card">
         <div class="flex items-center mb-5">
@@ -17,41 +7,46 @@
             <h2 class="font-bold text-lg mb-0">Il Mio Profilo</h2>
         </div>
 
-        <div class="profile-info">
-            <div class="form-group">
-                <label>Conto Corrente ID:</label>
-                <input type="input" id="contoid" formControlName="contoid" placeholder="svsvvsd" class="input" required/>        
+        <div class="img-profile">
+          <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+            <div class="w-10 rounded-full">
+              <img [src]="user?.picture || 'assets/usernopic.jpg'">
             </div>
-
-            <div class="form-group">
-                <label>Email:</label>
-                <input type="email" id="email" formControlName="email" placeholder="Inserisci per modificare" class="input" required />
-            </div>
-
-            <div class="form-group">
-                <label>Cognome Titolare:</label>
-                <input type="text" id="Cognome" formControlName="cognome" placeholder="Inserisci per modificare" class="input" required />
-            </div>
-
-            <div class="form-group">
-                <label>Nome Titolare:</label>
-                <input type="text" id="nome" formControlName="nome" placeholder="Inserisci per modificare" class="input" required />
-            </div>
-
-            <div class="form-group">
-                <label>Data Apertura:</label>
-                <input type="date" id="dataApertura" formControlName="dataApertura" class="input" required />
-            </div>
-
-            <div class="form-group">
-                <label>IBAN:</label>
-                <input type="text" id="iban" formControlName="iban" placeholder="Inserisci per modificare" class="input" required />
-            </div>
+          </div>
         </div>
 
-        <a href="profile.component.html" class="button">Modifica Profilo</a>
+        <form [formGroup]="transferForm" (ngSubmit)="submitTransfer()">
+            <div class="flex justify-between">
+                <div class="left-form w-1/2 pr-2">
+                    <div class="form-group">
+                        <label>Username:</label>
+                        <input type="text" formControlName="username" class="input" placeholder="Inserisci username" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label>Nome Titolare:</label>
+                        <input type="text" formControlName="nomeTitolare" class="input" placeholder="Inserisci nome" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label>Cognome Titolare:</label>
+                        <input type="text" formControlName="cognomeTitolare" class="input" placeholder="Inserisci cognome" readonly />
+                    </div>
+                </div>
+
+                <div class="right-form w-1/2 pl-2">
+                    <div class="form-group">
+                        <label>ContoID:</label>
+                        <input type="text" formControlName="id" class="input" placeholder="Inserisci id" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label>Data Apertura:</label>
+                        <input type="date" formControlName="dataApertura" class="input" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label>IBAN:</label>
+                        <input type="text" formControlName="IBAN" class="input" placeholder="Inserisci IBAN" readonly />
+                    </div>
+                </div>
+            </div>
+        </form>
     </mat-card>
 </div>
-
-</body>
-</html>
