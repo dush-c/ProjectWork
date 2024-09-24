@@ -18,6 +18,19 @@
       <span class="absolute right-3 text-lg">€</span>
     </div>
 
+    <div class="form-group">
+      <label for="categoria">Categoria:</label>
+      <select id="categoria" formControlName="categoria" class="input w-full" required>
+        <option value="" disabled>Seleziona una categoria</option>
+        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="causale">Causale:</label>
+      <input type="text" id="causale" formControlName="causale" placeholder="Inserisci la causale" class="input w-full" required />
+    </div>
+
     <button type="submit" class="btn btn-primary w-full" [disabled]="transferForm.invalid">
       Invia Bonifico
     </button>

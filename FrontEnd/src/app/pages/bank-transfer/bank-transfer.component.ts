@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {BankAccountService} from "../../services/bank-account.service";
+import {AuthService} from "../../services/auth.service";
+import {CategoryTransaction} from "../../interfaces/category-transaction.entity";
 
 @Component({
   selector: 'app-bank-transfer',
@@ -9,15 +12,31 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class BankTransferComponent {
   transferForm: FormGroup;
   balance: number = 100;
+  categories: CategoryTransaction[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private bankAccountService: BankAccountService, private authService: AuthService) {
     this.transferForm = this.fb.group({
       iban: ['', [Validators.required, Validators.pattern(/^IT[0-9]{2}[A-Z]{1}[0-9A-Z]{27}$/)]],
-      amount: ['', [Validators.required, Validators.min(1)]]
+      amount: ['', [Validators.required, Validators.min(1)]],
+      causale: ['', [Validators.required]],
+      categoria: ['', [Validators.required]]
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    this.bankAccountService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+      },
+      error: (error) => {
+        console.error('Errore nel recupero delle categorie:', error);
+      }
+    });
+  }
 
   async submitTransfer() {
     if (this.transferForm.valid) {
