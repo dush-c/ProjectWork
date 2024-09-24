@@ -37,6 +37,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { CreditCardComponent } from './components/credit-card/credit-card.component';
+import { CheckEmailComponent } from './pages/auth/check-email/check-email.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { CreditCardComponent } from './components/credit-card/credit-card.compon
     StatsCardComponent,
     ChartCardComponent,
     CreditCardComponent,
+    CheckEmailComponent,
   ],
   imports: [
     BrowserModule,

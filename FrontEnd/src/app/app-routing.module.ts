@@ -10,12 +10,14 @@ import {BankTransferComponent} from "./pages/bank-transfer/bank-transfer.compone
 import {PhoneCreditComponent} from "./pages/phone-credit/phone-credit.component";
 import { OptionsComponent } from './pages/options/options.component';
 import { ModifyPasswordComponent } from './pages/modify-password/modify-password.component';
+import {CheckEmailComponent} from "./pages/auth/check-email/check-email.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path:'email-confirmed', component: EmailConfirmedComponent},
+  { path:'check-email', component: CheckEmailComponent},
   { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]},
   { path:"profile", component: ProfileComponent, canActivate: [authGuard]},
   { path:"settings", component: OptionsComponent, canActivate: [authGuard]},
