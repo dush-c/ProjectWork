@@ -75,5 +75,9 @@ export class AuthService {
     return this.http.patch<any>(`${APIURL}/api/users/updatePassword`, body);
   }
 
+  confirmEmail(token: string): Observable<any> {
+    return this.http.post(`${APIURL}/api/users/email-confirmation`, { token });
+  }
+
 }
 
