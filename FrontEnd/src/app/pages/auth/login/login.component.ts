@@ -61,7 +61,8 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.authSrv.login(username!, password!).pipe(
         catchError((err) => {
           console.log(err);
-          this.loginError = 'Credenziali errate o non valide';
+          console.log(err.error.message);
+          this.loginError = err.error.message;
           return throwError(() => err);
         })
       ).subscribe({

@@ -38,6 +38,7 @@ import { NgModule } from '@angular/core';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { CreditCardComponent } from './components/credit-card/credit-card.component';
 import { CheckEmailComponent } from './pages/auth/check-email/check-email.component';
+import { ErrorTranslatorPipe } from './pipes/error-translator.pipe';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { CheckEmailComponent } from './pages/auth/check-email/check-email.compon
     ChartCardComponent,
     CreditCardComponent,
     CheckEmailComponent,
+    ErrorTranslatorPipe,
   ],
   imports: [
     BrowserModule,
