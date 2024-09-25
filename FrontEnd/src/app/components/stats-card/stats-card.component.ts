@@ -1,4 +1,4 @@
-import {Component, ViewEncapsulation} from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-stats-card',
@@ -6,5 +6,9 @@ import {Component, ViewEncapsulation} from '@angular/core';
   styleUrl: './stats-card.component.scss',
 })
 export class StatsCardComponent {
+  isBlurred: boolean = false;
 
+  toggleBlur() {
+    this.isBlurred = !this.isBlurred;
+  }
 }
