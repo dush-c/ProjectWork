@@ -22,7 +22,7 @@
       <label for="categoria">Categoria:</label>
       <select id="categoria" formControlName="categoria" class="input w-full" required>
         <option value="" disabled>Seleziona una categoria</option>
-        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        <option *ngFor="let category of categories" [value]="category">{{ category.NomeCategoria }}</option>
       </select>
     </div>
 

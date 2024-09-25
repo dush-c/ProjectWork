@@ -15,8 +15,4 @@ export class BankAccountService {
   getBankAccountInfo(): Observable<BankAccount> {
     return this.http.get<BankAccount>(`${APIURL}/api/bankAccounts/info`);
   }
-
-  getCategories(): Observable<CategoryTransaction[]> {
-    return this.http.get<CategoryTransaction[]>(`${APIURL}/api/categories`);
-  }
 }

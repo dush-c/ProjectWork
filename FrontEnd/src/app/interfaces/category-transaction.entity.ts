@@ -1,5 +1,5 @@
 export interface CategoryTransaction {
-  categoryTransactionID: string;
-  name: string;
-  type: string;
+  id: string;
+  NomeCategoria: string;
+  Tipologia: string;
 }
