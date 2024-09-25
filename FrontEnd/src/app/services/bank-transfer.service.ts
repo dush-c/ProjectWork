@@ -17,6 +17,10 @@ export class BankTransferService {
     return this.http.get<Transaction[]>(`${APIURL}/api/movimenti/`);
   }
 
+  getBalance(): Observable<any> {
+    return this.http.get<any>(`${APIURL}/api/movimenti/saldo`);
+  }
+
   getCategories(): Observable<CategoryTransaction[]> {
     return this.http.get<CategoryTransaction[]>(`${APIURL}/api/categorieMovimenti`);
   }
@@ -25,13 +29,13 @@ export class BankTransferService {
     return this.http.get<CategoryTransaction[]>(`${APIURL}/api/categorieMovimenti/:categoryTransactionID`);
   }
 
-  eseguiBonifico(ibanDestinatario: string, importo: number, causale:string): Observable<Bonifico> {
+  eseguiBonifico(ibanDestinatario: string, importo: number, causale:string): Observable<any> {
     const bonificoData = {
       ibanDestinatario: ibanDestinatario,
       importo: importo,
       causale: causale,
     };
-    return this.http.post<Bonifico>(`${APIURL}/api/bonifico`, bonificoData);
+    return this.http.post<any>(`${APIURL}/api/bonifico`, bonificoData);
   }
 
   eseguiRicarica(rechargeDetails: any): Observable<any> {

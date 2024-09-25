@@ -13,30 +13,28 @@ import {Transaction} from "../../interfaces/transaction.entity";
 })
 export class BankTransferComponent implements OnInit{
   transferForm: FormGroup;
-  Balance: number = 0;
+  saldo: number = 0;
   registrationError: string | null = null;
   registrationSuccess: string | null = null;
 
   constructor(private fb: FormBuilder, private transferService: BankTransferService) {
     this.transferForm = this.fb.group({
-      //iban: ['', [Validators.required, Validators.pattern(/^IT[0-9]{2}[A-Z]{1}[0-9A-Z]{27}$/)]],
-      iban: ['', [Validators.required, Validators.pattern(/^IT\d{2}[A-Z]\d{5}[A-Z0-9]{18}$/)]],
+      iban: ['', [Validators.required, Validators.pattern(/^IT[0-9]{2}[A-Z]{1}[0-9A-Z]{22}$/)]],
       amount: ['', [Validators.required, Validators.min(1)]],
       causale: ['', [Validators.required]]
     });
   }
 
   ngOnInit() {
-    this.transferService.getTransactions().subscribe({
-      next: (transactions: Transaction[]) => {
-        if (transactions.length > 0) {
-          this.Balance = transactions[0].balance;
-        } else {
-          this.registrationError = 'Nessuna transazione trovata';
-        }
+    this.transferService.getBalance().subscribe({
+      next: (response) => {
+        console.log('Risposta dalla API:', response);
+        this.saldo = response.saldo;
+        console.log(this.saldo);
       },
       error: (err) => {
-        console.error('Errore nel recuperare le transazioni:', err);
+        console.error('Errore nel recuperare il saldo:', err);
+        this.registrationError = 'Impossibile recuperare il saldo';
       }
     });
   }
@@ -45,20 +43,22 @@ export class BankTransferComponent implements OnInit{
     if (this.transferForm.valid) {
       const transferDetails = this.transferForm.value;
 
-      if (transferDetails.amount > this.Balance) {
+      if (transferDetails.amount > this.saldo) {
         this.registrationError = 'Saldo insufficiente';
         this.registrationSuccess = null;
         console.error('Saldo insufficiente');
         return;
       }
+
       this.transferService.eseguiBonifico(transferDetails.iban, transferDetails.amount, transferDetails.causale)
         .subscribe({
           next: (response) => {
             this.registrationSuccess = 'Bonifico eseguito con successo!';
             this.registrationError = null;
+            this.saldo -= transferDetails.amount;
           },
           error: (error) => {
-            this.registrationError = "Errore durante l'esecuzione del bonifico";
+            this.registrationError = error.error.message;
             this.registrationSuccess = null;
             console.error("Errore durante l'esecuzione del bonifico:", error);
           }

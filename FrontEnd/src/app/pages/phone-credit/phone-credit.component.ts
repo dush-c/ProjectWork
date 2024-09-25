@@ -23,16 +23,13 @@ export class PhoneCreditComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.transferService.getTransactions().subscribe({
-      next: (transactions: Transaction[]) => {
-        if (transactions.length > 0) {
-          this.Balance = transactions[0].balance;
-        } else {
-          this.registrationError = 'Nessuna transazione trovata';
-        }
+    this.transferService.getBalance().subscribe({
+      next: (response: { balance: number }) => {
+        this.Balance = response.balance;
       },
       error: (err) => {
-        console.error('Errore nel recuperare le transazioni:', err);
+        console.error('Errore nel recuperare il saldo:', err);
+        this.registrationError = 'Impossibile recuperare il saldo';
       }
     });
   }
@@ -57,7 +54,7 @@ export class PhoneCreditComponent implements OnInit {
             }
           });
       } else {
-        this.registrationError = 'Saldo insufficiente per eseguire la ricarica.';
+        this.registrationError = 'Saldo insufficiente per eseguire la ricarica';
         this.registrationSuccess = null;
       }
     }

@@ -5,8 +5,8 @@ export interface Transaction {
   transactionID?: string;
   bankAccount?: BankAccountEntity;
   date: string;
-  amount: number;
-  balance: number;
+  importo: number;
+  saldo: number;
   categoryTransaction: CategoryTransaction;
   description?: string;
 }
