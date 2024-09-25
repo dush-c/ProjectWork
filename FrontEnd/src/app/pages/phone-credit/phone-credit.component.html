@@ -9,6 +9,9 @@
     </h2>
     </div>
 
+    <div *ngIf="registrationError" class="error-message">{{ registrationError }}</div>
+    <div *ngIf="registrationSuccess" class="success-message">{{ registrationSuccess }}</div>
+
     <form [formGroup]="rechargeForm" (ngSubmit)="submitRecharge()">
       <div class="form-group">
         <label for="phoneNumber">Numero di Telefono:</label>

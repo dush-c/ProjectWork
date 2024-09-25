@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BankAccountService} from "../../services/bank-account.service";
-import {BankAccount} from "../../interfaces/bank-account";
+import {BankAccountEntity} from "../../interfaces/bank-account.entity";
 
 @Component({
   selector: 'app-welcome-bar',
@@ -14,7 +14,7 @@ export class WelcomeBarComponent implements OnInit{
 
   ngOnInit(): void {
     this.bankAccountService.getBankAccountInfo().subscribe({
-      next: (account: BankAccount) => {
+      next: (account: BankAccountEntity) => {
         this.nomeTitolare = account.nomeTitolare;
       },
       error: (err) => {

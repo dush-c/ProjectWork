@@ -1,4 +1,4 @@
-export interface BankAccount{
+export interface BankAccountEntity {
   id?: string;
   username: string;
   password: string;

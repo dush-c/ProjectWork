@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BankAccountService } from '../../services/bank-account.service'; 
-import { BankAccount } from '../../interfaces/bank-account'; 
+import { BankAccountService } from '../../services/bank-account.service';
+import { BankAccountEntity } from '../../interfaces/bank-account.entity';
 import { User } from '../../interfaces/user.entity';
 import { AuthService } from '../../services/auth.service';
 
@@ -9,16 +9,16 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'] 
+  styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  transferForm: FormGroup; 
-  errorMessage: string | undefined; 
+  transferForm: FormGroup;
+  errorMessage: string | undefined;
   user: User | null = null;
 
   constructor(private formBuilder: FormBuilder, private bankAccountService: BankAccountService, private authSrv: AuthService) {
     this.transferForm = this.formBuilder.group({
-      id: ['', Validators.required], 
+      id: ['', Validators.required],
       username: ['', [Validators.required, Validators.email]],
       cognomeTitolare: ['', Validators.required],
       nomeTitolare: ['', Validators.required],
@@ -37,7 +37,7 @@ export class ProfileComponent implements OnInit {
 
   getProfileData() {
     this.bankAccountService.getBankAccountInfo().subscribe(
-      (data: BankAccount) => {
+      (data: BankAccountEntity) => {
         this.transferForm.patchValue({
           id: data.id,
           username: data.username,
@@ -52,14 +52,14 @@ export class ProfileComponent implements OnInit {
         this.errorMessage = 'Errore nel recupero dei dati del profilo. Riprova più tardi.';
         console.error('Error fetching profile data:', error);
       }
-      
+
     );
   }
 
   formatDateToInput(date: Date): string {
-    const day = ('0' + date.getDate()).slice(-2); 
-    const month = ('0' + (date.getMonth() + 1)).slice(-2); 
-    const year = date.getFullYear(); 
+    const day = ('0' + date.getDate()).slice(-2);
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const year = date.getFullYear();
     return `${year}-${month}-${day}`;
   }
 

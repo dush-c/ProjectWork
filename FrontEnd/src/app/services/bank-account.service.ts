@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
-import {BankAccount} from "../interfaces/bank-account";
+import {BankAccountEntity} from "../interfaces/bank-account.entity";
 import {APIURL} from "../enviroments/api-url";
 import {HttpClient} from "@angular/common/http";
 import {CategoryTransaction} from "../interfaces/category-transaction.entity";
@@ -12,7 +12,7 @@ export class BankAccountService {
 
   constructor(private http: HttpClient) { }
 
-  getBankAccountInfo(): Observable<BankAccount> {
-    return this.http.get<BankAccount>(`${APIURL}/api/bankAccounts/info`);
+  getBankAccountInfo(): Observable<BankAccountEntity> {
+    return this.http.get<BankAccountEntity>(`${APIURL}/api/bankAccounts/info`);
   }
 }

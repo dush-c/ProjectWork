@@ -6,6 +6,20 @@
     <h2 class="font-bold text-lg mb-0">Nuovo Bonifico</h2>
   </div>
 
+  <div *ngIf="registrationError" role="alert" class="alert alert-error flex items-center p-4 mb-4 text-red-700 bg-red-100 rounded-lg">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current mr-2" fill="none" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <span>{{ registrationError }}</span>
+  </div>
+
+  <div *ngIf="registrationSuccess" role="alert" class="alert alert-success flex items-center p-4 mb-4 text-green-700 bg-green-100 rounded-lg">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current mr-2" fill="none" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2l4 -4" />
+    </svg>
+    <span>{{ registrationSuccess }}</span>
+  </div>
+
   <form (ngSubmit)="submitTransfer()" [formGroup]="transferForm">
     <div class="form-group">
       <label for="iban">IBAN Destinatario:</label>
@@ -16,14 +30,6 @@
       <label for="amount">Importo:</label>
       <input type="number" id="amount" formControlName="amount" placeholder="Inserisci l'importo" class="input w-full" required />
       <span class="absolute right-3 text-lg">€</span>
-    </div>
-
-    <div class="form-group">
-      <label for="categoria">Categoria:</label>
-      <select id="categoria" formControlName="categoria" class="input w-full" required>
-        <option value="" disabled>Seleziona una categoria</option>
-        <option *ngFor="let category of categories" [value]="category">{{ category.NomeCategoria }}</option>
-      </select>
     </div>
 
     <div class="form-group">
