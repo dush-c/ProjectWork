@@ -3,8 +3,8 @@ import { CategoryTransaction } from './category-transaction.entity';
 
 export interface Transaction {
   transactionID: string;
-  bankAccount: BankAccount;
-  date: string | Date;
+  bankAccount?: BankAccount;
+  date: string;
   amount: number;
   balance: number;
   categoryTransaction: CategoryTransaction;
