@@ -1,9 +1,12 @@
+import { BankAccount } from './bank-account';
+import { CategoryTransaction } from './category-transaction.entity';
+
 export interface Transaction {
   transactionID: string;
-  bankAccountID: string;
-  date: string;
+  bankAccount: BankAccount;
+  date: string | Date;
   amount: number;
   balance: number;
-  categoryTransactionID: string;
+  categoryTransaction: CategoryTransaction;
   description: string;
 }
