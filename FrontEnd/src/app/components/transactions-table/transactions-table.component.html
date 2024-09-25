@@ -12,8 +12,7 @@
       </select>
       <select class="select select-bordered w-full max-w-xs">
         <option disabled selected>Scegli una categoria</option>
-        <option>Han Solo</option>
-        <option>Greedo</option>
+        <option *ngFor="let category of categories" [value]="category">{{ category.NomeCategoria }}</option>
       </select>
       <button (click)="exportExcel()" class="flex items-center justify-center btn btn-outline btn-circle border-slate-700">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">

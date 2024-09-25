@@ -1,14 +1,37 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import {AuthService} from "../../services/auth.service";
+import {BankTransferService} from "../../services/bank-transfer.service";
+import {CategoryTransaction} from "../../interfaces/category-transaction.entity";
 
 @Component({
   selector: 'app-transactions-table',
   templateUrl: './transactions-table.component.html',
   styleUrl: './transactions-table.component.scss'
 })
-export class TransactionsTableComponent {
+export class TransactionsTableComponent implements OnInit {
+  categories: CategoryTransaction[] = [];
+
    EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+
+   constructor(private authSrv: AuthService, private transferService: BankTransferService) {
+   }
+
+  ngOnInit(): void {
+    this.loadCategories();
+  }
+
+  loadCategories() {
+    this.transferService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+      },
+      error: (error) => {
+        console.error('Errore nel recupero delle categorie:', error);
+      }
+    });
+  }
 
   exportExcel(): void {
     const tableElement = document.querySelector('.table') as HTMLTableElement;
