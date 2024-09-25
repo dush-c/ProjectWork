@@ -11,6 +11,7 @@ import {PhoneCreditComponent} from "./pages/phone-credit/phone-credit.component"
 import { OptionsComponent } from './pages/options/options.component';
 import { ModifyPasswordComponent } from './pages/modify-password/modify-password.component';
 import {CheckEmailComponent} from "./pages/auth/check-email/check-email.component";
+import { TransferDetailsComponent } from './pages/transfer-details/transfer-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path:"settings", component: OptionsComponent, canActivate: [authGuard]},
   { path:"modify-password", component: ModifyPasswordComponent, canActivate: [authGuard]},
   { path:"bank-transfer", component: BankTransferComponent, canActivate: [authGuard]},
+  { path:"bank-transfer/:id", component: TransferDetailsComponent, canActivate: [authGuard]},
   { path:"phone-credit", component: PhoneCreditComponent, canActivate: [authGuard]},
 ];
 
