@@ -1,4 +1,4 @@
-<div class="overflow-x-hidden card card-bordered w-[143%] border-slate-700 m-4">
+<div class="overflow-x-hidden card card-bordered min-h-[40%] w-[120%] border-slate-700 m-4">
   <div class="card bg-base-100 w-full">
     <div class="card-body flex-row justify-between">
       <select class="select select-bordered w-full max-w-xs">
@@ -131,15 +131,15 @@
                 d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
             </svg>
             <div>
-              <div class="font-bold">{{ transaction.description }}</div>
+              <div class="font-bold">{{ transaction.descrizioneEstesa}}</div>
             </div>
           </div>
         </td>
         <td>
-          {{transaction.date}}</td>
-        <td>"+" + {{transaction.amount}} + " " + "€"</td>
+          {{transaction.data}}</td>
+        <td>{{transaction.saldo}} </td>
         <td>
-          {{transaction.categoryTransaction.NomeCategoria}} + " " + {{transaction.categoryTransaction.Tipologia}}
+          {{transaction.categoriaMovimentoID.NomeCategoria}}
         </td>
         <td>
           <button class="btn btn-ghost btn-xs"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"

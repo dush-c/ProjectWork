@@ -16,14 +16,12 @@ export class TransactionsTableComponent implements OnInit {
   transactions: Transaction[] = [];
   EXCEL_TYPE =
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-  @Input()
-  currentBalance!: number;
 
-  @Output() balanceChange = new EventEmitter<number>(); // Emittiamo il saldo
+  currentBalance!: number;
 
   constructor(
     private authSrv: AuthService,
-    private bankTransSrv: BankTransferService,
+    private bankTransSrv: BankTransferService
   ) {}
 
   ngOnInit(): void {
@@ -46,37 +44,10 @@ export class TransactionsTableComponent implements OnInit {
     this.bankTransSrv.getTransactions().subscribe({
       next: (transactions) => {
         this.transactions = transactions;
-        this.updateBalance(this.transactions);
-        this.balanceChange.emit(this.currentBalance); // Emettiamo il saldo al genitore
       },
       error: (error) => {
         console.error('Errore nel recupero delle transazioni', error);
       },
-    });
-  }
-
-  updateBalance(transactions: Transaction[]) {
-    //All'inizio il saldo coincide con l'apertura del conto
-    let currentBalance = transactions[0].balance;
-
-    return transactions.map((movement) => {
-      // Creiamo la transazione e assegniamo il saldo corrente prima di aggiornare il saldo
-      const transaction: Transaction = {
-        transactionID: movement.transactionID,
-        date: movement.date,
-        amount: movement.amount,
-        balance: currentBalance, // Il saldo corrente prima di aggiornare
-        categoryTransaction: {
-          NomeCategoria: movement.categoryTransaction.NomeCategoria,
-          Tipologia: movement.categoryTransaction.Tipologia, // Da personalizzare in base alla categoria
-        },
-        description: movement.description,
-      };
-
-      // Aggiorniamo il saldo sottraendo l'importo del movimento
-      currentBalance -= movement.amount;
-      this.currentBalance = currentBalance;
-      return transaction;
     });
   }
 

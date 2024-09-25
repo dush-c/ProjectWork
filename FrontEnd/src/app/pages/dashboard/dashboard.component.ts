@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { BankTransferService } from '../../services/bank-transfer.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,5 +7,23 @@ import { Component } from '@angular/core';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
-  finalBalance: number | null = null; // Variabile per tenere traccia del saldo
+  lastBalance!: Number; // Variabile per tenere traccia del saldo
+
+  constructor(private bankTransSrv: BankTransferService) {}
+
+  ngOnInit() {
+    this.getLastBalance();
+  }
+
+  getLastBalance() {
+    this.bankTransSrv.getLatestBalance().subscribe({
+      next: (balance) => {
+        this.lastBalance = balance;
+        console.log('lastBalance', this.lastBalance);
+      },
+      error: (error) => {
+        console.error('Errore nel recupero numero:', error);
+      },
+    });
+  }
 }
