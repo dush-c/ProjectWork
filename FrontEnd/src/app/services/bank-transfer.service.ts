@@ -4,6 +4,7 @@ import {CategoryTransaction} from "../interfaces/category-transaction.entity";
 import {APIURL} from "../enviroments/api-url";
 import {HttpClient} from "@angular/common/http";
 import {Bonifico} from "../interfaces/bonifico.entity";
+import { Transaction } from '../interfaces/transaction.entity';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,10 @@ export class BankTransferService {
 
   constructor(private http: HttpClient) { }
 
+  getTransactions(): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(`${APIURL}/api/movimenti`);
+  }
+  
   getCategories(): Observable<CategoryTransaction[]> {
     return this.http.get<CategoryTransaction[]>(`${APIURL}/api/categorieMovimenti`);
   }

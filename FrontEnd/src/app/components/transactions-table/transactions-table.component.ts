@@ -4,7 +4,6 @@ import { saveAs } from 'file-saver';
 import { AuthService } from '../../services/auth.service';
 import { BankTransferService } from '../../services/bank-transfer.service';
 import { CategoryTransaction } from '../../interfaces/category-transaction.entity';
-import { TransactionService } from '../../services/transaction.service';
 import { Transaction } from '../../interfaces/transaction.entity';
 
 @Component({
@@ -24,8 +23,7 @@ export class TransactionsTableComponent implements OnInit {
 
   constructor(
     private authSrv: AuthService,
-    private transferService: BankTransferService,
-    private transactionService: TransactionService
+    private bankTransSrv: BankTransferService,
   ) {}
 
   ngOnInit(): void {
@@ -34,7 +32,7 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   loadCategories() {
-    this.transferService.getCategories().subscribe({
+    this.bankTransSrv.getCategories().subscribe({
       next: (categories) => {
         this.categories = categories;
       },
@@ -45,7 +43,7 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   loadTransactions() {
-    this.transactionService.getTransactions().subscribe({
+    this.bankTransSrv.getTransactions().subscribe({
       next: (transactions) => {
         this.transactions = transactions;
         this.updateBalance(this.transactions);
