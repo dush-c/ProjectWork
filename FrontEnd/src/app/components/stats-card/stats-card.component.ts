@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-stats-card',
@@ -6,6 +6,8 @@ import { Component, ViewEncapsulation } from '@angular/core';
   styleUrl: './stats-card.component.scss',
 })
 export class StatsCardComponent {
+  @Input() balance: number | null = null; // Riceviamo il saldo da DashboardComponent
+
   isBlurred: boolean = false;
 
   toggleBlur() {
