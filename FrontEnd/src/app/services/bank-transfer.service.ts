@@ -14,9 +14,9 @@ export class BankTransferService {
   constructor(private http: HttpClient) { }
 
   getTransactions(): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(`${APIURL}/api/movimenti`);
+    return this.http.get<Transaction[]>(`${APIURL}/api/movimenti/`);
   }
-  
+
   getCategories(): Observable<CategoryTransaction[]> {
     return this.http.get<CategoryTransaction[]>(`${APIURL}/api/categorieMovimenti`);
   }
@@ -34,8 +34,8 @@ export class BankTransferService {
     return this.http.post<Bonifico>(`${APIURL}/api/bonifico`, bonificoData);
   }
 
-  // eseguiRicarica(rechargeDetails: any): Observable<any> {
-  //   return this.http.post<Bonifico>(`${APIURL}/api/bonifico/ricarica`, rechargeDetails);
-  // }
+  eseguiRicarica(rechargeDetails: any): Observable<any> {
+    return this.http.post<Bonifico>(`${APIURL}/api/bonifico/ricarica`, rechargeDetails);
+  }
 
 }
