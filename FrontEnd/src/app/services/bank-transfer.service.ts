@@ -16,7 +16,7 @@ export class BankTransferService {
     return this.http.get<Transaction[]>(`${APIURL}/api/movimenti/`);
   }
 
-  getLatestBalance(): Observable<Number> {
+  getLatestBalance(): Observable<any> {
     // Fa una chiamata all'endpoint /movimenti?n=1 per ottenere il movimento più recente
     return this.http.get<Transaction[]>(`${APIURL}/api/movimenti?n=1`).pipe(
       map((movements: Transaction[]) => {
@@ -50,17 +50,17 @@ export class BankTransferService {
     ibanDestinatario: string,
     importo: number,
     causale: string
-  ): Observable<Bonifico> {
+  ): Observable<any> {
     const bonificoData = {
       ibanDestinatario: ibanDestinatario,
       importo: importo,
       causale: causale,
     };
-    return this.http.post<Bonifico>(`${APIURL}/api/bonifico`, bonificoData);
+    return this.http.post<any>(`${APIURL}/api/bonifico`, bonificoData);
   }
 
   eseguiRicarica(rechargeDetails: any): Observable<any> {
-    return this.http.post<Bonifico>(
+    return this.http.post<any>(
       `${APIURL}/api/bonifico/ricarica`,
       rechargeDetails
     );

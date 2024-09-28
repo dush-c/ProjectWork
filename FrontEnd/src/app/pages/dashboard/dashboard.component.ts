@@ -7,7 +7,7 @@ import { BankTransferService } from '../../services/bank-transfer.service';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
-  lastBalance!: Number; // Variabile per tenere traccia del saldo
+  lastBalance!: number; // Variabile per tenere traccia del saldo
 
   constructor(private bankTransSrv: BankTransferService) {}
 

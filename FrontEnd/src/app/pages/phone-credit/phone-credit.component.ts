@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BankTransferService } from '../../services/bank-transfer.service';
 import { Transaction } from '../../interfaces/transaction.entity';
+import {basename} from "@angular/compiler-cli";
 
 @Component({
   selector: 'app-phone-credit',
@@ -12,45 +13,49 @@ export class PhoneCreditComponent implements OnInit {
   rechargeForm: FormGroup;
   registrationError: string | null = null;
   registrationSuccess: string | null = null;
-  Balance: number = 0;
+  lastBalance!: number;
 
   constructor(
     private fb: FormBuilder,
     private transferService: BankTransferService
   ) {
     this.rechargeForm = this.fb.group({
-      phoneNumber: [
+      numero: [
         '+39',
         [Validators.required, Validators.pattern(/^\+39[0-9]{10}$/)],
       ],
-      operator: ['', Validators.required],
-      amount: ['', Validators.required],
+      operatore: ['', Validators.required],
+      taglio: ['', Validators.required],
     });
   }
 
   ngOnInit() {
-    this.transferService.getBalance().subscribe({
-      next: (response: { balance: number }) => {
-        this.Balance = response.balance;
+    this.getLastBalance();
+  }
+
+  getLastBalance() {
+    this.transferService.getLatestBalance().subscribe({
+      next: (balance) => {
+        this.lastBalance = balance;
+        console.log('lastBalance', this.lastBalance);
       },
-      error: (err) => {
-        console.error('Errore nel recuperare il saldo:', err);
-        this.registrationError = 'Impossibile recuperare il saldo';
-      }
+      error: (error) => {
+        console.error('Errore nel recupero numero:', error);
+      },
     });
   }
 
   submitRecharge() {
     if (this.rechargeForm.valid) {
       const rechargeDetails = this.rechargeForm.value;
-      const rechargeAmount = parseFloat(rechargeDetails.amount);
+      const rechargeAmount = parseFloat(rechargeDetails.taglio);
 
-      if (this.Balance >= rechargeAmount) {
+      if (this.lastBalance > rechargeAmount) {
         this.transferService.eseguiRicarica(rechargeDetails).subscribe({
           next: (response) => {
             this.registrationSuccess = 'Ricarica eseguita con successo!';
             this.registrationError = null;
-            this.Balance -= rechargeAmount;
+            this.lastBalance -= rechargeAmount;
           },
           error: (error) => {
             this.registrationError =

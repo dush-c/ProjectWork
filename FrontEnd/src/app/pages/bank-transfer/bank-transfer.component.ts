@@ -13,7 +13,7 @@ import {Transaction} from "../../interfaces/transaction.entity";
 })
 export class BankTransferComponent implements OnInit{
   transferForm: FormGroup;
-  saldo: number = 0;
+  lastBalance!: number;
   registrationError: string | null = null;
   registrationSuccess: string | null = null;
 
@@ -26,36 +26,40 @@ export class BankTransferComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.transferService.getBalance().subscribe({
-      next: (response) => {
-        console.log('Risposta dalla API:', response);
-        this.saldo = response.saldo;
-        console.log(this.saldo);
+    this.getLastBalance();
+  }
+
+  getLastBalance() {
+    this.transferService.getLatestBalance().subscribe({
+      next: (balance) => {
+        this.lastBalance = balance;
+        console.log('lastBalance', this.lastBalance);
       },
-      error: (err) => {
-        console.error('Errore nel recuperare il saldo:', err);
-        this.registrationError = 'Impossibile recuperare il saldo';
-      }
+      error: (error) => {
+        console.error('Errore nel recupero numero:', error);
+      },
     });
   }
 
   submitTransfer() {
     if (this.transferForm.valid) {
       const transferDetails = this.transferForm.value;
+      const amount = parseFloat(transferDetails.amount);
+      console.log(amount)
 
-      if (transferDetails.amount > this.saldo) {
+      if (amount > this.lastBalance) {
         this.registrationError = 'Saldo insufficiente';
         this.registrationSuccess = null;
         console.error('Saldo insufficiente');
         return;
       }
 
-      this.transferService.eseguiBonifico(transferDetails.iban, transferDetails.amount, transferDetails.causale)
+      this.transferService.eseguiBonifico(transferDetails.iban, amount, transferDetails.causale)
         .subscribe({
           next: (response) => {
             this.registrationSuccess = 'Bonifico eseguito con successo!';
             this.registrationError = null;
-            this.saldo -= transferDetails.amount;
+            this.lastBalance -= amount;
           },
           error: (error) => {
             this.registrationError = error.error.message;
@@ -65,4 +69,5 @@ export class BankTransferComponent implements OnInit{
         });
     }
   }
+
 }
