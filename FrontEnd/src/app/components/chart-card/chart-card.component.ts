@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 
 import {
   ChartComponent,
@@ -19,6 +19,9 @@ import {
   ApexTheme,
   ApexDataLabels,
 } from 'ng-apexcharts';
+import { BankTransferService } from '../../services/bank-transfer.service';
+import { map } from 'rxjs';
+import { Transaction } from '../../interfaces/transaction.entity';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
@@ -45,11 +48,13 @@ export type ChartOptions = {
   templateUrl: './chart-card.component.html',
   styleUrl: './chart-card.component.scss',
 })
-export class ChartCardComponent {
+export class ChartCardComponent implements OnInit {
   @ViewChild('chart') chart!: ChartComponent;
   public chartSpending: Partial<ChartOptions>;
+  spendingList!: number[];
 
-  constructor() {
+  constructor(private bankTransSrv: BankTransferService) {
+    // Initialize chart options
     this.chartSpending = {
       chart: {
         height: 'auto',
@@ -92,24 +97,35 @@ export class ChartCardComponent {
           top: 0,
         },
       },
-      series: [
-        {
-          name: 'New users',
-          data: [6500, 6418, 6456, 6526, 6356, 6456],
-          color: '#1A56DB',
-        },
-      ],
+      series: [], // Initially empty, will be populated later
       xaxis: {
-        categories: [
-          '01 February',
-          '02 February',
-          '03 February',
-          '04 February',
-          '05 February',
-          '06 February',
-          '07 February',
-        ],
+        categories: [],
       },
     };
+  }
+
+  ngOnInit(): void {
+    // Fetch the data on initialization
+    this.getData();
+  }
+
+  getData(): void {
+    this.bankTransSrv.getTransactions().subscribe({
+      next: (transactions: Transaction[]) => {
+        // Map transaction data to spendingList
+        this.spendingList = transactions.map((t) => t.importo);
+        const dateList = transactions.map((d) => d.data);
+        // Now update the chart series with the fetched data
+        this.chartSpending.series = [
+          {
+            name: 'Transazioni',
+            data: this.spendingList,
+            color: '#1A56DB',
+          },
+        ];
+
+        this.chartSpending.xaxis!.categories = dateList;
+      },
+    });
   }
 }
