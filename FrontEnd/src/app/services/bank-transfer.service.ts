@@ -16,7 +16,7 @@ export class BankTransferService {
     return this.http.get<Transaction[]>(`${APIURL}/api/movimenti/`);
   }
 
-  getLatestBalance(): Observable<any> {
+  getLatestBalance(): Observable<number> {
     // Fa una chiamata all'endpoint /movimenti?n=1 per ottenere il movimento più recente
     return this.http.get<Transaction[]>(`${APIURL}/api/movimenti?n=1`).pipe(
       map((movements: Transaction[]) => {
