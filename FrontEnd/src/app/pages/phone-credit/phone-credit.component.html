@@ -1,23 +1,40 @@
 <div class="container">
   <div class="recharge-card">
     <div class="flex items-center mb-5">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mr-2" style="height: 24px; width: 24px;">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="size-6 mr-2" style="height: 24px; width: 24px;">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
       </svg>
-    <h2 class="text-center font-bold text-xl">
-      <strong>Ricarica Telefonica</strong>
-    </h2>
+      <h2 class="text-center font-bold text-xl">
+        <strong>Ricarica Telefonica</strong>
+      </h2>
+    </div>
+
+    <div *ngIf="registrationError" role="alert" class="alert alert-error flex items-center p-4 mb-4 text-red-700 bg-red-100 rounded-lg">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current mr-2" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <span>{{ registrationError }}</span>
+    </div>
+
+    <div *ngIf="registrationSuccess" role="alert" class="alert alert-success flex items-center p-4 mb-4 text-green-700 bg-green-100 rounded-lg">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current mr-2" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2l4 -4" />
+      </svg>
+      <span>{{ registrationSuccess }}</span>
     </div>
 
     <form [formGroup]="rechargeForm" (ngSubmit)="submitRecharge()">
       <div class="form-group">
         <label for="phoneNumber">Numero di Telefono:</label>
-        <input type="tel" id="phoneNumber" formControlName="phoneNumber" placeholder="Inserisci il numero" class="input w-full" required />
+        <input type="tel" id="phoneNumber" formControlName="numero" placeholder="Inserisci il numero"
+          class="input w-full" required />
       </div>
 
       <div class="form-group">
         <label for="operator">Operatore Telefonico:</label>
-        <select id="operator" formControlName="operator" class="select w-full" required>
+        <select id="operator" formControlName="operatore" class="select w-full" required>
           <option value="">Seleziona Operatore</option>
           <option value="illiad">Illiad</option>
           <option value="tim">TIM</option>
@@ -29,7 +46,7 @@
 
       <div class="form-group">
         <label for="amount">Taglio della Ricarica:</label>
-        <select id="amount" formControlName="amount" class="select w-full" required>
+        <select id="amount" formControlName="taglio" class="select w-full" required>
           <option value="">Seleziona Importo</option>
           <option value="5">5€</option>
           <option value="10">10€</option>
@@ -40,7 +57,8 @@
       </div>
 
       <div class="flex justify-center my-8">
-        <button type="submit" class="btn btn-outline-secondary btn-wide" [disabled]="rechargeForm.invalid">Ricarica</button>
+        <button type="submit" class="btn btn-outline-secondary btn-wide"
+          [disabled]="rechargeForm.invalid">Ricarica</button>
       </div>
     </form>
   </div>

@@ -52,7 +52,7 @@ export class ChartCardComponent {
   constructor() {
     this.chartSpending = {
       chart: {
-        height: 350,
+        height: 'auto',
         width: '160%',
         type: 'area',
         dropShadow: {

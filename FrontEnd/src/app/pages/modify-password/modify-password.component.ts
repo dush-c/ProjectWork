@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {BankAccount} from "../../interfaces/bank-account";
+import {BankAccountEntity} from "../../interfaces/bank-account.entity";
 import {BankAccountService} from "../../services/bank-account.service";
 import {AuthService} from "../../services/auth.service";
 
