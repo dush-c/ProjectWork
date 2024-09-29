@@ -46,6 +46,8 @@ export class BankTransferService {
     );
   }
 
+  
+
   eseguiBonifico(
     ibanDestinatario: string,
     importo: number,
