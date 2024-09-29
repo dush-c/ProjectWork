@@ -39,6 +39,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { CreditCardComponent } from './components/credit-card/credit-card.component';
 import { CheckEmailComponent } from './pages/auth/check-email/check-email.component';
 import { ErrorTranslatorPipe } from './pipes/error-translator.pipe';
+import { RangeDatepickerComponent } from './components/range-datepicker/range-datepicker.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { ErrorTranslatorPipe } from './pipes/error-translator.pipe';
     CreditCardComponent,
     CheckEmailComponent,
     ErrorTranslatorPipe,
+    RangeDatepickerComponent,
   ],
   imports: [
     BrowserModule,
