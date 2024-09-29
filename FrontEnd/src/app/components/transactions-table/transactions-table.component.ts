@@ -19,6 +19,12 @@ export class TransactionsTableComponent implements OnInit {
 
   currentBalance!: number;
 
+  totalTransactions: number = 0; // Numero totale di transazioni
+  transactionsPerPage: number = 10; // Numero predefinito di transazioni per pagina
+  currentPage: number = 1; // Pagina corrente
+  totalPages: number = 1; // Numero totale di pagine
+  pages: number[] = []; // Array di pagine
+
   constructor(
     private authSrv: AuthService,
     private bankTransSrv: BankTransferService
@@ -67,5 +73,52 @@ export class TransactionsTableComponent implements OnInit {
 
     const data: Blob = new Blob([excelBuffer], { type: this.EXCEL_TYPE });
     saveAs(data, 'tabella_movimenti.xlsx');
+  }
+
+  /* Pagination*/
+
+  // Calcola il numero totale di pagine
+  calculateTotalPages(): void {
+    this.totalPages = Math.ceil(
+      this.totalTransactions / this.transactionsPerPage
+    );
+    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  // Metodo per aggiornare il numero di transazioni per pagina e ricalcolare le pagine
+  updateTransactionsPerPage(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    this.transactionsPerPage = parseInt(selectElement.value, 10); // Converte il valore selezionato in numero
+    this.calculateTotalPages();
+    this.currentPage = 1; // Resetta la pagina corrente alla prima pagina
+  }
+
+  // Metodo per passare alla pagina successiva
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+
+  // Metodo per passare alla pagina precedente
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
+
+  // Metodo per passare alla prima pagina
+  firstPage(): void {
+    this.currentPage = 1;
+  }
+
+  // Metodo per passare all'ultima pagina
+  lastPage(): void {
+    this.currentPage = this.totalPages;
+  }
+
+  // Metodo per selezionare una pagina specifica
+  goToPage(page: number): void {
+    this.currentPage = page;
   }
 }

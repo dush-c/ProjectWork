@@ -1,6 +1,6 @@
 <div class="overflow-x-hidden card card-bordered min-h-[54.5vh] w-[128%] border-slate-700 m-4">
   <div class="card bg-base-100 w-full">
-    <div class="card-body flex-row justify-between">
+    <div class="card-body flex-row justify-between pb-2">
       <select class="select select-bordered w-full max-w-xs">
         <option disabled selected>Ultimi movimenti</option>
         <option>1</option>
@@ -32,6 +32,11 @@
             clip-rule="evenodd" />
         </svg>
       </button>
+    </div>
+  </div>
+  <div class="card bg-base-100 w-full">
+    <div class="card-body flex-row pt-1">
+      <!-- <app-range-datepicker></app-range-datepicker> -->
     </div>
   </div>
   <table class="table">
@@ -137,7 +142,7 @@
         </td>
         <td>
           {{transaction.data}}</td>
-        <td>{{transaction.saldo}} </td>
+        <td>{{transaction.importo}} </td>
         <td>
           {{transaction.categoriaMovimentoID.NomeCategoria}}
         </td>
@@ -153,40 +158,53 @@
       </tr>
     </tbody>
     <!-- foot -->
+    <!-- Pagina di navigazione -->
     <tfoot>
       <tr>
         <td colspan="4" class="p-2">
-          <div class="flex item-center justify-center">
-            <!-- Double arrow left -->
-            <button class="btn btn-sm">
+          <div class="flex item-center justify-center space-x-2">
+            <!-- Bottone per selezionare il numero di elementi per pagina -->
+            <select class="select select-sm select-bordered leading-none" (change)="updateTransactionsPerPage($event)">
+              <option [value]="5" selected>5</option>
+              <option [value]="10">10</option>
+              <option [value]="20">20</option>
+              <option [value]="50">50</option>
+            </select>
+
+            <!-- Prima pagina -->
+            <button class="btn btn-sm" (click)="firstPage()" [disabled]="currentPage === 1">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                 class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
               </svg>
             </button>
-            <!-- Arrow left -->
-            <button class="btn btn-sm">
+
+            <!-- Pagina precedente -->
+            <button class="btn btn-sm" (click)="previousPage()" [disabled]="currentPage === 1">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                 class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
               </svg>
             </button>
-            <!-- Pages -->
-            <button class="btn btn-sm btn-active">1</button>
-            <button class="btn btn-sm">2</button>
-            <button class="btn btn-sm">3</button>
-            <button class="btn btn-sm">4</button>
-            <button class="btn btn-sm">5</button>
-            <!-- Arrow right -->
-            <button class="btn btn-sm">
+
+            <!-- Pagine -->
+            <ng-container *ngFor="let page of pages">
+              <button class="btn btn-sm" [ngClass]="{'btn-active': page === currentPage}" (click)="goToPage(page)">
+                {{ page }}
+              </button>
+            </ng-container>
+
+            <!-- Pagina successiva -->
+            <button class="btn btn-sm" (click)="nextPage()" [disabled]="currentPage === totalPages">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                 class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </button>
-            <!-- Double arrow right -->
-            <button class="btn btn-sm">
+
+            <!-- Ultima pagina -->
+            <button class="btn btn-sm" (click)="lastPage()" [disabled]="currentPage === totalPages">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                 class="w-4 h-4">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7m-8-14l7 7-7 7" />
