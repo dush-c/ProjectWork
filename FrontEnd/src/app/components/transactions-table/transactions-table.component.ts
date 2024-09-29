@@ -27,6 +27,10 @@ export class TransactionsTableComponent implements OnInit {
   pages: number[] = []; // Array di pagine
   transaction: Transaction|null = null;
 
+  filteredTransactions: Transaction[] = [];
+  selectedNumberOfTransactions: number = 0;
+  selectedCategory: string = '';
+
   constructor(
     private authSrv: AuthService,
     private bankTransSrv: BankTransferService,
@@ -53,6 +57,7 @@ export class TransactionsTableComponent implements OnInit {
     this.bankTransSrv.getTransactions().subscribe({
       next: (transactions) => {
         this.transactions = transactions;
+        this.filteredTransactions = transactions;
         console.log('Transactions:', this.transactions); // Debugging
       },
       error: (error) => {
@@ -134,6 +139,38 @@ export class TransactionsTableComponent implements OnInit {
   // Metodo per selezionare una pagina specifica
   goToPage(page: number): void {
     this.currentPage = page;
+  }
+
+  /* Filtri */
+
+  filterTransactions(): void {
+    let result = this.transactions;
+
+    // Filtro per categoria
+    if (this.selectedCategory) {
+      result = result.filter(
+        (transaction) =>
+          transaction.categoriaMovimentoID.NomeCategoria ===
+          this.selectedCategory
+      );
+    }
+
+    // Limito il numero di transazioni visualizzate
+    if (this.selectedNumberOfTransactions > 0) {
+      result = result.slice(0, this.selectedNumberOfTransactions);
+    }
+
+    this.filteredTransactions = result;
+  }
+
+  onNumberOfTransactionsChange(event: any): void {
+    this.selectedNumberOfTransactions = +event.target.value; // Converte il valore in numero
+    this.filterTransactions();
+  }
+
+  onCategoryChange(event: any): void {
+    this.selectedCategory = event.target.value;
+    this.filterTransactions();
   }
 
   viewDetails(id: string) {
