@@ -53,14 +53,15 @@ export class TransactionsTableComponent implements OnInit {
     this.bankTransSrv.getTransactions().subscribe({
       next: (transactions) => {
         this.transactions = transactions;
+        console.log('Transactions:', this.transactions); // Debugging
       },
       error: (error) => {
         console.error('Errore nel recupero delle transazioni', error);
       },
     });
   }
-  loadTransaction(transactionID: string) {
-    this.bankTransSrv.getTransaction(transactionID).subscribe({
+  loadTransaction(_id: string) {
+    this.bankTransSrv.getTransaction(_id).subscribe({
       next: (transaction) => {
         this.transaction = transaction;
       },
@@ -136,8 +137,9 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   viewDetails(id: string) {
-    this.router.navigate(['bank-transfer/:id', this.transactions]);
+    console.log('Transaction ID:', id); // Debugging
+    this.router.navigate([`/bank-transfer/${id}`]);
   }
 
-  
+
 }
