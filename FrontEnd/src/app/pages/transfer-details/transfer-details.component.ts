@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BankAccountService } from '../../services/bank-account.service'; 
 import { Transaction } from '../../interfaces/transaction.entity';
 import { ActivatedRoute } from '@angular/router'; // Per ottenere l'ID del movimento dalla rotta
+import { BankTransferService } from '../../services/bank-transfer.service';
 
 @Component({
   selector: 'app-details',
@@ -13,14 +14,14 @@ export class TransferDetailsComponent implements OnInit {
   transferForm: FormGroup;
   errorMessage: string | undefined;
   transaction: Transaction | null = null;
-
-  // Variabile per movimentoId
-  movimentoId: string = '';
+  movimentoId!: string; 
 
   constructor(
     private formBuilder: FormBuilder,
     private bankAccountService: BankAccountService,
-    private route: ActivatedRoute // Per leggere i parametri dalla URL
+    private route: ActivatedRoute, // Per leggere i parametri dalla URL
+    private BankTransferService: BankTransferService,
+    
   ) {
     // Inizializza il form con i campi di Transaction
     this.transferForm = this.formBuilder.group({
@@ -35,13 +36,13 @@ export class TransferDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Ottieni il movimentoId dalla rotta
-    this.movimentoId = this.route.snapshot.paramMap.get('id') || '';
-    this.getTransactionData(); // Chiama direttamente il metodo per ottenere i dati della transazione
+    // Get the movimentoId from the route
+    this.movimentoId = this.route.snapshot.paramMap.get('id') || ''; // Ensure it's a string
+    this.getTransactionData(); // Call to get the transaction data
   }
 
   getTransactionData() {
-    this.bankAccountService.getMovimentiById(this.movimentoId).subscribe(
+    this.BankTransferService.getTransaction(this.movimentoId).subscribe(
       (data: Transaction | string | null) => {
         if (typeof data === 'string') {
           this.errorMessage = data; // In caso di errore da parte del backend
@@ -50,13 +51,15 @@ export class TransferDetailsComponent implements OnInit {
           // Popola il form con i dati della transazione
           this.transferForm.patchValue({
             transactionID: data.transactionID,
-            bankAccountID: data.bankAccountID,
-            date: data.date ? this.formatDateToInput(new Date(data.date)) : '',
-            amount: data.amount,
-            balance: data.balance,
-            categoryTransactionID: data.categoryTransactionID,
-            description: data.description,
+            bankAccountID: data.contoCorrenteId,
+            date: data.data ? this.formatDateToInput(new Date(data.data)) : '',
+            amount: data.importo,
+            balance: data.saldo,
+            categoryTransactionID: data.categoriaMovimentoID,
+            description: data.descrizioneEstesa, 
+
           });
+          console.log(data);
           this.transferForm.disable(); // Rendi il form non modificabile
         }
       },

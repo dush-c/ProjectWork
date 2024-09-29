@@ -2,7 +2,7 @@ import { BankAccountEntity } from './bank-account.entity';
 import { CategoryTransaction } from './category-transaction.entity';
 
 export interface Transaction {
-  transactionID?: string;
+  transactionID: string;
   contoCorrenteId: BankAccountEntity;
   data: string;
   importo: number;

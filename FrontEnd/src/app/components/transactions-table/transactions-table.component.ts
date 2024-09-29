@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { BankTransferService } from '../../services/bank-transfer.service';
 import { CategoryTransaction } from '../../interfaces/category-transaction.entity';
 import { Transaction } from '../../interfaces/transaction.entity';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-transactions-table',
@@ -24,10 +25,12 @@ export class TransactionsTableComponent implements OnInit {
   currentPage: number = 1; // Pagina corrente
   totalPages: number = 1; // Numero totale di pagine
   pages: number[] = []; // Array di pagine
+  transaction: Transaction|null = null;
 
   constructor(
     private authSrv: AuthService,
-    private bankTransSrv: BankTransferService
+    private bankTransSrv: BankTransferService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -50,6 +53,16 @@ export class TransactionsTableComponent implements OnInit {
     this.bankTransSrv.getTransactions().subscribe({
       next: (transactions) => {
         this.transactions = transactions;
+      },
+      error: (error) => {
+        console.error('Errore nel recupero delle transazioni', error);
+      },
+    });
+  }
+  loadTransaction(transactionID: string) {
+    this.bankTransSrv.getTransaction(transactionID).subscribe({
+      next: (transaction) => {
+        this.transaction = transaction;
       },
       error: (error) => {
         console.error('Errore nel recupero delle transazioni', error);
@@ -121,4 +134,10 @@ export class TransactionsTableComponent implements OnInit {
   goToPage(page: number): void {
     this.currentPage = page;
   }
+
+  viewDetails(id: string) {
+    this.router.navigate(['bank-transfer/:id', this.transactions]);
+  }
+
+  
 }
