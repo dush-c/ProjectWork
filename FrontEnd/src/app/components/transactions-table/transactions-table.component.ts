@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { AuthService } from '../../services/auth.service';
@@ -18,14 +25,14 @@ export class TransactionsTableComponent implements OnInit {
   EXCEL_TYPE =
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 
-  currentBalance!: number;
-  totalTransactions: number = 0;
   filteredTransactions: Transaction[] = [];
-  selectedNumberOfTransactions: number = 0;
-  selectedCategory: string = '';
+  startDate: Date = new Date(0);
+  endDate: Date = new Date();
+
+  @Input() selectedNumberOfTransactions: number = 0;
+  @Input() selectedCategory: string = '';
 
   constructor(
-    private authSrv: AuthService,
     private bankTransSrv: BankTransferService,
     private router: Router
   ) {}
@@ -51,8 +58,7 @@ export class TransactionsTableComponent implements OnInit {
       next: (transactions) => {
         this.transactions = transactions;
         this.filteredTransactions = transactions;
-        console.log(this.transactions)
-
+        console.log(this.transactions);
       },
       error: (error) => {
         console.error('Errore nel recupero delle transazioni', error);
@@ -61,18 +67,32 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   filterTransactions(): void {
-    let result = this.transactions;
+    let result = [...this.transactions];
 
     if (this.selectedCategory) {
-      result = result.filter(transaction => transaction.categoriaMovimentoID.NomeCategoria === this.selectedCategory);
+      result = result.filter((transaction) => {
+        return (
+          transaction.categoriaMovimentoID &&
+          transaction.categoriaMovimentoID.NomeCategoria === this.selectedCategory
+        );
+      });
     }
 
     if (this.selectedNumberOfTransactions > 0) {
       result = result.slice(0, this.selectedNumberOfTransactions);
     }
 
+    if (this.startDate && this.endDate) {
+      result = result.filter(transaction => {
+        const transactionDate = new Date(transaction.data);
+        return !isNaN(transactionDate.getTime()) &&
+          transactionDate >= this.startDate &&
+          transactionDate <= this.endDate;
+      });
+    }
     this.filteredTransactions = result;
   }
+
 
   onNumberOfTransactionsChange(event: any): void {
     this.selectedNumberOfTransactions = +event.target.value;
@@ -83,6 +103,17 @@ export class TransactionsTableComponent implements OnInit {
     this.selectedCategory = event.target.value;
     this.filterTransactions();
   }
+
+  onStartDateChange(event: any): void {
+    this.startDate = new Date(event.target.value);
+    this.filterTransactions();
+  }
+
+  onEndDateChange(event: any): void {
+    this.endDate = new Date(event.target.value);
+    this.filterTransactions();
+  }
+
 
   exportExcel(): void {
     const tableElement = document.querySelector('.table') as HTMLTableElement;
@@ -103,9 +134,6 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   viewDetails(id: string) {
-    console.log('Transaction ID:', id); // Debugging
     this.router.navigate([`/bank-transfer/${id}`]);
   }
-
-
 }

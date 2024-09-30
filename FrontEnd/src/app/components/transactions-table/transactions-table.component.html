@@ -1,20 +1,23 @@
 <div class="overflow-x-hidden card card-bordered h-[54.5vh] w-[910px] border-slate-700 m-4">
   <div class="card bg-base-100 w-full">
     <div class="card-body flex-row justify-between pb-2">
-      <select class="select select-bordered w-full max-w-xs" (change)="onNumberOfTransactionsChange($event)">
-        <option disabled selected>Ultimi movimenti</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-        <option>7</option>
-        <option>10</option>
-        <option>15</option>
-        <option>20</option>
-      </select>
-      <select class="select select-bordered w-full max-w-xs"  (change)="onCategoryChange($event)">
-        <option disabled selected>Scegli una categoria</option>
-        <option *ngFor="let category of categories" [value]="category">{{ category.NomeCategoria }}</option>
-      </select>
+      <div class="card-body flex-row justify-between pb-2">
+        <select class="select select-bordered w-full max-w-xs" (change)="onNumberOfTransactionsChange($event)">
+          <option disabled selected>Ultimi movimenti</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          <option>7</option>
+          <option>10</option>
+          <option>15</option>
+          <option>20</option>
+        </select>
+        <select class="select select-bordered w-full max-w-xs" (change)="onCategoryChange($event)">
+          <option disabled selected>Scegli una categoria</option>
+          <option *ngFor="let category of categories" [value]="category.NomeCategoria">{{ category.NomeCategoria }}
+          </option>
+        </select>
+      </div>
       <button (click)="exportExcel()"
         class="flex items-center justify-center btn btn-outline btn-circle border-slate-700">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -25,11 +28,32 @@
       </button>
     </div>
   </div>
-  <div class="card bg-base-100 w-full">
-    <div class="card-body flex-row pt-1">
-      <!-- <app-range-datepicker></app-range-datepicker> -->
+  <div id="date-range-picker" class="flex items-center">
+    <div class="relative">
+      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+        </svg>
+      </div>
+      <input id="datepicker-range-start" name="start" type="date"
+             (change)="onStartDateChange($event)"
+             class="input input-bordered text-base-content block w-full pl-10 p-2.5" placeholder="Select date start" />
+    </div>
+
+    <span class="mx-4 text-gray-500">to</span>
+
+    <div class="relative">
+      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+        </svg>
+      </div>
+      <input id="datepicker-range-end" name="end" type="date"
+             (change)="onEndDateChange($event)"
+             class="input input-bordered text-base-content block w-full pl-10 p-2.5" placeholder="Select date end" />
     </div>
   </div>
+
   <table class="table">
     <thead>
       <tr>
