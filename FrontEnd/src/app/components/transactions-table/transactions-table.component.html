@@ -1,5 +1,5 @@
 <div class="overflow-x-hidden card card-bordered h-[54.5vh] w-[910px] border-slate-700 m-4">
-  <div class="sticky-filters card bg-base-100 w-full">
+  <div class="sticky top-0 z-10 card bg-base-100 w-full">
     <div class="card-body flex-row justify-between pb-2">
       <select class="select select-bordered w-full max-w-xs select-number"
         (change)="onNumberOfTransactionsChange($event)">
@@ -69,7 +69,7 @@
   </div>
 
   <table class="table">
-    <thead>
+    <thead class="sticky top-[88px] z-10 bg-base-100">
       <tr>
         <th>Movimento</th>
         <th>Data</th>
@@ -79,7 +79,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngIf="transactions.length === 0">
+      <tr *ngIf="filteredTransactions.length === 0">
         <td colspan="5">Nessun movimento trovato</td>
       </tr>
       <tr *ngFor="let transaction of filteredTransactions">
