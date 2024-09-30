@@ -28,6 +28,7 @@ export class TransactionsTableComponent implements OnInit {
   filteredTransactions: Transaction[] = [];
   startDate: Date = new Date(0);
   endDate: Date = new Date();
+  isDateRangeModalOpen = false;
 
   @Input() selectedNumberOfTransactions: number = 0;
   @Input() selectedCategory: string = '';
@@ -131,6 +132,10 @@ export class TransactionsTableComponent implements OnInit {
 
     const data: Blob = new Blob([excelBuffer], { type: this.EXCEL_TYPE });
     saveAs(data, 'tabella_movimenti.xlsx');
+  }
+
+  toggleDateRangeModal() {
+    this.isDateRangeModalOpen = !this.isDateRangeModalOpen;
   }
 
   viewDetails(id: string) {
