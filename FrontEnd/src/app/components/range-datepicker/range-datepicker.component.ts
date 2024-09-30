@@ -5,7 +5,7 @@ import type { InstanceOptions } from 'flowbite';
 @Component({
   selector: 'app-range-datepicker',
   templateUrl: './range-datepicker.component.html',
-  styleUrl: './range-datepicker.component.css',
+  styleUrl: './range-datepicker.component.scss',
 })
 export class RangeDatepickerComponent {
   // set the target element of the input field

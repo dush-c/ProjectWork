@@ -51,6 +51,8 @@ export class TransactionsTableComponent implements OnInit {
       next: (transactions) => {
         this.transactions = transactions;
         this.filteredTransactions = transactions;
+        console.log(this.transactions)
+
       },
       error: (error) => {
         console.error('Errore nel recupero delle transazioni', error);
@@ -60,12 +62,9 @@ export class TransactionsTableComponent implements OnInit {
 
   filterTransactions(): void {
     let result = this.transactions;
+
     if (this.selectedCategory) {
-      result = result.filter(
-        (transaction) =>
-          transaction.categoriaMovimentoID.NomeCategoria ===
-          this.selectedCategory
-      );
+      result = result.filter(transaction => transaction.categoriaMovimentoID.NomeCategoria === this.selectedCategory);
     }
 
     if (this.selectedNumberOfTransactions > 0) {
@@ -85,7 +84,6 @@ export class TransactionsTableComponent implements OnInit {
     this.filterTransactions();
   }
 
-  
   exportExcel(): void {
     const tableElement = document.querySelector('.table') as HTMLTableElement;
     const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(tableElement);
