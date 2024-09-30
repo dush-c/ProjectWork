@@ -4,9 +4,7 @@ module.exports = {
     "./src/**/*.{html,ts}",
     "./node_modules/flowbite/**/*.js",
   ],
-  theme: {
-    extend: {},
-  },
+  themes: ["light", "dark"],
   plugins: [
     require("daisyui"), require('flowbite/plugin'),
   ],
