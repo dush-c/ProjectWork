@@ -1,9 +1,10 @@
-  import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BankAccountService } from '../../services/bank-account.service';
 import { Transaction } from '../../interfaces/transaction.entity';
 import { ActivatedRoute } from '@angular/router'; // Per ottenere l'ID del movimento dalla rotta
 import { BankTransferService } from '../../services/bank-transfer.service';
+import { CategoryTransaction } from '../../interfaces/category-transaction.entity';
 
 @Component({
   selector: 'app-details',
@@ -49,23 +50,28 @@ export class TransferDetailsComponent implements OnInit {
           console.error('Errore:', data);
         } else if (data) {
           // Popola il form con i dati della transazione
+
+          this.BankTransferService.getCategoryByName(data.categoriaMovimentoID.NomeCategoria).subscribe(
+            (category: CategoryTransaction) => {
+              const categoryId = category?.id || '';
+
           this.transferForm.patchValue({
             _id: data._id,
             contoCorrenteId: data.contoCorrenteId,
             data: data.data ? this.formatDateToInput(new Date(data.data)) : '',
             importo: data.importo,
             saldo: data.saldo,
-            categoriaMovimentoID: data.categoriaMovimentoID.NomeCategoria, // Mostra il nome della categoria
+            categoriaMovimentoID: categoryId, // Mostra il nome della categoria
             descrizioneEstesa: data.descrizioneEstesa,
           });
           console.log(data);
         }
-      },
+    );}
       (error: any) => {
         this.errorMessage = `Errore nel recupero dei dati della transazione: ${error}`;
         console.error('Errore nel recupero dei dati della transazione:', error);
       }
-    );
+  });
   }
 
   formatDateToInput(date: Date): string {
