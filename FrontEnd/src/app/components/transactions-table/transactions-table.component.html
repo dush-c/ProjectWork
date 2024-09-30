@@ -26,6 +26,14 @@
         </svg>
 
       </button>
+      <button (click)="toggleDateRangeModal()"
+        class="flex items-center justify-center btn btn-outline btn-circle border-slate-700 mx-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z" />
+        </svg>
+      </button>
       <button (click)="exportExcel()"
         class="tooltip tooltip-bottom flex items-center justify-center btn btn-outline btn-circle border-slate-700"
         data-tip="Scarica tabella">
@@ -37,29 +45,26 @@
       </button>
     </div>
   </div>
-  <div id="date-range-picker" class="flex items-center">
-    <div class="relative">
-      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-        </svg>
-      </div>
-      <input id="datepicker-range-start" name="start" type="date"
-             (change)="onStartDateChange($event)"
-             class="input input-bordered text-base-content block w-full pl-10 p-2.5" placeholder="Select date start" />
-    </div>
 
-    <span class="mx-4 text-gray-500">to</span>
+  <div *ngIf="isDateRangeModalOpen" class="modal modal-open">
+    <div class="modal-box">
+      <h2 class="font-bold text-lg">Seleziona Range di Date</h2>
+      <div id="date-range-picker" class="flex items-center justify-center my-4">
+        <div class="relative w-40 mx-2">
+          <input id="datepicker-range-start" name="start" type="date" (change)="onStartDateChange($event)"
+            class="input input-bordered text-base-content block w-full p-2.5" placeholder="Seleziona data inizio" />
+        </div>
 
-    <div class="relative">
-      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-        </svg>
+        <span class="mx-4 text-gray-500">a</span>
+
+        <div class="relative w-40 mx-2">
+          <input id="datepicker-range-end" name="end" type="date" (change)="onEndDateChange($event)"
+            class="input input-bordered text-base-content block w-full p-2.5" placeholder="Seleziona data fine" />
+        </div>
       </div>
-      <input id="datepicker-range-end" name="end" type="date"
-             (change)="onEndDateChange($event)"
-             class="input input-bordered text-base-content block w-full pl-10 p-2.5" placeholder="Select date end" />
+      <div class="modal-action">
+        <button (click)="isDateRangeModalOpen = false" class="btn">Chiudi</button>
+      </div>
     </div>
   </div>
 
@@ -73,12 +78,9 @@
         <th>Dettagli</th>
       </tr>
     </thead>
-
     <tbody>
       <tr *ngIf="transactions.length === 0">
-        <td>
-          Nessun movimento trovato
-        </td>
+        <td colspan="5">Nessun movimento trovato</td>
       </tr>
       <tr *ngFor="let transaction of filteredTransactions">
         <td>
@@ -93,12 +95,9 @@
             </div>
           </div>
         </td>
-        <td>
-          {{transaction.data | date:"MMM dd, yyyy"}} </td>
-        <td>{{transaction.importo | currency:'EUR' }} </td>
-        <td>
-          {{transaction.categoriaMovimentoID.NomeCategoria}}
-        </td>
+        <td>{{transaction.data | formatDate}}</td>
+        <td>{{transaction.importo | currency:'EUR'}}</td>
+        <td>{{transaction.categoriaMovimentoID.NomeCategoria}}</td>
         <td>
           <button (click)="viewDetails(transaction._id)">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">

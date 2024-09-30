@@ -40,6 +40,7 @@ import { CreditCardComponent } from './components/credit-card/credit-card.compon
 import { CheckEmailComponent } from './pages/auth/check-email/check-email.component';
 import { ErrorTranslatorPipe } from './pipes/error-translator.pipe';
 import { TransferDetailsComponent } from './pages/transfer-details/transfer-details.component';
+import { FormatDatePipe } from './pipes/format-date.pipe';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { TransferDetailsComponent } from './pages/transfer-details/transfer-deta
     CheckEmailComponent,
     ErrorTranslatorPipe,
     TransferDetailsComponent,
+    FormatDatePipe,
   ],
   imports: [
     BrowserModule,
