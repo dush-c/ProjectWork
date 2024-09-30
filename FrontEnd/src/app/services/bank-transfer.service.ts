@@ -16,25 +16,15 @@ export class BankTransferService {
     return this.http.get<Transaction[]>(`${APIURL}/api/movimenti/`);
   }
 
-  getLatestTransactions(n: string): Observable<Transaction[]> {
-    return this.http
-      .get<Transaction[]>(`${APIURL}/api/movimenti?n=${n}`)
-      .pipe();
-  }
-
-  // getTransactionByCategory()
-
-  getTransaction(_id: string): Observable<Transaction> {
-    return this.http.get<Transaction>(`${APIURL}/api/movimenti/${_id}`);
-  }
+  getTransaction(id: string): Observable<Transaction> {
+  return this.http.get<Transaction>(`${APIURL}/api/movimenti/${id}`);
+}
 
   getLatestBalance(): Observable<number> {
-    // Fa una chiamata all'endpoint /movimenti?n=1 per ottenere il movimento più recente
     return this.http.get<Transaction[]>(`${APIURL}/api/movimenti?n=1`).pipe(
       map((movements: Transaction[]) => {
-        // Controlla se c'è almeno un movimento e restituisci il saldo
         if (movements && movements.length > 0) {
-          return movements[0].saldo; // Restituisce il saldo del primo movimento
+          return movements[0].saldo; 
         } else {
           throw new Error('Nessun movimento trovato');
         }

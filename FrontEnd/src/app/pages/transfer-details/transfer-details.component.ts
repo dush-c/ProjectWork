@@ -1,4 +1,4 @@
-  import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BankAccountService } from '../../services/bank-account.service';
 import { Transaction } from '../../interfaces/transaction.entity';
@@ -13,7 +13,6 @@ import { BankTransferService } from '../../services/bank-transfer.service';
 export class TransferDetailsComponent implements OnInit {
   transferForm: FormGroup;
   errorMessage: string | undefined;
-  transaction: Transaction | null = null;
   movimentoId!: string;
 
   constructor(
@@ -58,7 +57,7 @@ export class TransferDetailsComponent implements OnInit {
             categoriaMovimentoID: data.categoriaMovimentoID.NomeCategoria, // Mostra il nome della categoria
             descrizioneEstesa: data.descrizioneEstesa,
           });
-          console.log(data);
+          console.log("data: ",data);
         }
       },
       (error: any) => {

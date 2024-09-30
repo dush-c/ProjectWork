@@ -40,7 +40,7 @@ import { CreditCardComponent } from './components/credit-card/credit-card.compon
 import { CheckEmailComponent } from './pages/auth/check-email/check-email.component';
 import { ErrorTranslatorPipe } from './pipes/error-translator.pipe';
 import { TransferDetailsComponent } from './pages/transfer-details/transfer-details.component';
-import { RangeDatepickerComponent } from './components/range-datepicker/range-datepicker.component';
+import { FormatDatePipe } from './pipes/format-date.pipe';
 
 @NgModule({
   declarations: [
@@ -65,7 +65,7 @@ import { RangeDatepickerComponent } from './components/range-datepicker/range-da
     CheckEmailComponent,
     ErrorTranslatorPipe,
     TransferDetailsComponent,
-    RangeDatepickerComponent,
+    FormatDatePipe,
   ],
   imports: [
     BrowserModule,

@@ -9,12 +9,12 @@
   
   .transfer-card {
     width: 600px;
-    padding: 20px;
+    padding: 40px;
     border: 1px solid #ddd;
     border-radius: 20px;
   
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 5px;
   
       label {
         font-weight: 600;
@@ -28,7 +28,7 @@
     .profile-info {
       display: grid;
       grid-template-columns: repeat(2, 1fr); 
-      gap: 10px; 
+      gap: 5px; 
   }
   
   .img-profile {
@@ -62,5 +62,19 @@
     overflow: hidden; 
     border-radius: 50%; 
   }
-  
+
+  .input-description {
+    width: 100%;          
+    height: auto;          
+    min-height: 100px;     
+    padding: 12px;         
+    border-radius: 4px;   
+    box-sizing: border-box; 
+    overflow-wrap: break-word; 
+    white-space: pre-wrap;   
+    resize: none;            
   }
+  
+  
+ }
+  

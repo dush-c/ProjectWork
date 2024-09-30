@@ -51,7 +51,7 @@ export type ChartOptions = {
 export class ChartCardComponent implements OnInit {
   @ViewChild('chart') chart!: ChartComponent;
   public chartSpending: Partial<ChartOptions>;
-  spendingList!: number[];
+  balanceList!: number[];
 
   constructor(private bankTransSrv: BankTransferService) {
     // Initialize chart options
@@ -113,13 +113,13 @@ export class ChartCardComponent implements OnInit {
     this.bankTransSrv.getTransactions().subscribe({
       next: (transactions: Transaction[]) => {
         // Map transaction data to spendingList
-        this.spendingList = transactions.map((t) => t.importo);
+        this.balanceList = transactions.map((t) => t.saldo);
         const dateList = transactions.map((d) => d.data);
         // Now update the chart series with the fetched data
         this.chartSpending.series = [
           {
-            name: 'Transazioni',
-            data: this.spendingList,
+            name: 'Saldo',
+            data: this.balanceList,
             color: '#1A56DB',
           },
         ];
