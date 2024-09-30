@@ -29,6 +29,10 @@ export class TransactionsTableComponent implements OnInit {
   totalTransactions: number = 0;
   filteredTransactions: Transaction[] = [];
 
+  // Variabili di appoggio per il reset del template
+  public selectedCategoryView: string = ''; // Variabile di appoggio per la categoria nel template
+  public selectedTransactionsView: string = ''; // Variabile di appoggio per il numero di transazioni nel template
+
   @Input() selectedNumberOfTransactions: number = 0; // Usare come input
   @Input() selectedCategory: string = ''; // Usare come input
 
@@ -44,7 +48,7 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Quando ci sono cambiamenti negli input, aggiorna i filtri
+    // Applica i filtri quando cambiano i valori di categoria o numero di transazioni
     if (
       changes['selectedNumberOfTransactions'] ||
       changes['selectedCategory']
@@ -108,6 +112,31 @@ export class TransactionsTableComponent implements OnInit {
   onCategoryChange(event: any): void {
     this.selectedCategory = event.target.value;
     this.filterTransactions();
+  }
+
+  clearFilters(): void {
+    // Resetta i filtri
+    this.selectedNumberOfTransactions = 0; // Reset del numero di transazioni
+    this.selectedCategory = ''; // Reset della categoria
+
+    // Ripristina tutte le transazioni non filtrate
+    this.filteredTransactions = [...this.transactions];
+
+    // Resetta gli input a valori predefiniti
+    const numberOfTransactionsSelect = document.querySelector(
+      '.select-number'
+    ) as HTMLSelectElement;
+    const categorySelect = document.querySelector(
+      '.select-category'
+    ) as HTMLSelectElement;
+
+    if (numberOfTransactionsSelect) {
+      numberOfTransactionsSelect.selectedIndex = 0; // Resetta alla prima opzione
+    }
+
+    if (categorySelect) {
+      categorySelect.selectedIndex = 0; // Resetta alla prima opzione
+    }
   }
 
   exportExcel(): void {
