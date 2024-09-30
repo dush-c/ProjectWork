@@ -1,50 +1,48 @@
 <div class="card-login">
   <mat-card class="custom-card">
-    <div class="flex flex-row">
-      <div class="form-container">
-        <div class="w-full sm:max-w-md">
-          <h1 class="text-xl text-center font-bold leading-tight text-base-content md:text-2xl">
-            Bentornato!
-          </h1>
-          <app-login-toggle></app-login-toggle>
+    <div class="flex flex-col md:flex-row">
+      <div class="form-container w-full sm:max-w-md">
+        <h1 class="text-xl text-center font-bold leading-tight text-base-content md:text-2xl">
+          Bentornato!
+        </h1>
+        <app-login-toggle></app-login-toggle>
 
-          <!-- Alert per errori di login -->
-          <div *ngIf="loginError" role="alert" class="alert alert-error flex items-center p-2 mb-2 text-red-700 bg-red-100 rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current mr-2" fill="none" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>{{ loginError | errorTranslator}}</span>
-          </div>
-
-          <!-- Alert per Reset dopo 30 sec -->
-          <div *ngIf="timeoutMessage" role="alert" class="alert alert-error flex justify-center items-center max-w-sm mx-auto p-2">
-            <p>{{ timeoutMessage }}</p>
-          </div>
-
-          <form (ngSubmit)="login()" [formGroup]="loginForm">
-            <div>
-              <div class="my-3">
-                <label class="block mb-2 text-sm font-medium text-base-content">Email</label>
-                <input type="email" class="input input-bordered w-full" placeholder="Email" formControlName="username" />
-              </div>
-              <div class="my-3">
-                <label class="block mb-2 text-sm font-medium text-base-content">Password</label>
-                <div class="input-container">
-                  <input [type]="hide ? 'password' : 'text'" class="input input-bordered w-full" placeholder="Password" formControlName="password" />
-                  <button type="button" class="icon-button" (click)="hide = !hide" [attr.aria-label]="hide ? 'Mostra password' : 'Nascondi password'" [attr.aria-pressed]="hide">
-                    <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="flex justify-center my-8">
-              <button type="submit" class="btn btn-outline-secondary btn-wide" [disabled]="loginForm.invalid">Login</button>
-            </div>
-          </form>
+        <!-- Alert per errori di login -->
+        <div *ngIf="loginError" role="alert" class="alert alert-error flex items-center p-4 mb-4 text-red-700 bg-red-100 rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current mr-2" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>{{ loginError | errorTranslator }}</span>
         </div>
+
+        <!-- Alert per Reset dopo 30 sec -->
+        <div *ngIf="timeoutMessage" role="alert" class="alert alert-error flex justify-center items-center max-w-sm mx-auto p-2">
+          <p>{{ timeoutMessage }}</p>
+        </div>
+
+        <form (ngSubmit)="login()" [formGroup]="loginForm">
+          <div>
+            <div class="my-3">
+              <label class="block mb-2 text-sm font-medium text-base-content">Email</label>
+              <input type="email" class="input input-bordered w-full" placeholder="Email" formControlName="username" />
+            </div>
+            <div class="my-3">
+              <label class="block mb-2 text-sm font-medium text-base-content">Password</label>
+              <div class="input-container">
+                <input [type]="hide ? 'password' : 'text'" class="input input-bordered w-full" placeholder="Password" formControlName="password" />
+                <button type="button" class="icon-button" (click)="hide = !hide" [attr.aria-label]="hide ? 'Mostra password' : 'Nascondi password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-center my-8">
+            <button type="submit" class="btn btn-outline-secondary btn-wide" [disabled]="loginForm.invalid">Login</button>
+          </div>
+        </form>
       </div>
-      <div class="logo-container">
-        <img src="../../../../assets/logoProjectWork.jpg" alt="Logo" class="app-logo" />
+      <div class="logo-container flex justify-center items-center mt-4 md:mt-0 md:ml-4">
+        <img src="../../../../assets/logoProjectWork.jpg" alt="Logo" class="app-logo hidden md:block w-full h-full object-cover" />
       </div>
     </div>
   </mat-card>
