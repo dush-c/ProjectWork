@@ -4,7 +4,6 @@ import { BankAccountService } from '../../services/bank-account.service';
 import { Transaction } from '../../interfaces/transaction.entity';
 import { ActivatedRoute } from '@angular/router'; // Per ottenere l'ID del movimento dalla rotta
 import { BankTransferService } from '../../services/bank-transfer.service';
-import { CategoryTransaction } from '../../interfaces/category-transaction.entity';
 
 @Component({
   selector: 'app-details',
@@ -14,7 +13,6 @@ import { CategoryTransaction } from '../../interfaces/category-transaction.entit
 export class TransferDetailsComponent implements OnInit {
   transferForm: FormGroup;
   errorMessage: string | undefined;
-  transaction: Transaction | null = null;
   movimentoId!: string;
 
   constructor(
@@ -50,28 +48,23 @@ export class TransferDetailsComponent implements OnInit {
           console.error('Errore:', data);
         } else if (data) {
           // Popola il form con i dati della transazione
-
-          this.BankTransferService.getCategoryByName(data.categoriaMovimentoID.NomeCategoria).subscribe(
-            (category: CategoryTransaction) => {
-              const categoryId = category?.id || '';
-
           this.transferForm.patchValue({
             _id: data._id,
             contoCorrenteId: data.contoCorrenteId,
             data: data.data ? this.formatDateToInput(new Date(data.data)) : '',
             importo: data.importo,
             saldo: data.saldo,
-            categoriaMovimentoID: categoryId, // Mostra il nome della categoria
+            categoriaMovimentoID: data.categoriaMovimentoID.NomeCategoria, // Mostra il nome della categoria
             descrizioneEstesa: data.descrizioneEstesa,
           });
-          console.log(data);
+          console.log("data: ",data);
         }
-    );}
+      },
       (error: any) => {
         this.errorMessage = `Errore nel recupero dei dati della transazione: ${error}`;
         console.error('Errore nel recupero dei dati della transazione:', error);
       }
-  });
+    );
   }
 
   formatDateToInput(date: Date): string {

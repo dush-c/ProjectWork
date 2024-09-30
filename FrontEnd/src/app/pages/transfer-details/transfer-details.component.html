@@ -1,6 +1,6 @@
 <div class="container">
-  <mat-card class="transfer-card">
-    <div class="flex items-center mb-5">
+    <mat-card class="transfer-card">
+      <div class="flex items-center mb-5">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="size-6 mr-2" style="height: 24px; width: 24px;">
           <path stroke-linecap="round" stroke-linejoin="round"
@@ -10,35 +10,48 @@
           <strong>Dettagli Transazione</strong>
         </h2>
       </div>
-      
-    <form [formGroup]="transferForm">
-      <div class="flex justify-between">
-        <div class="left-form w-1/2 pr-2">
-          <div class="form-group">
-            <label>date:</label>
-            <input type="date" formControlName="data" class="input" placeholder="Inserisci data" readonly />
-          </div>
-        </div>
+  
+      <form [formGroup]="transferForm">
+        <div class="flex justify-between">
+          <div class="left-form w-1/2 pr-2">
+            <div class="form-group">
+              <label>Data:</label>
+              <input type="date" formControlName="data" class="input" placeholder="Inserisci data" readonly />
+            </div>
 
-        <div class="right-form w-1/2 pl-2">
-          <div class="form-group">
-            <label>amount:</label>
-            <input type="text" formControlName="importo" class="input" placeholder="Inserisci amount" readonly />
+            <div class="form-group">
+                <label>Importo:</label>
+                <div class="relative">
+                  <input type="text" formControlName="importo" class="input pr-8" placeholder="Inserisci importo" readonly />
+                  <span class="absolute right-2 top-1/2 transform -translate-y-1/2 text-lg">€</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+              <label>Saldo:</label>
+              <div class="relative">
+                <input type="text" formControlName="saldo" class="input" placeholder="Inserisci saldo" readonly />
+                <span class="absolute right-2 top-1/2 transform -translate-y-1/2 text-lg">€</span>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label>Categoria:</label>
+              <input type="text" formControlName="categoriaMovimentoID" class="input" placeholder="Inserisci category" readonly />
+            </div>
           </div>
-          <div class="form-group">
-            <label>balance:</label>
-            <input type="string" formControlName="saldo" class="input" readonly />
-          </div>
-          <div class="form-group">
-            <label>categoryTransactionID:</label>
-            <input type="text" formControlName="categoriaMovimentoID" class="input" placeholder="Inserisci category" readonly />
-          </div>
-          <div class="form-group">
-            <label>description:</label>
-            <input type="text" formControlName="descrizioneEstesa" class="input" placeholder="Inserisci description" readonly />
+  
+          <div class="right-form w-1/2 pl-2">
+           
+            <div class="form-group">
+                <label>Descrizione:</label>
+                <div class="input-description" [innerText]="transferForm.get('descrizioneEstesa')?.value"></div>
+            </div>
+              
           </div>
         </div>
-      </div>
-    </form>
-  </mat-card>
-</div>
+      </form>
+    </mat-card>
+  </div>
+  
