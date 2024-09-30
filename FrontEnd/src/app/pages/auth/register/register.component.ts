@@ -18,7 +18,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     email: ['', { validators: [Validators.required, Validators.email] }],
     password: ['', { validators: [Validators.required, Validators.minLength(8), this.passwordValidator] }],
     confirmPassword: ['', { validators: Validators.required }],
-    profilePicture: ['']
+    profilePicture: ['https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg']
   })
 
   registrationError = ''
