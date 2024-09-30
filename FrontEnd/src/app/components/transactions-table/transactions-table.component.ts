@@ -19,14 +19,7 @@ export class TransactionsTableComponent implements OnInit {
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 
   currentBalance!: number;
-
-  totalTransactions: number = 0; // Numero totale di transazioni
-  transactionsPerPage: number = 10; // Numero predefinito di transazioni per pagina
-  currentPage: number = 1; // Pagina corrente
-  totalPages: number = 1; // Numero totale di pagine
-  pages: number[] = []; // Array di pagine
-  transaction: Transaction|null = null;
-
+  totalTransactions: number = 0;
   filteredTransactions: Transaction[] = [];
   selectedNumberOfTransactions: number = 0;
   selectedCategory: string = '';
@@ -58,17 +51,6 @@ export class TransactionsTableComponent implements OnInit {
       next: (transactions) => {
         this.transactions = transactions;
         this.filteredTransactions = transactions;
-        console.log('Transactions:', this.transactions); // Debugging
-      },
-      error: (error) => {
-        console.error('Errore nel recupero delle transazioni', error);
-      },
-    });
-  }
-  loadTransaction(_id: string) {
-    this.bankTransSrv.getTransaction(_id).subscribe({
-      next: (transaction) => {
-        this.transaction = transaction;
       },
       error: (error) => {
         console.error('Errore nel recupero delle transazioni', error);
@@ -76,6 +58,34 @@ export class TransactionsTableComponent implements OnInit {
     });
   }
 
+  filterTransactions(): void {
+    let result = this.transactions;
+    if (this.selectedCategory) {
+      result = result.filter(
+        (transaction) =>
+          transaction.categoriaMovimentoID.NomeCategoria ===
+          this.selectedCategory
+      );
+    }
+
+    if (this.selectedNumberOfTransactions > 0) {
+      result = result.slice(0, this.selectedNumberOfTransactions);
+    }
+
+    this.filteredTransactions = result;
+  }
+
+  onNumberOfTransactionsChange(event: any): void {
+    this.selectedNumberOfTransactions = +event.target.value;
+    this.filterTransactions();
+  }
+
+  onCategoryChange(event: any): void {
+    this.selectedCategory = event.target.value;
+    this.filterTransactions();
+  }
+
+  
   exportExcel(): void {
     const tableElement = document.querySelector('.table') as HTMLTableElement;
     const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(tableElement);
@@ -92,85 +102,6 @@ export class TransactionsTableComponent implements OnInit {
 
     const data: Blob = new Blob([excelBuffer], { type: this.EXCEL_TYPE });
     saveAs(data, 'tabella_movimenti.xlsx');
-  }
-
-  /* Pagination*/
-
-  // Calcola il numero totale di pagine
-  calculateTotalPages(): void {
-    this.totalPages = Math.ceil(
-      this.totalTransactions / this.transactionsPerPage
-    );
-    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
-
-  // Metodo per aggiornare il numero di transazioni per pagina e ricalcolare le pagine
-  updateTransactionsPerPage(event: Event): void {
-    const selectElement = event.target as HTMLSelectElement;
-    this.transactionsPerPage = parseInt(selectElement.value, 10); // Converte il valore selezionato in numero
-    this.calculateTotalPages();
-    this.currentPage = 1; // Resetta la pagina corrente alla prima pagina
-  }
-
-  // Metodo per passare alla pagina successiva
-  nextPage(): void {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-    }
-  }
-
-  // Metodo per passare alla pagina precedente
-  previousPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
-  // Metodo per passare alla prima pagina
-  firstPage(): void {
-    this.currentPage = 1;
-  }
-
-  // Metodo per passare all'ultima pagina
-  lastPage(): void {
-    this.currentPage = this.totalPages;
-  }
-
-  // Metodo per selezionare una pagina specifica
-  goToPage(page: number): void {
-    this.currentPage = page;
-  }
-
-  /* Filtri */
-
-  filterTransactions(): void {
-    let result = this.transactions;
-
-    // Filtro per categoria
-    if (this.selectedCategory) {
-      result = result.filter(
-        (transaction) =>
-          transaction.categoriaMovimentoID.NomeCategoria ===
-          this.selectedCategory
-      );
-    }
-
-    // Limito il numero di transazioni visualizzate
-    if (this.selectedNumberOfTransactions > 0) {
-      result = result.slice(0, this.selectedNumberOfTransactions);
-    }
-
-    this.filteredTransactions = result;
-  }
-
-  onNumberOfTransactionsChange(event: any): void {
-    this.selectedNumberOfTransactions = +event.target.value; // Converte il valore in numero
-    this.filterTransactions();
-  }
-
-  onCategoryChange(event: any): void {
-    this.selectedCategory = event.target.value;
-    this.filterTransactions();
   }
 
   viewDetails(id: string) {
