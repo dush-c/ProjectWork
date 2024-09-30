@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { AuthService } from '../../services/auth.service';
@@ -21,8 +28,9 @@ export class TransactionsTableComponent implements OnInit {
   currentBalance!: number;
   totalTransactions: number = 0;
   filteredTransactions: Transaction[] = [];
-  selectedNumberOfTransactions: number = 0;
-  selectedCategory: string = '';
+
+  @Input() selectedNumberOfTransactions: number = 0; // Usare come input
+  @Input() selectedCategory: string = ''; // Usare come input
 
   constructor(
     private authSrv: AuthService,
@@ -33,6 +41,16 @@ export class TransactionsTableComponent implements OnInit {
   ngOnInit(): void {
     this.loadCategories();
     this.loadTransactions();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Quando ci sono cambiamenti negli input, aggiorna i filtri
+    if (
+      changes['selectedNumberOfTransactions'] ||
+      changes['selectedCategory']
+    ) {
+      this.filterTransactions();
+    }
   }
 
   loadCategories() {
@@ -51,8 +69,7 @@ export class TransactionsTableComponent implements OnInit {
       next: (transactions) => {
         this.transactions = transactions;
         this.filteredTransactions = transactions;
-        console.log(this.transactions)
-
+        console.log(this.transactions);
       },
       error: (error) => {
         console.error('Errore nel recupero delle transazioni', error);
@@ -61,17 +78,26 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   filterTransactions(): void {
-    let result = this.transactions;
+    let result = [...this.transactions]; // Crea una copia delle transazioni
 
+    // Filtro per categoria
     if (this.selectedCategory) {
-      result = result.filter(transaction => transaction.categoriaMovimentoID.NomeCategoria === this.selectedCategory);
+      result = result.filter((transaction) => {
+        // Verifica che transaction.categoriaMovimentoID esista e confronta NomeCategoria
+        return (
+          transaction.categoriaMovimentoID?.NomeCategoria ===
+          this.selectedCategory
+        );
+      });
     }
 
+    // Filtro per numero di transazioni
     if (this.selectedNumberOfTransactions > 0) {
       result = result.slice(0, this.selectedNumberOfTransactions);
     }
 
     this.filteredTransactions = result;
+    console.log('Filtrate:', this.filteredTransactions); // Per debug
   }
 
   onNumberOfTransactionsChange(event: any): void {
@@ -106,6 +132,4 @@ export class TransactionsTableComponent implements OnInit {
     console.log('Transaction ID:', id); // Debugging
     this.router.navigate([`/bank-transfer/${id}`]);
   }
-
-
 }

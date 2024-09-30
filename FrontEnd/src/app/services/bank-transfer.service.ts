@@ -16,6 +16,14 @@ export class BankTransferService {
     return this.http.get<Transaction[]>(`${APIURL}/api/movimenti/`);
   }
 
+  getLatestTransactions(n: string): Observable<Transaction[]> {
+    return this.http
+      .get<Transaction[]>(`${APIURL}/api/movimenti?n=${n}`)
+      .pipe();
+  }
+
+  // getTransactionByCategory()
+
   getTransaction(_id: string): Observable<Transaction> {
     return this.http.get<Transaction>(`${APIURL}/api/movimenti/${_id}`);
   }
@@ -49,8 +57,6 @@ export class BankTransferService {
       `${APIURL}/api/categorieMovimenti/:categoryTransactionID`
     );
   }
-
-  
 
   eseguiBonifico(
     ibanDestinatario: string,

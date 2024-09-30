@@ -1,20 +1,23 @@
 <div class="overflow-x-hidden card card-bordered h-[54.5vh] w-[910px] border-slate-700 m-4">
   <div class="card bg-base-100 w-full">
     <div class="card-body flex-row justify-between pb-2">
-      <select class="select select-bordered w-full max-w-xs" (change)="onNumberOfTransactionsChange($event)">
-        <option disabled selected>Ultimi movimenti</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-        <option>7</option>
-        <option>10</option>
-        <option>15</option>
-        <option>20</option>
-      </select>
-      <select class="select select-bordered w-full max-w-xs"  (change)="onCategoryChange($event)">
-        <option disabled selected>Scegli una categoria</option>
-        <option *ngFor="let category of categories" [value]="category">{{ category.NomeCategoria }}</option>
-      </select>
+      <div class="card-body flex-row justify-between pb-2">
+        <select class="select select-bordered w-full max-w-xs" (change)="onNumberOfTransactionsChange($event)">
+          <option disabled selected>Ultimi movimenti</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          <option>7</option>
+          <option>10</option>
+          <option>15</option>
+          <option>20</option>
+        </select>
+        <select class="select select-bordered w-full max-w-xs" (change)="onCategoryChange($event)">
+          <option disabled selected>Scegli una categoria</option>
+          <option *ngFor="let category of categories" [value]="category.NomeCategoria">{{ category.NomeCategoria }}
+          </option>
+        </select>
+      </div>
       <button (click)="exportExcel()"
         class="flex items-center justify-center btn btn-outline btn-circle border-slate-700">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
