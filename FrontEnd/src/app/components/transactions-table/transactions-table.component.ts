@@ -108,14 +108,11 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   clearFilters(): void {
-    // Resetta i filtri
-    this.selectedNumberOfTransactions = 0; // Reset del numero di transazioni
-    this.selectedCategory = ''; // Reset della categoria
+    this.selectedNumberOfTransactions = 0;
+    this.selectedCategory = '';
 
-    // Ripristina tutte le transazioni non filtrate
     this.filteredTransactions = [...this.transactions];
 
-    // Resetta gli input a valori predefiniti
     const numberOfTransactionsSelect = document.querySelector(
       '.select-number'
     ) as HTMLSelectElement;
@@ -124,11 +121,11 @@ export class TransactionsTableComponent implements OnInit {
     ) as HTMLSelectElement;
 
     if (numberOfTransactionsSelect) {
-      numberOfTransactionsSelect.selectedIndex = 0; // Resetta alla prima opzione
+      numberOfTransactionsSelect.selectedIndex = 0;
     }
 
     if (categorySelect) {
-      categorySelect.selectedIndex = 0; // Resetta alla prima opzione
+      categorySelect.selectedIndex = 0;
     }
   }
 
