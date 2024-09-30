@@ -1,30 +1,29 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { BankTransferService } from '../../services/bank-transfer.service';
 import { Transaction } from '../../interfaces/transaction.entity';
-import { map, Observable } from 'rxjs';
+import { map } from 'rxjs';
 import { CategoryTransaction } from '../../interfaces/category-transaction.entity';
 
 @Component({
   selector: 'app-stats-card',
   templateUrl: './stats-card.component.html',
-  styleUrl: './stats-card.component.scss',
+  styleUrls: ['./stats-card.component.scss'], // Corretto da "styleUrl" a "styleUrls"
 })
 export class StatsCardComponent implements OnInit {
   @Input() balance!: Number; // Riceviamo il saldo da DashboardComponent
 
   transNum!: number;
   totalSpent!: number;
+  filteredTransactions!: Transaction[];
+
+  isBlurred: boolean = false;
 
   constructor(private bankTransSrv: BankTransferService) {}
+
   ngOnInit(): void {
     this.getTransactionsNumber();
-    this.getMonthlySpending().subscribe({
-      next: (totalSpent) => {
-        this.totalSpent = totalSpent;
-      },
-    });
+    this.getMonthlySpending();
   }
-  isBlurred: boolean = false;
 
   toggleBlur() {
     this.isBlurred = !this.isBlurred;
@@ -41,7 +40,7 @@ export class StatsCardComponent implements OnInit {
     });
   }
 
-  getMonthlySpending(): Observable<number> {
+  getMonthlySpending(): void {
     const currentDate = new Date();
     const startOfMonth = new Date(
       currentDate.getFullYear(),
@@ -54,41 +53,52 @@ export class StatsCardComponent implements OnInit {
       0
     ); // Ultimo giorno del mese
 
-    const transactionTypes: String[] = [];
-    // Tipi di transazioni da considerare per il calcolo
-    this.bankTransSrv.getCategories().pipe(
-      map((categories: CategoryTransaction[]) => {
-        categories.forEach((cat) => {
-          transactionTypes.push(cat.NomeCategoria);
-        });
-      })
-    );
+    this.bankTransSrv.getCategories().subscribe({
+      next: (categories: CategoryTransaction[]) => {
+        // Filtra le categorie, escludendo 'Bonifico Entrata' e 'Apertura conto'
+        const excludedCategories: String[] = [
+          'Bonifico Entrata',
+          'Apertura conto',
+        ];
+        const transactionTypes = categories
+          .filter((cat) => !excludedCategories.includes(cat.NomeCategoria))
+          .map((cat) => cat.NomeCategoria);
 
-    return this.bankTransSrv.getTransactions().pipe(
-      map((transactions: Transaction[]) => {
-        // Filtra le transazioni per tipo e data
-        const filteredTransactions = transactions.filter((transaction) => {
-          const transactionDate = new Date(transaction.data);
-          return (
-            transactionTypes.includes(
-              transaction.categoriaMovimentoID.NomeCategoria.toLowerCase()
-            ) &&
-            transactionDate >= startOfMonth &&
-            transactionDate <= endOfMonth
-          );
-        });
+        console.log('Transaction Types to Include:', transactionTypes);
 
-        // Somma l'importo delle transazioni filtrate (solo quelle con importi negativi, perché rappresentano spese)
-        const totalSpent = filteredTransactions.reduce((total, transaction) => {
-          if (transaction.importo < 0) {
-            // Consideriamo solo le spese (importi negativi)
-            return total + Math.abs(transaction.importo); // Sommiamo il valore assoluto delle spese
-          }
-          return total;
-        }, 0);
+        this.bankTransSrv
+          .getTransactions()
+          .pipe(
+            map((transactions: Transaction[]) => {
+              // Filtra le transazioni per data e tipo di categoria
+              this.filteredTransactions = transactions.filter((transaction) => {
+                const transactionDate = new Date(transaction.data);
+                return (
+                  transactionTypes.includes(
+                    transaction.categoriaMovimentoID.NomeCategoria
+                  ) &&
+                  transactionDate >= startOfMonth &&
+                  transactionDate <= endOfMonth
+                );
+              });
 
-        return totalSpent; // Restituisce la somma totale delle spese
-      })
-    );
+              console.log('Filtered Transactions:', this.filteredTransactions);
+
+              // Somma le spese (importi negativi)
+              this.totalSpent = this.filteredTransactions.reduce(
+                (total, transaction) => {
+                  return total + Math.abs(transaction.importo); // Sommiamo il valore assoluto delle spese
+                },
+                0
+              );
+              console.log('Total Monthly Spending:', this.totalSpent);
+            })
+          )
+          .subscribe();
+      },
+      error: (error) => {
+        console.error('Error fetching categories:', error);
+      },
+    });
   }
 }
