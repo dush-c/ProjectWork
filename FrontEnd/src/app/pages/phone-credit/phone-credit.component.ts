@@ -56,6 +56,7 @@ export class PhoneCreditComponent implements OnInit {
             this.registrationSuccess = 'Ricarica eseguita con successo!';
             this.registrationError = null;
             this.lastBalance -= rechargeAmount;
+            this.rechargeForm.reset();
           },
           error: (error) => {
             this.registrationError =
