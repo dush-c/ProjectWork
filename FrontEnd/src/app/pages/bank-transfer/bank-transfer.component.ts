@@ -60,6 +60,7 @@ export class BankTransferComponent implements OnInit{
             this.registrationSuccess = 'Bonifico eseguito con successo!';
             this.registrationError = null;
             this.lastBalance -= amount;
+            this.transferForm.reset();
           },
           error: (error) => {
             this.registrationError = error.error.message;
