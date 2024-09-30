@@ -25,19 +25,14 @@ export class TransactionsTableComponent implements OnInit {
   EXCEL_TYPE =
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 
-  currentBalance!: number;
-  totalTransactions: number = 0;
   filteredTransactions: Transaction[] = [];
+  startDate: Date = new Date(0);
+  endDate: Date = new Date();
 
-  // Variabili di appoggio per il reset del template
-  public selectedCategoryView: string = ''; // Variabile di appoggio per la categoria nel template
-  public selectedTransactionsView: string = ''; // Variabile di appoggio per il numero di transazioni nel template
-
-  @Input() selectedNumberOfTransactions: number = 0; // Usare come input
-  @Input() selectedCategory: string = ''; // Usare come input
+  @Input() selectedNumberOfTransactions: number = 0;
+  @Input() selectedCategory: string = '';
 
   constructor(
-    private authSrv: AuthService,
     private bankTransSrv: BankTransferService,
     private router: Router
   ) {}
@@ -45,16 +40,6 @@ export class TransactionsTableComponent implements OnInit {
   ngOnInit(): void {
     this.loadCategories();
     this.loadTransactions();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    // Applica i filtri quando cambiano i valori di categoria o numero di transazioni
-    if (
-      changes['selectedNumberOfTransactions'] ||
-      changes['selectedCategory']
-    ) {
-      this.filterTransactions();
-    }
   }
 
   loadCategories() {
@@ -82,26 +67,33 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   filterTransactions(): void {
-    let result = [...this.transactions]; // Crea una copia delle transazioni
+    let result = [...this.transactions];
 
-    // Filtro per categoria
     if (this.selectedCategory) {
       result = result.filter((transaction) => {
-        // Verifica che transaction.categoriaMovimentoID esista e confronta NomeCategoria
         return (
-          transaction.categoriaMovimentoID?.NomeCategoria ===
-          this.selectedCategory
+          transaction.categoriaMovimentoID &&
+          transaction.categoriaMovimentoID.NomeCategoria ===
+            this.selectedCategory
         );
       });
     }
 
-    // Filtro per numero di transazioni
     if (this.selectedNumberOfTransactions > 0) {
       result = result.slice(0, this.selectedNumberOfTransactions);
     }
 
+    if (this.startDate && this.endDate) {
+      result = result.filter((transaction) => {
+        const transactionDate = new Date(transaction.data);
+        return (
+          !isNaN(transactionDate.getTime()) &&
+          transactionDate >= this.startDate &&
+          transactionDate <= this.endDate
+        );
+      });
+    }
     this.filteredTransactions = result;
-    console.log('Filtrate:', this.filteredTransactions); // Per debug
   }
 
   onNumberOfTransactionsChange(event: any): void {
@@ -139,6 +131,16 @@ export class TransactionsTableComponent implements OnInit {
     }
   }
 
+  onStartDateChange(event: any): void {
+    this.startDate = new Date(event.target.value);
+    this.filterTransactions();
+  }
+
+  onEndDateChange(event: any): void {
+    this.endDate = new Date(event.target.value);
+    this.filterTransactions();
+  }
+
   exportExcel(): void {
     const tableElement = document.querySelector('.table') as HTMLTableElement;
     const worksheet: XLSX.WorkSheet = XLSX.utils.table_to_sheet(tableElement);
@@ -158,7 +160,6 @@ export class TransactionsTableComponent implements OnInit {
   }
 
   viewDetails(id: string) {
-    console.log('Transaction ID:', id); // Debugging
     this.router.navigate([`/bank-transfer/${id}`]);
   }
 }
