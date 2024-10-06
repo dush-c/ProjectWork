@@ -1,49 +1,70 @@
-Home Banking Web App
-Overview
+# Home Banking Web App
 
-This is a home banking web application that allows users to manage their accounts, view transaction history, and perform basic banking operations such as transferring funds and checking account balances. The app is designed to be secure, user-friendly, and responsive.
-Features
+Questa è un progetto che punta a ricreare il funzionamento di un sistema di Home Banking nella quale l'utente è in grado di gestire il proprio account, vedere una lista delle transazioni e performare semplici operazioni bancarie come bonifici o ricariche.
 
-    User Authentication: Secure login system with hashed passwords (using bcrypt).
-    Account Management: View and manage multiple accounts.
-    Transaction History: Track deposits, withdrawals, and transfers.
-    Funds Transfer: Securely transfer money between accounts.
-    Responsive Design: Optimized for both desktop and mobile devices.
 
-Technologies Used
 
-    Frontend: Blazor (using .NET 8.0)
-    Backend: NodeJS (API development)
-    Database: MongoDB for storing user data, accounts, and transactions
-    Authentication: Password hashing using bcrypt
+## Funzionalità
 
-Usage
+Autenticazione: Login sicuro con criptazione password (usando bcrypt).
+Conferma Email: Invio di una email di conferma per un ulteriore livello di sicurezza.
+Account Management: Possibilità di vedere e controllare anche molteplici account.
+Storico Transazioni: Tracciamento di boifici, depositi, prelievi e altro.
 
-    Login/Register: Create an account or log in using your credentials.
-    Manage Accounts: View account details, transaction history, and perform banking operations.
-    Transfer Funds: Securely transfer funds between accounts.
-    Transaction History: Track all account activities.
 
-Project Structure
 
-bash
+## Tecnologie Usate
 
-/home-banking-app
+Frontend: Angular 17 (No-Standalone).
+Backend: NodeJS (sviluppo API).
+Database: MongoDB per immagazzinare dati, account e transazioni (si sta valutando il trasferimento a database relazionali quali sqlServer/mySql).
+Authentication: Password hasing usando bcrypt.
+
+
+
+## Utilizzo
+Login/Registrazione: Crea un account o accedi usando le tue credenziali.
+Conferma Email: Assicurarsi di confermare la propria email una volta registrato per attivare il proprio account.
+Gestisci Account: Visualizza i dettagli dell'account, lo storico delle transazioni e performa operazioni bancarie.
+Storico Transazioni: Tieni traccia delle tue spese
+
+
+
+## Struttura del progetto
+```
+FrontEnd
 │
-├── backend            # NodeJS backend (API)
-│   ├── models         # Database models
-│   ├── routes         # API routes for user and banking functions
-│   ├── controllers    # Business logic for API routes
-│   └── app.js         # Main entry point
-│
-├── frontend           # Blazor frontend
-│   ├── Pages          # Razor pages (UI)
-│   ├── Services       # HTTP Services for API communication
-│   └── Program.cs     # Entry point for Blazor app
-└── README.md
+└── src
+    └── app
+        ├── components
+        │   ├── login-toggle
+        │   ├── navbar
+        │   ├── stats-card
+        │   ├── transactions-table
+        │   └── welcome-bar
+        │
+        ├── directives        
+        ├── environments
+        ├── guards
+        ├── interfaces
+        │
+        ├── pages
+        │   ├── auth
+        │   │   ├── check-email
+        │   │   ├── email-confirmed
+        │   │   ├── login
+        │   │   ├── register
+        │   │   └── bank-transfer
+        │   │
+        │   ├── dashboard
+        │   ├── modify-password
+        │   ├── options
+        │   ├── phone-credit
+        │   ├── profile
+        │   └── transfer-details
+        │
+        ├── pipes
+        └── services
+        └── utils
+```
 
-Security Considerations
-
-    Password Encryption: All passwords are securely hashed using bcrypt before being stored in the database.
-    Data Validation: Input is validated to prevent common attacks like SQL injection and XSS.
-    HTTPS: The app should be run over HTTPS for secure communication.
