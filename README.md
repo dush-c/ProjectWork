@@ -1,4 +1,4 @@
-# Home Banking Web App
+# Home Banking Web Application
 
 Questa è un progetto che punta a ricreare il funzionamento di un sistema di Home Banking nella quale l'utente è in grado di gestire il proprio account, vedere una lista delle transazioni e performare semplici operazioni bancarie come bonifici o ricariche.
 
