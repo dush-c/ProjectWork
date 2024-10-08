@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { BankTransferService } from '../../services/bank-transfer.service';
 
 @Component({
@@ -6,8 +6,8 @@ import { BankTransferService } from '../../services/bank-transfer.service';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent {
-  lastBalance!: number; // Variabile per tenere traccia del saldo
+export class DashboardComponent implements OnInit {
+  lastBalance!: number;
 
   constructor(private bankTransSrv: BankTransferService) {}
 

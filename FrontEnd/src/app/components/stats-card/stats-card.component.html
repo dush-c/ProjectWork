@@ -2,7 +2,6 @@
   <div class="card card-bordered bg-base-100 border-slate-700 h-36 w-80 m-4 shadow-xl card-animation">
     <div class="card-body">
       <h2 class="card-title text-xl">Saldo finale<span class="flex items-center mx-2">
-          <!-- Eye Icon -->
           <button (click)="toggleBlur()" class="focus:outline-none">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="size-6">
@@ -14,7 +13,6 @@
 
       <div class="flex items-center text-base-content dark:text-white">
         <span class="text-3xl text-base-content font-semibold">€</span>
-        <!--Total Balance-->
         <span class="text-5xl text-base-content font-extrabold tracking-tight ml-2"
           [ngClass]="{'blur-lg': isBlurred}">{{balance}}</span>
       </div>

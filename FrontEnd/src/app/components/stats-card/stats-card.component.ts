@@ -7,10 +7,10 @@ import { CategoryTransaction } from '../../interfaces/category-transaction.entit
 @Component({
   selector: 'app-stats-card',
   templateUrl: './stats-card.component.html',
-  styleUrls: ['./stats-card.component.scss'], // Corretto da "styleUrl" a "styleUrls"
+  styleUrls: ['./stats-card.component.scss'],
 })
 export class StatsCardComponent implements OnInit {
-  @Input() balance!: Number; // Riceviamo il saldo da DashboardComponent
+  @Input() balance!: Number;
 
   transNum!: number;
   totalSpent!: number;
@@ -46,16 +46,15 @@ export class StatsCardComponent implements OnInit {
       currentDate.getFullYear(),
       currentDate.getMonth(),
       1
-    ); // Primo giorno del mese
+    );
     const endOfMonth = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth() + 1,
       0
-    ); // Ultimo giorno del mese
+    );
 
     this.bankTransSrv.getCategories().subscribe({
       next: (categories: CategoryTransaction[]) => {
-        // Filtra le categorie, escludendo 'Bonifico Entrata' e 'Apertura conto'
         const excludedCategories: String[] = [
           'Bonifico Entrata',
           'Apertura conto',
@@ -70,9 +69,9 @@ export class StatsCardComponent implements OnInit {
           .getTransactions()
           .pipe(
             map((transactions: Transaction[]) => {
-              // Filtra le transazioni per data e tipo di categoria
               this.filteredTransactions = transactions.filter((transaction) => {
                 const transactionDate = new Date(transaction.data);
+                console.log('Transaction Date:', transactionDate);
                 return (
                   transactionTypes.includes(
                     transaction.categoriaMovimentoID.NomeCategoria
@@ -84,10 +83,9 @@ export class StatsCardComponent implements OnInit {
 
               console.log('Filtered Transactions:', this.filteredTransactions);
 
-              // Somma le spese (importi negativi)
               this.totalSpent = this.filteredTransactions.reduce(
                 (total, transaction) => {
-                  return total + Math.abs(transaction.importo); // Sommiamo il valore assoluto delle spese
+                  return total + Math.abs(transaction.importo);
                 },
                 0
               );
