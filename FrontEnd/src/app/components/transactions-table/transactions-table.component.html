@@ -1,8 +1,12 @@
-<div class="overflow-x-hidden card card-bordered h-[54.5vh] w-[910px] border-slate-700 m-4">
+<div
+  class="overflow-x-hidden card card-bordered h-[54.5vh] w-[910px] border-slate-700 m-4"
+>
   <div class="sticky top-0 z-10 card bg-base-100 w-full">
     <div class="card-body flex-row justify-between pb-2">
-      <select class="select select-bordered w-full max-w-xs select-number"
-        (change)="onNumberOfTransactionsChange($event)">
+      <select
+        class="select select-bordered w-full max-w-xs select-number"
+        (change)="onNumberOfTransactionsChange($event)"
+      >
         <option disabled selected>Ultimi movimenti</option>
         <option>3</option>
         <option>4</option>
@@ -12,35 +16,74 @@
         <option>15</option>
         <option>20</option>
       </select>
-      <select class="select select-bordered w-full max-w-xs select-category" (change)="onCategoryChange($event)">
+      <select
+        class="select select-bordered w-full max-w-xs select-category"
+        (change)="onCategoryChange($event)"
+      >
         <option disabled selected>Scegli una categoria</option>
-        <option *ngFor="let category of categories" [value]="category.NomeCategoria">{{ category.NomeCategoria }}
+        <option
+          *ngFor="let category of categories"
+          [value]="category.NomeCategoria"
+        >
+          {{ category.NomeCategoria }}
         </option>
       </select>
-      <button (click)="clearFilters()"
+      <button
+        (click)="clearFilters()"
         class="tooltip tooltip-up flex items-center justify-center btn btn-outline btn-circle border-slate-700"
-        data-tip="Pulisci filtro">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-          class="size-6">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        data-tip="Pulisci filtro"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18 18 6M6 6l12 12"
+          />
         </svg>
-
       </button>
-      <button (click)="toggleDateRangeModal()"
-        class="tooltip tooltip-up flex items-center justify-center btn btn-outline btn-circle border-slate-700 mx-2" data-tip="Filtro Date">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-          class="size-6">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z" />
+      <button
+        (click)="toggleDateRangeModal()"
+        class="tooltip tooltip-up flex items-center justify-center btn btn-outline btn-circle border-slate-700 mx-2"
+        data-tip="Filtro Date"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6.75 2.994v2.25m10.5-2.25v2.25m-14.252 13.5V7.491a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v11.251m-18 0a2.25 2.25 0 0 0 2.25 2.25h13.5a2.25 2.25 0 0 0 2.25-2.25m-18 0v-7.5a2.25 2.25 0 0 1 2.25-2.25h13.5a2.25 2.25 0 0 1 2.25 2.25v7.5m-6.75-6h2.25m-9 2.25h4.5m.002-2.25h.005v.006H12v-.006Zm-.001 4.5h.006v.006h-.006v-.005Zm-2.25.001h.005v.006H9.75v-.006Zm-2.25 0h.005v.005h-.006v-.005Zm6.75-2.247h.005v.005h-.005v-.005Zm0 2.247h.006v.006h-.006v-.006Zm2.25-2.248h.006V15H16.5v-.005Z"
+          />
         </svg>
       </button>
-      <button (click)="exportExcel()"
+      <button
+        (click)="exportExcel()"
         class="tooltip tooltip-up flex items-center justify-center btn btn-outline btn-circle border-slate-700"
-        data-tip="Scarica tabella">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-          <path fill-rule="evenodd"
+        data-tip="Scarica tabella"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="size-6"
+        >
+          <path
+            fill-rule="evenodd"
             d="M12 2.25a.75.75 0 0 1 .75.75v11.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 1 1 1.06-1.06l3.22 3.22V3a.75.75 0 0 1 .75-.75Zm-9 13.5a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z"
-            clip-rule="evenodd" />
+            clip-rule="evenodd"
+          />
         </svg>
       </button>
     </div>
@@ -51,19 +94,33 @@
       <h2 class="font-bold text-lg">Seleziona Range di Date</h2>
       <div id="date-range-picker" class="flex items-center justify-center my-4">
         <div class="relative w-40 mx-2">
-          <input id="datepicker-range-start" name="start" type="date" (change)="onStartDateChange($event)"
-            class="input input-bordered text-base-content block w-full p-2.5" placeholder="Seleziona data inizio" />
+          <input
+            id="datepicker-range-start"
+            name="start"
+            type="date"
+            (change)="onStartDateChange($event)"
+            class="input input-bordered text-base-content block w-full p-2.5"
+            placeholder="Seleziona data inizio"
+          />
         </div>
 
         <span class="mx-4 text-gray-500">a</span>
 
         <div class="relative w-40 mx-2">
-          <input id="datepicker-range-end" name="end" type="date" (change)="onEndDateChange($event)"
-            class="input input-bordered text-base-content block w-full p-2.5" placeholder="Seleziona data fine" />
+          <input
+            id="datepicker-range-end"
+            name="end"
+            type="date"
+            (change)="onEndDateChange($event)"
+            class="input input-bordered text-base-content block w-full p-2.5"
+            placeholder="Seleziona data fine"
+          />
         </div>
       </div>
       <div class="modal-action">
-        <button (click)="isDateRangeModalOpen = false" class="btn">Chiudi</button>
+        <button (click)="isDateRangeModalOpen = false" class="btn">
+          Chiudi
+        </button>
       </div>
     </div>
   </div>
@@ -85,25 +142,47 @@
       <tr *ngFor="let transaction of filteredTransactions">
         <td>
           <div class="flex items-center gap-3">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="size-6"
-              width="24" height="24">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              class="size-6"
+              width="24"
+              height="24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"
+              />
             </svg>
-            <div class="tooltip tooltip-right" [attr.data-tip]="transaction.descrizioneEstesa">
-              <div class="font-bold w-20 truncate">{{ transaction.descrizioneEstesa}}</div>
+            <div
+              class="tooltip tooltip-right"
+              [attr.data-tip]="transaction.descrizioneEstesa"
+            >
+              <div class="font-bold w-20 truncate">
+                {{ transaction.descrizioneEstesa }}
+              </div>
             </div>
           </div>
         </td>
-        <td>{{transaction.data | formatDate}}</td>
-        <td>{{transaction.importo | currency:'EUR'}}</td>
-        <td>{{transaction.categoriaMovimentoID.NomeCategoria}}</td>
+        <td>{{ transaction.data | formatDate }}</td>
+        <td>{{ transaction.importo | currency : "EUR" }}</td>
+        <td>{{ transaction.categoriaMovimentoID.NomeCategoria }}</td>
         <td>
           <button (click)="viewDetails(transaction._id)">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-              <path fill-rule="evenodd"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              class="size-6"
+            >
+              <path
+                fill-rule="evenodd"
                 d="M4.5 12a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z"
-                clip-rule="evenodd" />
+                clip-rule="evenodd"
+              />
             </svg>
           </button>
         </td>

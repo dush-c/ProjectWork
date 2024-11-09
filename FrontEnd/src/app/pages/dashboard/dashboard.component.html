@@ -1,9 +1,13 @@
 <app-welcome-bar></app-welcome-bar>
-<div class="flex flex-row items-center h-36 space-x-20">
+
+<div
+  class="flex flex-col lg:flex-row items-center lg:h-36 space-y-4 lg:space-y-0 lg:space-x-20"
+>
   <app-stats-card [balance]="lastBalance"></app-stats-card>
   <app-credit-card></app-credit-card>
 </div>
-<div class="flex flex-row items-center mr-4">
-  <app-transactions-table></app-transactions-table>
-  <app-chart-card></app-chart-card>
+
+<div class="flex flex-col lg:flex-row items-center mr-4">
+  <app-transactions-table class="hidden lg:block"></app-transactions-table>
+  <app-chart-card class="hidden lg:block"></app-chart-card>
 </div>

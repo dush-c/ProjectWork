@@ -7,4 +7,25 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+@media (max-width: 767px) {
+  .card-body .hidden.md\:flex {
+    display: none;
+  }
+  table {
+    font-size: 0.875rem; /* Smaller font size for readability */
+  }
+  th,
+  td {
+    padding: 8px 12px;
+  }
+  .btn {
+    padding: 6px 12px;
+  }
+}
 
+/* For larger screens, show filters and keep the original layout */
+@media (min-width: 768px) {
+  .overflow-x-auto {
+    padding-right: 20px; /* Ensure no overflow */
+  }
+}
