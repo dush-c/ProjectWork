@@ -1,21 +1,63 @@
+<app-loader *ngIf="isLoading"></app-loader>
+
 <mat-card class="transfer-card">
   <div class="flex items-center mb-5">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mr-2" style="height: 24px; width: 24px;">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="size-6 mr-2"
+      style="height: 24px; width: 24px"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
+      />
     </svg>
     <h2 class="font-bold text-lg mb-0">Nuovo Bonifico</h2>
   </div>
 
-  <div *ngIf="registrationError" role="alert" class="alert alert-error flex items-center p-4 mb-4 text-red-700 bg-red-100 rounded-lg">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current mr-2" fill="none" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  <div
+    *ngIf="registrationError"
+    role="alert"
+    class="alert alert-error flex items-center p-4 mb-4 text-red-700 bg-red-100 rounded-lg"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-6 w-6 shrink-0 stroke-current mr-2"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
     </svg>
     <span>{{ registrationError }}</span>
   </div>
 
-  <div *ngIf="registrationSuccess" role="alert" class="alert alert-success flex items-center p-4 mb-4 text-green-700 bg-green-100 rounded-lg">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current mr-2" fill="none" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2l4 -4" />
+  <div
+    *ngIf="registrationSuccess"
+    role="alert"
+    class="alert alert-success flex items-center p-4 mb-4 text-green-700 bg-green-100 rounded-lg"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-6 w-6 shrink-0 stroke-current mr-2"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M9 12l2 2l4 -4"
+      />
     </svg>
     <span>{{ registrationSuccess }}</span>
   </div>
@@ -23,21 +65,46 @@
   <form (ngSubmit)="submitTransfer()" [formGroup]="transferForm">
     <div class="form-group">
       <label for="iban">IBAN Destinatario:</label>
-      <input type="text" id="iban" formControlName="iban" placeholder="Inserisci l'IBAN" class="input w-full" required />
+      <input
+        type="text"
+        id="iban"
+        formControlName="iban"
+        placeholder="Inserisci l'IBAN"
+        class="input w-full"
+        required
+      />
     </div>
 
     <div class="form-group">
       <label for="amount">Importo:</label>
-      <input type="number" id="amount" formControlName="amount" placeholder="Inserisci l'importo" class="input w-full" required />
+      <input
+        type="number"
+        id="amount"
+        formControlName="amount"
+        placeholder="Inserisci l'importo"
+        class="input w-full"
+        required
+      />
       <span class="absolute right-3 text-lg">€</span>
     </div>
 
     <div class="form-group">
       <label for="causale">Causale:</label>
-      <input type="text" id="causale" formControlName="causale" placeholder="Inserisci la causale" class="input w-full" required />
+      <input
+        type="text"
+        id="causale"
+        formControlName="causale"
+        placeholder="Inserisci la causale"
+        class="input w-full"
+        required
+      />
     </div>
 
-    <button type="submit" class="btn btn-primary w-full" [disabled]="transferForm.invalid">
+    <button
+      type="submit"
+      class="btn btn-primary w-full"
+      [disabled]="transferForm.invalid"
+    >
       Invia Bonifico
     </button>
   </form>

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BankTransferService } from '../../services/bank-transfer.service';
 
 @Component({
@@ -8,6 +8,7 @@ import { BankTransferService } from '../../services/bank-transfer.service';
 })
 export class DashboardComponent implements OnInit {
   lastBalance!: number;
+  isLoading = false;
 
   constructor(private bankTransSrv: BankTransferService) {}
 
@@ -16,12 +17,15 @@ export class DashboardComponent implements OnInit {
   }
 
   getLastBalance() {
+    this.isLoading = true;
     this.bankTransSrv.getLatestBalance().subscribe({
       next: (balance) => {
         this.lastBalance = balance;
         console.log('lastBalance', this.lastBalance);
+        this.isLoading = false;
       },
       error: (error) => {
+        this.isLoading = false;
         console.error('Errore nel recupero numero:', error);
       },
     });

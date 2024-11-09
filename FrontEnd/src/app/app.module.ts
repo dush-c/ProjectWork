@@ -41,6 +41,7 @@ import { CheckEmailComponent } from './pages/auth/check-email/check-email.compon
 import { ErrorTranslatorPipe } from './pipes/error-translator.pipe';
 import { TransferDetailsComponent } from './pages/transfer-details/transfer-details.component';
 import { FormatDatePipe } from './pipes/format-date.pipe';
+import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { FormatDatePipe } from './pipes/format-date.pipe';
     ErrorTranslatorPipe,
     TransferDetailsComponent,
     FormatDatePipe,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,

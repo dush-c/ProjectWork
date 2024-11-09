@@ -1,52 +1,101 @@
-<div class="container">
-    <mat-card class="transfer-card">
-        <div class="flex items-center mb-5">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 mr-2" style="height: 24px; width: 24px;">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-            </svg>
-            <h2 class="font-bold text-lg mb-0">Il Mio Profilo</h2>
-        </div>
+<app-loader *ngIf="isLoading"></app-loader>
 
-        <div class="img-profile">
-          <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-            <div class="w-10 rounded-full">
-              <img [src]="user?.picture || 'assets/usernopic.jpg'">
-            </div>
+<div class="container">
+  <mat-card class="transfer-card">
+    <div class="flex items-center mb-5">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6 mr-2"
+        style="height: 24px; width: 24px"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+        />
+      </svg>
+      <h2 class="font-bold text-lg mb-0">Il Mio Profilo</h2>
+    </div>
+
+    <div class="img-profile">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+        <div class="w-10 rounded-full">
+          <img [src]="user?.picture || 'assets/usernopic.jpg'" />
+        </div>
+      </div>
+    </div>
+
+    <form [formGroup]="transferForm" (ngSubmit)="submitTransfer()">
+      <div class="flex justify-between">
+        <div class="left-form w-1/2 pr-2">
+          <div class="form-group">
+            <label>Username:</label>
+            <input
+              type="text"
+              formControlName="username"
+              class="input"
+              placeholder="Inserisci username"
+              readonly
+            />
+          </div>
+          <div class="form-group">
+            <label>Nome Titolare:</label>
+            <input
+              type="text"
+              formControlName="nomeTitolare"
+              class="input"
+              placeholder="Inserisci nome"
+              readonly
+            />
+          </div>
+          <div class="form-group">
+            <label>Cognome Titolare:</label>
+            <input
+              type="text"
+              formControlName="cognomeTitolare"
+              class="input"
+              placeholder="Inserisci cognome"
+              readonly
+            />
           </div>
         </div>
 
-        <form [formGroup]="transferForm" (ngSubmit)="submitTransfer()">
-            <div class="flex justify-between">
-                <div class="left-form w-1/2 pr-2">
-                    <div class="form-group">
-                        <label>Username:</label>
-                        <input type="text" formControlName="username" class="input" placeholder="Inserisci username" readonly />
-                    </div>
-                    <div class="form-group">
-                        <label>Nome Titolare:</label>
-                        <input type="text" formControlName="nomeTitolare" class="input" placeholder="Inserisci nome" readonly />
-                    </div>
-                    <div class="form-group">
-                        <label>Cognome Titolare:</label>
-                        <input type="text" formControlName="cognomeTitolare" class="input" placeholder="Inserisci cognome" readonly />
-                    </div>
-                </div>
-
-                <div class="right-form w-1/2 pl-2">
-                    <div class="form-group">
-                        <label>ContoID:</label>
-                        <input type="text" formControlName="id" class="input" placeholder="Inserisci id" readonly />
-                    </div>
-                    <div class="form-group">
-                        <label>Data Apertura:</label>
-                        <input type="date" formControlName="dataApertura" class="input" readonly />
-                    </div>
-                    <div class="form-group">
-                        <label>IBAN:</label>
-                        <input type="text" formControlName="IBAN" class="input" placeholder="Inserisci IBAN" readonly />
-                    </div>
-                </div>
-            </div>
-        </form>
-    </mat-card>
+        <div class="right-form w-1/2 pl-2">
+          <div class="form-group">
+            <label>ContoID:</label>
+            <input
+              type="text"
+              formControlName="id"
+              class="input"
+              placeholder="Inserisci id"
+              readonly
+            />
+          </div>
+          <div class="form-group">
+            <label>Data Apertura:</label>
+            <input
+              type="date"
+              formControlName="dataApertura"
+              class="input"
+              readonly
+            />
+          </div>
+          <div class="form-group">
+            <label>IBAN:</label>
+            <input
+              type="text"
+              formControlName="IBAN"
+              class="input"
+              placeholder="Inserisci IBAN"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-card>
 </div>

@@ -5,18 +5,22 @@ import { BankAccountEntity } from '../../interfaces/bank-account.entity';
 import { User } from '../../interfaces/user.entity';
 import { AuthService } from '../../services/auth.service';
 
-
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss']
+  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
   transferForm: FormGroup;
   errorMessage: string | undefined;
   user: User | null = null;
+  isLoading = false;
 
-  constructor(private formBuilder: FormBuilder, private bankAccountService: BankAccountService, private authSrv: AuthService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private bankAccountService: BankAccountService,
+    private authSrv: AuthService
+  ) {
     this.transferForm = this.formBuilder.group({
       id: ['', Validators.required],
       username: ['', [Validators.required, Validators.email]],
@@ -27,7 +31,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
   ngOnInit(): void {
     this.getProfileData();
     this.authSrv.currentUser$.subscribe((user: User | null) => {
@@ -36,23 +39,28 @@ export class ProfileComponent implements OnInit {
   }
 
   getProfileData() {
+    this.isLoading = true;
     this.bankAccountService.getBankAccountInfo().subscribe(
       (data: BankAccountEntity) => {
+        this.isLoading = false;
         this.transferForm.patchValue({
           id: data.id,
           username: data.username,
           cognomeTitolare: data.cognomeTitolare,
           nomeTitolare: data.nomeTitolare,
-          dataApertura: data.dataApertura ? this.formatDateToInput(new Date(data.dataApertura)) : '',  // Formattiamo la data
+          dataApertura: data.dataApertura
+            ? this.formatDateToInput(new Date(data.dataApertura))
+            : '', // Formattiamo la data
           IBAN: data.IBAN,
         });
         this.transferForm.disable();
       },
       (error: any) => {
-        this.errorMessage = 'Errore nel recupero dei dati del profilo. Riprova più tardi.';
+        this.isLoading = false;
+        this.errorMessage =
+          'Errore nel recupero dei dati del profilo. Riprova più tardi.';
         console.error('Error fetching profile data:', error);
       }
-
     );
   }
 

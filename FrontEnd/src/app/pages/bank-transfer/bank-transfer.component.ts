@@ -1,27 +1,37 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {BankAccountService} from "../../services/bank-account.service";
-import {AuthService} from "../../services/auth.service";
-import {CategoryTransaction} from "../../interfaces/category-transaction.entity";
-import {BankTransferService} from "../../services/bank-transfer.service";
-import {Transaction} from "../../interfaces/transaction.entity";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BankAccountService } from '../../services/bank-account.service';
+import { AuthService } from '../../services/auth.service';
+import { CategoryTransaction } from '../../interfaces/category-transaction.entity';
+import { BankTransferService } from '../../services/bank-transfer.service';
+import { Transaction } from '../../interfaces/transaction.entity';
 
 @Component({
   selector: 'app-bank-transfer',
   templateUrl: './bank-transfer.component.html',
-  styleUrl: './bank-transfer.component.scss'
+  styleUrl: './bank-transfer.component.scss',
 })
-export class BankTransferComponent implements OnInit{
+export class BankTransferComponent implements OnInit {
   transferForm: FormGroup;
   lastBalance!: number;
   registrationError: string | null = null;
   registrationSuccess: string | null = null;
+  isLoading = false;
 
-  constructor(private fb: FormBuilder, private transferService: BankTransferService) {
+  constructor(
+    private fb: FormBuilder,
+    private transferService: BankTransferService
+  ) {
     this.transferForm = this.fb.group({
-      iban: ['', [Validators.required, Validators.pattern(/^IT[0-9]{2}[A-Z]{1}[0-9A-Z]{22}$/)]],
+      iban: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^IT[0-9]{2}[A-Z]{1}[0-9A-Z]{22}$/),
+        ],
+      ],
       amount: ['', [Validators.required, Validators.min(1)]],
-      causale: ['', [Validators.required]]
+      causale: ['', [Validators.required]],
     });
   }
 
@@ -43,9 +53,10 @@ export class BankTransferComponent implements OnInit{
 
   submitTransfer() {
     if (this.transferForm.valid) {
+      this.isLoading = true;
       const transferDetails = this.transferForm.value;
       const amount = parseFloat(transferDetails.amount);
-      console.log(amount)
+      console.log(amount);
 
       if (amount > this.lastBalance) {
         this.registrationError = 'Saldo insufficiente';
@@ -54,21 +65,23 @@ export class BankTransferComponent implements OnInit{
         return;
       }
 
-      this.transferService.eseguiBonifico(transferDetails.iban, amount, transferDetails.causale)
+      this.transferService
+        .eseguiBonifico(transferDetails.iban, amount, transferDetails.causale)
         .subscribe({
           next: (response) => {
+            this.isLoading = false;
             this.registrationSuccess = 'Bonifico eseguito con successo!';
             this.registrationError = null;
             this.lastBalance -= amount;
             this.transferForm.reset();
           },
           error: (error) => {
+            this.isLoading = false;
             this.registrationError = error.error.message;
             this.registrationSuccess = null;
             console.error("Errore durante l'esecuzione del bonifico:", error);
-          }
+          },
         });
     }
   }
-
 }
